@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{simulator.htmltitle}"></title>
+
+        <link rel="apple-touch-icon" sizes="180x180" th:href="@{/favicon/apple-touch-icon.png}" href="../static/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" th:href="@{/favicon/favicon-32x32.png}" href="../static/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" th:href="@{/favicon/favicon-16x16.png}" href="../static/favicon/favicon-16x16.png">
+
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/css/bootstrap-slider.min.css" integrity="sha256-+xqVrdbLgHjiKF8ULvcwzQ545r7lCVfOqXlNJCB3XOg=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
+    </head>
+    <body>
+        <div class="sim-container">
+            <div class="header">
+
+            </div>
+            <div class="workspace">
+                <canvas id="c" style="border: 1px solid rgb(204, 204, 204);width: 100%; height: 100%;"></canvas>
+            </div>
+            <div class="element-palette">
+                <h3 th:text="#{availableElements.header}"></h3>
+            </div>
+            <div class="fluid-properties">
+                <h3 th:text="#{fluidProperties.header}"></h3>
+            </div>
+            <div class="sequence-properties">
+                <h3 th:text="#{sequenceProperties.header}"></h3>
+            </div>
+            <div class="element-properties">
+                <h3 th:text="#{selectedElementProperties.header}"></h3>
+
+            </div>
+            <div class="footer">
+                <div class="playback-progress">
+                    <label for="progressbar">
+                        <span class="progressbar-current">0</span> / <span class="progressbar-max">140</span>
+                    </label>
+                    <input id="progressbar" type="text" data-slider-min="0" data-slider-max="140" data-slider-step="1" data-slider-value="0" />
+                </div>
+                <div class="sim-controls">
+                    <div class="icon-box"><i class="fas fa-play"></i></div>
+
+                    <div class="icon-box"><i class="fas fa-caret-left"></i></div>
+                    <div class="icon-box"><i class="fas fa-stop"></i></div>
+                    <div class="icon-box"><i class="fas fa-caret-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/bootstrap-slider.min.js" integrity="sha256-nviKEC91moGfyFMMzT31WyNxuAvIIgOSkSGi7K6U7EU=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min.js" integrity="sha256-WBL/n3xm7bfMlEkSfLdaXpMVekQhsDVpslNegSlFw5Y=" crossorigin="anonymous"></script>
+
+        <script th:src="@{/scripts/main.js}" src="../static/scripts/main.js"></script>
+        <script th:src="@{/scripts/workspace.js}" src="../static/scripts/workspace.js"></script>
+    </body>
+</html>
