@@ -3,58 +3,8 @@ html, body {
     min-height: 100%;
 }
 
-.sim-container {
-    height: 100%;
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: minmax(200px, 300px) 3fr minmax(200px, 300px);
-    grid-template-rows: 10% 40% 40% 100px;
-}
-
-.sim-container > div {
-    border: 1px solid #EFEFEF;
-}
-
-
-.header {
-    grid-column: 1 / 4;
-    grid-row: 1 / 2;
-}
-
-.workspace {
-    grid-column: 2 / 3;
-    grid-row: 2 / 4;
-}
-.element-palette {
-    grid-column: 3 / 4;
-    grid-row: 2 / 3;
-}
-
-.fluid-properties {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-}
-
-.sequence-properties {
-    grid-column: 1 / 2;
-    grid-row: 3 / 4;
-}
-
-.element-properties {
-    grid-column: 3 / 4;
-    grid-row: 3 / 4;
-}
-
-
-/* FOOTER */
-.footer {
-    grid-column: 1 / 4;
-    grid-row: 4 / 5;
-    display: flex;
-    flex-direction: column;
-
-    padding: 20px;
+label {
+    margin-bottom: 0;
 }
 
 .icon-box {
@@ -67,16 +17,177 @@ html, body {
     border: 1px solid #EFEFEF;
 }
 
-.icon-box:first-child {
+
+.icon-box.disabled {
+    cursor: no-drop;
+    background-color: #c3c3c3;
+    color: #616161 !important;
+}
+
+.sim-container {
+    height: 100%;
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 300px 3fr 300px;
+    grid-template-rows: 70px 1fr 1fr 100px;
+}
+
+.sim-container > div {
+    border: 1px solid #EFEFEF;
+    display: flex;
+}
+
+.header {
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.header .fas {
+    padding-right: 17px;
+}
+
+.header h2 {
+    padding-left: 10px;
+}
+
+
+.workspace {
+    grid-column: 2 / 3;
+    grid-row: 2 / 4;
+    width: 100% !important;
+}
+
+.workspace .canvas-container {
+    width: 100% !important;
+}
+
+.element-palette {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+    flex-direction: column;
+}
+
+.fluid-properties {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    padding: 10px;
+    flex-direction: column;
+}
+
+.fluid-properties .table-wrapper {
+    display: inline-block;
+    height: 150px;
+    overflow: auto;
+    padding-bottom: 4px;
+}
+
+.fluid-properties h4 {
+    margin-bottom: 0.5rem;
+}
+
+.fluid-properties thead th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    border-top: white;
+    border-bottom: 2px solid #d7dadc;
+    padding: 6px 4px;
+}
+
+.fluid-properties tbody td {
+    padding: 4px 4px;
+    cursor: pointer;
+    border: none;
+}
+
+.fluid-properties tbody tr.active {
+    background-color: #71e690;
+}
+
+.fluid-properties tbody td:last-of-type {
+    display: flex;
+    height: 33px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.fluid-properties .fluid-property-line {
+    display: flex;
+    align-items: center;
+    margin-left: -15px;
+}
+
+.fluid-properties .fluid-property-line label {
+    font-size: 0.75em;
+
+}
+
+.fluid-properties .fluid-property-line input {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#newFluidModal form,
+#copyFluidModal form {
+    display: flex;
+    flex-direction: column;
+}
+
+#newFluidModal form button,
+#copyFluidModal form button {
+    background: #d03f3f;
+    border: none;
+    padding: 7px;
+}
+
+#copyFluidModal form input {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding: 5px 10px;
+}
+
+#newFluidModal form input {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+}
+
+/* DROPLET SEQUENCE */
+.sequence-properties {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+    padding: 10px;
+}
+
+
+
+/* ELEMENT PROPERTIES */
+.element-properties {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+}
+
+/* FOOTER */
+.footer {
+    grid-column: 1 / 4;
+    grid-row: 4 / 5;
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px;
+}
+
+.footer .icon-box:first-child {
     margin-right: 30px;
 }
 
-
-.fa-caret-left, .fa-caret-right{
+.footer .fa-caret-left, .fa-caret-right{
     font-size: 25px
 }
-
-
 
 .footer .playback-progress {
     display: flex;
@@ -88,7 +199,6 @@ html, body {
 
 .footer .playback-progress label {
     margin-right: 20px;
-    margin-bottom: 0;
     white-space: nowrap;
 }
 

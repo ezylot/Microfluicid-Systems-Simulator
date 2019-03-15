@@ -1,48 +1,93 @@
 (function() {
     const canvas = new fabric.Canvas('c', { selection: false });
     const grid = 10;
-    fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
     let canvasContainer = $('.workspace');
-    canvas.setHeight(canvasContainer.height())
-    canvas.setWidth(canvasContainer.width())
+    let backgroundGroup = null;
+
+    canvas.setHeight(canvasContainer.height());
+    canvas.setWidth(canvasContainer.width());
+    canvas.calcOffset();
+
     window.onresize = () => {
-        canvas.setHeight(canvasContainer.height())
-        canvas.setWidth(canvasContainer.width())
+        canvas.setHeight(canvasContainer.height());
+        canvas.setWidth(canvasContainer.width());
+        canvas.calcOffset();
+        redrawBackground();
     };
 
-    for (let i = 0; i < (canvas.width / grid); i++) {
-        canvas.add(new fabric.Line([ i * grid, 0, i * grid, canvas.height], { stroke: '#ccc', selectable: false }));
-    }
-    for (let i = 0; i < (canvas.height / grid); i++) {
-        canvas.add(new fabric.Line([ 0, i * grid, canvas.width, i * grid], { stroke: '#ccc', selectable: false }))
+    function redrawBackground() {
+        if(backgroundGroup) {
+            canvas.remove(backgroundGroup);
+        }
+
+        let gridLines = [];
+        const gridOverlap = 5;
+
+        for (let i = -gridOverlap; i < (canvasContainer.width() / grid) + gridOverlap; i++) {
+            let verticalGridLine = new fabric.Line([ i * grid, -gridOverlap * grid, i * grid, canvasContainer.height() + gridOverlap * grid], {
+                stroke: '#eeeeee',
+                selectable: false
+            });
+            gridLines.push(verticalGridLine);
+        }
+        for (let i = -gridOverlap; i < (canvasContainer.height() / grid) + gridOverlap; i++) {
+            let horizontalGridLine = new fabric.Line([ -gridOverlap * grid, i * grid,  canvasContainer.width() + gridOverlap * grid, i * grid], {
+                stroke: '#eeeeee',
+                selectable: false
+            });
+            gridLines.push(horizontalGridLine);
+        }
+
+        backgroundGroup = new fabric.Group(gridLines, {
+            selectable: false,
+            evented: false,
+        });
+        canvas.add(backgroundGroup);
+        backgroundGroup.sendToBack();
+
+        let panHintText = new fabric.Text('Alt + Drag to move around', {
+            left: canvasContainer.width() / 2 - 220,
+            top: canvasContainer.height() - 100,
+            fill: '#cccccc',
+            opacity: 0.5,
+            absolutePositioned: true
+        });
+        backgroundGroup.addWithUpdate(panHintText);
     }
 
-    canvas.on('mouse:down', function(opt) {
+    redrawBackground();
+
+    canvas.on('mouse:down', opt => {
         if (opt.e.altKey === true) {
-            this.isDragging = true;
-            this.selection = false;
-            this.lastPosX = opt.e.clientX;
-            this.lastPosY = opt.e.clientY;
+            canvas.isDragging = true;
+            canvas.selection = false;
+            canvas.lastPosX = opt.e.clientX;
+            canvas.lastPosY = opt.e.clientY;
         }
     });
 
-    canvas.on('mouse:move', function(opt) {
-        if (this.isDragging) {
-            this.viewportTransform[4] += opt.e.clientX - this.lastPosX;
-            this.viewportTransform[5] += opt.e.clientY - this.lastPosY;
-            this.requestRenderAll();
-            this.lastPosX = opt.e.clientX;
-            this.lastPosY = opt.e.clientY;
+    canvas.on('mouse:move', opt => {
+        if (canvas.isDragging) {
+            canvas.viewportTransform[4] += opt.e.clientX - canvas.lastPosX;
+            canvas.viewportTransform[5] += opt.e.clientY - canvas.lastPosY;
+            canvas.requestRenderAll();
+
+            backgroundGroup.left -= opt.e.clientX - canvas.lastPosX;
+            backgroundGroup.top -= opt.e.clientY - canvas.lastPosY;
+
+            canvas.lastPosX = opt.e.clientX;
+            canvas.lastPosY = opt.e.clientY;
         }
     });
 
-    canvas.on('mouse:up', function(opt) {
-        this.isDragging = false;
-        this.selection = true;
+    canvas.on('mouse:up', () => {
+        canvas.isDragging = false;
+        canvas.selection = true;
         canvas.getObjects().forEach(value => {
             value.setCoords();
-        })
+        });
+        mergeCircles();
     });
 
     function makeLine(coords) {
@@ -55,10 +100,10 @@
         });
 
         let circleStart = new fabric.Circle({
-            left: coords[0],
-            top: coords[1],
+            left: coords[0] - grid/2,
+            top: coords[1] - grid/2,
             strokeWidth: 5,
-            radius: 7,
+            radius: 10,
             fill: '#fff',
             stroke: '#666'
         });
@@ -67,10 +112,10 @@
         circleStart.hasControls = circleStart.hasBorders = false;
 
         let circleEnd = new fabric.Circle({
-            left: coords[2],
-            top: coords[3],
+            left: coords[2] - grid/2,
+            top: coords[3] - grid/2,
             strokeWidth: 5,
-            radius: 7,
+            radius: 10,
             fill: '#fff',
             stroke: '#666'
         });
@@ -101,7 +146,7 @@
         canvas.getObjects().forEach(value => {
             if(value.type === 'circle') {
                 if(circles[value.left] && circles[value.left][value.top]) {
-                    circles[value.left][value.top].lines.push(value.lines[0]);
+                    circles[value.left][value.top].lines = circles[value.left][value.top].lines.concat(value.lines);
                     canvas.remove(value);
                     circles[value.left][value.top].bringToFront();
                     return;
@@ -122,8 +167,8 @@
         let top = Math.round(circle.top / grid) * grid;
 
         circle.set({
-            left: left,
-            top: top
+            left: left - grid/2,
+            top: top - grid/2
         });
 
         circle.lines.forEach(value => {
@@ -137,4 +182,10 @@
         });
         canvas.renderAll();
     });
+
+
+    // TODO: selectable lines
+    // TODO: show properties of selected liens
+    // TODO: del to delete line
+    // TODO: delete lines if start and end are same
 })();
