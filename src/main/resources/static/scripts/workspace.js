@@ -21,7 +21,11 @@
     };
 
     function redrawBackground() {
+        let prevTop = 0;
+        let prevLeft = 0;
         if(backgroundGroup) {
+            prevTop = backgroundGroup.top;
+            prevLeft = backgroundGroup.left;
             canvas.remove(backgroundGroup);
         }
 
@@ -58,6 +62,8 @@
             absolutePositioned: true
         });
         backgroundGroup.addWithUpdate(panHintText);
+        backgroundGroup.left = prevLeft;
+        backgroundGroup.top = prevTop;
     }
 
     redrawBackground();

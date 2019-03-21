@@ -5,7 +5,6 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: resize changes grid
     // TODO: create new pipe when clicking element in palette
     // TODO: del to delete line
     // TODO: droplet sequence
