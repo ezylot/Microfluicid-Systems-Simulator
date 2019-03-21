@@ -54,7 +54,7 @@
             left: canvasContainer.width() / 2 - 220,
             top: canvasContainer.height() - 100,
             fill: '#cccccc',
-            opacity: 0.5,
+            opacity: 0.7,
             absolutePositioned: true
         });
         backgroundGroup.addWithUpdate(panHintText);
@@ -75,7 +75,38 @@
 
             opt.target.set({ 'fill': lineColorSelected, 'stroke': lineColorSelected });
             oldSelectedLine = opt.target;
+
+            let $elementPropertiesWindow = $('.element-properties');
+            $elementPropertiesWindow.find('.empty-hint').hide();
+
+            let linePropertyForm = $elementPropertiesWindow.find('.line-properties');
+
+            let length, width, height;
+            if(opt.target.properties == null) {
+                opt.target.properties = {};
+                length = width = height = 0;
+            } else {
+                length = opt.target.properties.length || 0;
+                width  = opt.target.properties.width || 0;
+                height = opt.target.properties.height || 0;
+            }
+            opt.target.properties.length = length;
+            opt.target.properties.width = width;
+            opt.target.properties.height = height;
+
+            linePropertyForm.find('#length').val(length);
+            linePropertyForm.find('#width').val(width);
+            linePropertyForm.find('#height').val(height);
+            linePropertyForm.data('objectProperties', opt.target.properties);
+            linePropertyForm.show();
         }
+    });
+
+    $('.element-properties .property-form').on('input', 'input', (event) => {
+        let $input = $(event.target);
+        let objectProperties = $input.closest('.property-form').data('objectProperties');
+
+        objectProperties[$input.attr('id')] = $input.val();
     });
 
     canvas.on('mouse:move', opt => {
@@ -109,6 +140,7 @@
             selectable: false,
             evented: true,
         });
+        line.hasControls = line.hasBorders = false;
 
         let circleStart = new fabric.Circle({
             left: coords[0] - grid/2,
@@ -196,9 +228,4 @@
         });
         canvas.renderAll();
     });
-
-
-    // TODO: show properties of selected liens
-    // TODO: del to delete line
-    // TODO: delete lines if start and end are same
 })();

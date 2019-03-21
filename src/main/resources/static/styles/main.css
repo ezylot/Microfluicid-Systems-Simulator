@@ -24,6 +24,10 @@ label {
     color: #616161 !important;
 }
 
+.empty-hint {
+    opacity: 0.6;
+}
+
 .sim-container {
     height: 100%;
     width: 100%;
@@ -130,6 +134,8 @@ label {
 .fluid-properties .fluid-property-line input {
     margin-bottom: 10px;
     width: 100%;
+    text-align: right;
+    padding-right: 7px;
 }
 
 #newFluidModal form,
@@ -164,11 +170,31 @@ label {
 }
 
 
-
 /* ELEMENT PROPERTIES */
 .element-properties {
     grid-column: 3 / 4;
     grid-row: 3 / 4;
+    flex-direction: column;
+    padding: 10px;
+}
+
+
+.element-properties .element-property-line {
+    display: flex;
+    align-items: center;
+    margin-left: -15px;
+}
+
+.element-properties .element-property-line label {
+    font-size: 0.75em;
+
+}
+
+.element-properties .element-property-line input {
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: right;
+    padding-right: 7px;
 }
 
 /* FOOTER */

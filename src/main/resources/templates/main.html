@@ -93,8 +93,22 @@
                 <h4 th:text="#{sequenceProperties.header}"></h4>
             </div>
             <div class="element-properties">
-                <h4 th:text="#{selectedElementProperties.header}"></h4>
-
+                <h4 th:text="#{selectedElementProperties.header}" class="mb-3"></h4>
+                <p class="empty-hint" th:text="#{selectedElementProperties.noneSelected}"></p>
+                <div class="property-form line-properties" style="display: none;">
+                    <div class="element-property-line">
+                        <label for="length" class="col-md-4" th:text="#{elementProperties.line.length}"></label>
+                        <input id="length" name="muc" type="number" dir="rtl" />
+                    </div>
+                    <div class="element-property-line">
+                        <label for="width" class="col-md-4" th:text="#{elementProperties.line.width}"></label>
+                        <input id="width" name="muc" type="number" dir="rtl" />
+                    </div>
+                    <div class="element-property-line">
+                        <label for="height" class="col-md-4" th:text="#{elementProperties.line.height}"></label>
+                        <input id="height" name="muc" type="number" dir="rtl" />
+                    </div>
+                </div>
             </div>
             <div class="footer">
                 <div class="playback-progress">
