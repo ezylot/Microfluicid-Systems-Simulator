@@ -55,13 +55,21 @@
         backgroundGroup.sendToBack();
 
         let panHintText = new fabric.Text('Alt + Drag to move around', {
-            left: canvasContainer.width() / 2 - 220,
-            top: canvasContainer.height() - 150,
-            fill: '#cccccc',
-            opacity: 0.7,
+            left: canvasContainer.width() / 2 - 260,
+            top: canvasContainer.height() - 200,
+            opacity: 0.25,
             absolutePositioned: true
         });
+
+        let delHintText = new fabric.Text('Del key to remove selected element', {
+            left: canvasContainer.width() / 2 - 320,
+            top: canvasContainer.height() - 150,
+            opacity: 0.25,
+            absolutePositioned: true
+        });
+
         backgroundGroup.addWithUpdate(panHintText);
+        backgroundGroup.addWithUpdate(delHintText);
         backgroundGroup.left = prevLeft;
         backgroundGroup.top = prevTop;
     }
