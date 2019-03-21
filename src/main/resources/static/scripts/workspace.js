@@ -1,11 +1,11 @@
+const grid = 10;
+const lineColor = '#9c9c9c';
+const lineColorSelected = '#689c52';
+const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
+
+
 (function() {
     const canvas = new fabric.Canvas('c', { selection: false });
-    const grid = 10;
-
-    const lineColor = '#9c9c9c';
-    const lineColorSelected = '#689c52';
-
-    const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
 
 
     let canvasContainer = $('.workspace');
@@ -91,9 +91,11 @@
         } else if(currentDrawingState === DrawingStates.ready) {
             //region start drawing line
             currentDrawingState = DrawingStates.started;
-            let pointer = canvas.getPointer(opt.e);
-            let points = [pointer.x, pointer.y, pointer.x, pointer.y];
-            currentDrawingLine = makeLine(points, {});
+            let pointer = canvas.getPointer(opt.e, false);
+            let left = Math.round(pointer.x / grid) * grid;
+            let top = Math.round(pointer.y / grid) * grid;
+            let points = [left, top, left, top];
+            currentDrawingLine = makeLine(canvas, points, {});
             //endregion
         } else if(currentDrawingState === DrawingStates.started) {
             //region end drawing line
@@ -170,13 +172,13 @@
         }
 
         if(currentDrawingState === DrawingStates.started) {
-            let pointer = canvas.getPointer(opt.e);
+            let pointer = canvas.getPointer(opt.e, false);
 
             let left = Math.round(pointer.x / grid) * grid;
             let top = Math.round(pointer.y / grid) * grid;
 
             currentDrawingLine.set({ x2: left, y2: top });
-            currentDrawingLine.endCircle.set({ left: left - grid/2, top: top - grid/2 })
+            currentDrawingLine.endCircle.set({left: left - grid / 2, top: top - grid / 2});
             canvas.renderAll();
         }
     });
@@ -200,60 +202,14 @@
         }
     });
 
-    function makeLine(coords, properties) {
-        let line = new fabric.Line(coords, {
-            fill: lineColor,
-            stroke: lineColor,
-            strokeWidth: 12,
-            selectable: false,
-            evented: true,
-            hoverCursor : 'default',
-        });
-        line.hasControls = line.hasBorders = false;
-
-        let startCircle = new fabric.Circle({
-            left: coords[0] - grid/2,
-            top: coords[1] - grid/2,
-            strokeWidth: 5,
-            radius: 10,
-            fill: '#fff',
-            stroke: '#666'
-        });
-        startCircle.pos = 'start';
-        startCircle.lines = [{line: line, pos: startCircle.pos}];
-        startCircle.hasControls = startCircle.hasBorders = false;
-
-        let endCircle = new fabric.Circle({
-            left: coords[2] - grid/2,
-            top: coords[3] - grid/2,
-            strokeWidth: 5,
-            radius: 10,
-            fill: '#fff',
-            stroke: '#666'
-        });
-
-        endCircle.pos = 'end';
-        endCircle.lines = [{line: line, pos: endCircle.pos}];
-        endCircle.hasControls = endCircle.hasBorders = false;
-
-        canvas.add(line);
-        canvas.add(startCircle);
-        canvas.add(endCircle);
-
-        line.properties = properties;
-        line.startCircle = startCircle;
-        line.endCircle = endCircle;
-        return line;
-    }
-
-    makeLine([ 100, 100, 200, 100 ]);
-    makeLine([ 200, 100, 200, 50 ]);
-    makeLine([ 200, 100, 200, 150 ]);
-    makeLine([ 200, 150, 300, 150 ]);
-    makeLine([ 200, 50, 300, 50 ]);
-    makeLine([ 300, 50, 300, 100 ]);
-    makeLine([ 300, 150, 300, 100 ]);
-    makeLine([ 300, 100, 400, 100 ]);
+    makeLine(canvas, [ 100, 100, 200, 100 ]);
+    makeLine(canvas, [ 200, 100, 200, 50 ]);
+    makeLine(canvas, [ 200, 100, 200, 150 ]);
+    makeLine(canvas, [ 200, 150, 300, 150 ]);
+    makeLine(canvas, [ 200, 50, 300, 50 ]);
+    makeLine(canvas, [ 300, 50, 300, 100 ]);
+    makeLine(canvas, [ 300, 150, 300, 100 ]);
+    makeLine(canvas, [ 300, 100, 400, 100 ]);
 
     mergeCircles(canvas);
     
@@ -277,10 +233,60 @@
                 console.error("Circle to move did not match any end of the connected line");
             }
         });
-        mergeCircles(canvas);
         canvas.renderAll();
     });
+
+    canvas.on('object:moving', () => {
+        mergeCircles(canvas);
+    });
+
 })();
+
+function makeLine(canvas, coords, properties) {
+    let line = new fabric.Line(coords, {
+        fill: lineColor,
+        stroke: lineColor,
+        strokeWidth: 12,
+        selectable: false,
+        evented: true,
+        hoverCursor : 'default',
+    });
+    line.hasControls = line.hasBorders = false;
+
+    let startCircle = new fabric.Circle({
+        left: coords[0] - grid/2,
+        top: coords[1] - grid/2,
+        strokeWidth: 5,
+        radius: 10,
+        fill: '#fff',
+        stroke: '#666'
+    });
+    startCircle.pos = 'start';
+    startCircle.lines = [{line: line, pos: startCircle.pos}];
+    startCircle.hasControls = startCircle.hasBorders = false;
+
+    let endCircle = new fabric.Circle({
+        left: coords[2] - grid/2,
+        top: coords[3] - grid/2,
+        strokeWidth: 5,
+        radius: 10,
+        fill: '#fff',
+        stroke: '#666'
+    });
+
+    endCircle.pos = 'end';
+    endCircle.lines = [{line: line, pos: endCircle.pos}];
+    endCircle.hasControls = endCircle.hasBorders = false;
+
+    canvas.add(line);
+    canvas.add(startCircle);
+    canvas.add(endCircle);
+
+    line.properties = properties;
+    line.startCircle = startCircle;
+    line.endCircle = endCircle;
+    return line;
+}
 
 function mergeCircles(canvas) {
     let circles = {};
