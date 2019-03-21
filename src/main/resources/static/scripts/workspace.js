@@ -2,8 +2,12 @@
     const canvas = new fabric.Canvas('c', { selection: false });
     const grid = 10;
 
+    const lineColor = '#9c9c9c';
+    const lineColorSelected = '#689c52';
+
     let canvasContainer = $('.workspace');
     let backgroundGroup = null;
+    let oldSelectedLine = null;
 
     canvas.setHeight(canvasContainer.height());
     canvas.setWidth(canvasContainer.width());
@@ -64,6 +68,13 @@
             canvas.selection = false;
             canvas.lastPosX = opt.e.clientX;
             canvas.lastPosY = opt.e.clientY;
+        } else if(opt.target != null && opt.target.type === 'line') {
+            if(oldSelectedLine != null) {
+                oldSelectedLine.set({ 'fill': lineColor, 'stroke': lineColor });
+            }
+
+            opt.target.set({ 'fill': lineColorSelected, 'stroke': lineColorSelected });
+            oldSelectedLine = opt.target;
         }
     });
 
@@ -90,13 +101,13 @@
         mergeCircles();
     });
 
-    function makeLine(coords) {
+    function makeLine(coords, properties) {
         let line = new fabric.Line(coords, {
-            fill: '#9c9c9c',
-            stroke: '#9c9c9c',
+            fill: lineColor,
+            stroke: lineColor,
             strokeWidth: 12,
             selectable: false,
-            evented: false,
+            evented: true,
         });
 
         let circleStart = new fabric.Circle({
@@ -119,6 +130,7 @@
             fill: '#fff',
             stroke: '#666'
         });
+
         circleEnd.pos = 'end';
         circleEnd.lines = [{line: line, pos: circleEnd.pos}];
         circleEnd.hasControls = circleEnd.hasBorders = false;
@@ -126,6 +138,8 @@
         canvas.add(line);
         canvas.add(circleStart);
         canvas.add(circleEnd);
+
+        line.properties = properties;
     }
 
     makeLine([ 100, 100, 200, 100 ]);
@@ -184,7 +198,6 @@
     });
 
 
-    // TODO: selectable lines
     // TODO: show properties of selected liens
     // TODO: del to delete line
     // TODO: delete lines if start and end are same
