@@ -137,6 +137,7 @@ body.drawing {
 }
 
 .fluid-properties .fluid-property-line {
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     margin-left: -15px;
@@ -147,7 +148,6 @@ body.drawing {
 }
 
 .fluid-properties .fluid-property-line input {
-    margin-bottom: 10px;
     width: 100%;
     text-align: right;
     padding-right: 7px;
@@ -230,6 +230,7 @@ body.drawing {
 }
 
 .sequence-properties .sequence-property-line {
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     margin-left: -15px;
@@ -240,7 +241,6 @@ body.drawing {
 }
 
 .sequence-properties .sequence-property-line input {
-    margin-bottom: 10px;
     width: 100%;
     text-align: right;
     padding-right: 7px;
@@ -257,6 +257,7 @@ body.drawing {
 }
 
 .element-properties .element-property-line {
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     margin-left: -15px;
@@ -264,11 +265,9 @@ body.drawing {
 
 .element-properties .element-property-line label {
     font-size: 0.75em;
-
 }
 
 .element-properties .element-property-line input {
-    margin-bottom: 10px;
     width: 100%;
     text-align: right;
     padding-right: 7px;
