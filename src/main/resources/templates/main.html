@@ -101,14 +101,14 @@
                 </div>
 
                 <div class="d-flex">
-                    <div class="icon-box ml-auto disabled mr-2 copy-button" data-toggle="tooltip"
-                         data-placement="top" th:title="#{fluidProperties.copyButton.tooltip}">
-                        <i class="fas fa-copy"></i>
-                    </div>
-                    <div class="mr-2" data-toggle="tooltip" data-placement="top" th:title="#{fluidProperties.newButton.tooltip}">
+                    <div class="mr-2 ml-auto" data-toggle="tooltip" data-placement="top" th:title="#{fluidProperties.newButton.tooltip}">
                         <div class="icon-box" data-toggle="modal" data-target="#newFluidModal">
                             <i class="fas fa-plus"></i>
                         </div>
+                    </div>
+                    <div class="icon-box  disabled mr-2 copy-button" data-toggle="tooltip"
+                         data-placement="top" th:title="#{fluidProperties.copyButton.tooltip}">
+                        <i class="fas fa-copy"></i>
                     </div>
                     <div class="icon-box disabled delete-button" data-toggle="tooltip"
                          data-placement="top" th:title="#{fluidProperties.delete.tooltip}">
@@ -140,15 +140,20 @@
                     <label for="injectionTime" class="col-md-4" th:text="#{sequenceProperties.form.injectTime}"></label>
                     <input id="injectionTime" name="muc" type="text"/>
                 </div>
+
                 <div class="d-flex">
-                    <div class="icon-box ml-auto disabled ml-auto mr-2 copy-button" data-toggle="tooltip"
+                    <div class="mr-2 ml-auto" data-toggle="tooltip" data-placement="top" th:title="#{sequenceProperties.newButton.tooltip}">
+                        <div class="icon-box" data-toggle="modal" data-target="#newDropletModal">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="icon-box  disabled mr-2 copy-button" data-toggle="tooltip"
                          data-placement="top" th:title="#{sequenceProperties.copyButton.tooltip}">
                         <i class="fas fa-copy"></i>
                     </div>
-                    <div data-toggle="tooltip" data-placement="top" th:title="#{sequenceProperties.newButton.tooltip}">
-                        <div class="icon-box ml-auto" data-toggle="modal" data-target="#newDropletModal">
-                            <i class="fas fa-plus"></i>
-                        </div>
+                    <div class="icon-box disabled delete-button" data-toggle="tooltip"
+                         data-placement="top" th:title="#{sequenceProperties.delete.tooltip}">
+                        <i class="fas fa-trash"></i>
                     </div>
                 </div>
             </div>

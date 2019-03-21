@@ -182,6 +182,45 @@ body.drawing {
     flex-direction: column;
 }
 
+.sequence-properties .property-list {
+    padding-top: 5px;
+}
+
+.sequence-properties .table-wrapper {
+    display: inline-block;
+    min-height: 150px;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-bottom: 4px;
+    padding-right: 1px;
+}
+
+.sequence-properties h4 {
+    margin-bottom: 0.5rem;
+}
+
+.sequence-properties thead th {
+    font-size: 14px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    border-top: white;
+    border-bottom: 2px solid #d7dadc;
+    padding: 6px 4px;
+}
+
+.sequence-properties tbody td {
+    padding: 4px 4px;
+    cursor: pointer;
+    border: none;
+}
+
+.sequence-properties tbody tr.active {
+    background-color: #71e690;
+}
+
 .sequence-properties .sequence-property-line {
     display: flex;
     align-items: center;
@@ -190,7 +229,6 @@ body.drawing {
 
 .sequence-properties .sequence-property-line label {
     font-size: 0.75em;
-
 }
 
 .sequence-properties .sequence-property-line input {
