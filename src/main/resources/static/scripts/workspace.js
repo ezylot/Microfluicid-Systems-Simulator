@@ -1,18 +1,28 @@
 const grid = 10;
-const lineColor = '#9c9c9c';
-const lineColorSelected = '#689c52';
-const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
+const DrawingStates = Object.freeze({ 'none': 1, 'ready': 2, 'started': 3 });
+const ChannelTypes = Object.freeze({ 'normal': 'normal', 'cloggable': 'cloggable', 'bypass': 'bypass' });
+
+const lineColor = { };
+lineColor[ChannelTypes.normal]= '#9c9c9c';
+lineColor[ChannelTypes.cloggable]= '#70719c';
+lineColor[ChannelTypes.bypass]= '#9c5872';
+
+const lineColorSelected = { };
+lineColorSelected[ChannelTypes.normal] = '#689c52';
+lineColorSelected[ChannelTypes.cloggable] = '#9c702e';
+lineColorSelected[ChannelTypes.bypass] = '#9c3540';
 
 
 (function() {
     const canvas = new fabric.Canvas('c', { selection: false });
 
-
     let canvasContainer = $('.workspace');
     let backgroundGroup = null;
     let oldSelectedLine = null;
     let isDragging = false;
+
     let currentDrawingState = DrawingStates.none;
+    let currentDrawingChannelType = null;
     let currentDrawingLine = null;
 
     canvas.setHeight(canvasContainer.height());
@@ -95,7 +105,7 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
             let left = Math.round(pointer.x / grid) * grid;
             let top = Math.round(pointer.y / grid) * grid;
             let points = [left, top, left, top];
-            currentDrawingLine = makeLine(canvas, points, {});
+            currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType,{});
             //endregion
         } else if(currentDrawingState === DrawingStates.started) {
             //region end drawing line
@@ -111,10 +121,10 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
         } else if(opt.target != null && opt.target.type === 'line') {
             //region Select element and display information
             if(oldSelectedLine != null) {
-                oldSelectedLine.set({ 'fill': lineColor, 'stroke': lineColor });
+                oldSelectedLine.set({ 'fill': lineColor[oldSelectedLine.channelType], 'stroke': lineColor[oldSelectedLine.channelType] });
             }
 
-            opt.target.set({ 'fill': lineColorSelected, 'stroke': lineColorSelected });
+            opt.target.set({ 'fill': lineColorSelected[opt.target.channelType], 'stroke': lineColorSelected[opt.target.channelType] });
             oldSelectedLine = opt.target;
 
             let $elementPropertiesWindow = $('.element-properties');
@@ -153,6 +163,7 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
 
     $('.element-palette .createChannelIcon').on('click', () => {
         currentDrawingState = DrawingStates.ready;
+        currentDrawingChannelType = ChannelTypes.normal;
         $('body').addClass('drawing');
         canvas.hoverCursor = 'crosshair';
         canvas.defaultCursor = 'crosshair';
@@ -205,14 +216,14 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
         }
     });
 
-    makeLine(canvas, [ 100, 100, 200, 100 ]);
-    makeLine(canvas, [ 200, 100, 200, 50 ]);
-    makeLine(canvas, [ 200, 100, 200, 150 ]);
-    makeLine(canvas, [ 200, 150, 300, 150 ]);
-    makeLine(canvas, [ 200, 50, 300, 50 ]);
-    makeLine(canvas, [ 300, 50, 300, 100 ]);
-    makeLine(canvas, [ 300, 150, 300, 100 ]);
-    makeLine(canvas, [ 300, 100, 400, 100 ]);
+    makeLine(canvas, [ 100, 100, 200, 100 ], ChannelTypes.normal, {});
+    makeLine(canvas, [ 200, 100, 200, 50 ], ChannelTypes.normal, {});
+    makeLine(canvas, [ 200, 100, 200, 150 ], ChannelTypes.normal, {});
+    makeLine(canvas, [ 200, 150, 300, 150 ], ChannelTypes.normal, {});
+    makeLine(canvas, [ 200, 50, 300, 50 ], ChannelTypes.normal, {});
+    makeLine(canvas, [ 300, 50, 300, 100 ], ChannelTypes.normal, {});
+    makeLine(canvas, [ 300, 150, 300, 100 ], ChannelTypes.normal, {});
+    makeLine(canvas, [ 300, 100, 400, 100 ], ChannelTypes.normal, {});
 
     mergeElements(canvas);
     
@@ -233,7 +244,7 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
             } else if(value.pos === 'end') {
                 value.line.set({ 'x2': left, 'y2': top });
             } else {
-                console.error("Circle to move did not match any end of the connected line");
+                console.error('Circle to move did not match any end of the connected line');
             }
         });
         canvas.renderAll();
@@ -248,16 +259,17 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
 
 })();
 
-function makeLine(canvas, coords, properties) {
+function makeLine(canvas, coords, channelType, properties) {
     let line = new fabric.Line(coords, {
-        fill: lineColor,
-        stroke: lineColor,
+        fill: lineColor[channelType],
+        stroke: lineColor[channelType],
         strokeWidth: 12,
         selectable: false,
         evented: true,
         hoverCursor : 'default',
         perPixelTargetFind: true,
     });
+    line.channelType = channelType;
     line.hasControls = line.hasBorders = false;
 
     let startCircle = new fabric.Circle({
@@ -301,7 +313,14 @@ function mergeElements(canvas) {
     canvas.getObjects().forEach(value => {
         if(value.type === 'circle') {
             if(circles[value.left] && circles[value.left][value.top]) {
-                circles[value.left][value.top].lines = circles[value.left][value.top].lines.concat(value.lines);
+                value.lines.forEach(lineWithPosInfo => {
+                    circles[value.left][value.top].lines.push(lineWithPosInfo);
+                    if (value === lineWithPosInfo.line.startCircle) {
+                        lineWithPosInfo.line.startCircle = circles[value.left][value.top];
+                    } else {
+                        lineWithPosInfo.line.endCircle = circles[value.left][value.top];
+                    }
+                });
                 canvas.remove(value);
                 circles[value.left][value.top].bringToFront();
                 return;
