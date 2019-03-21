@@ -6,7 +6,7 @@ $(document).ready(() => {
     });
 
 
-    // TODO: fluids - copy function
+    // TODO: fluids - move delete button to other buttons
     // TODO: fluids - save on change function
     // TODO: droplet sequence javascript part
     // TODO: cancel drawing on escape

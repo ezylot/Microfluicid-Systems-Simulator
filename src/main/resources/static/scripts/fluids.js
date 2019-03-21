@@ -1,5 +1,6 @@
 $(document).ready(() => {
     let fluids = [];
+    let nextId = 0;
 
     $('#newFluidModal').on('shown.bs.modal', () => {
         $(this).find('[autofocus]').focus();
@@ -16,7 +17,7 @@ $(document).ready(() => {
         let newSlip = $('#newFluidForm input[name="newSlip"]');
 
         let newFluid = {
-            id: fluids.length + 1,
+            id: nextId++,
             name: newFluidName.val(),
             muc: newMuc.val(),
             mud: newMud.val(),
@@ -24,35 +25,8 @@ $(document).ready(() => {
             interfTens: newInterfTens.val(),
             slip: newSlip.val(),
         };
-        fluids.push(newFluid);
 
-        let $tableBody = $('.fluid-properties table tbody');
-        let $tableRow = $('<tr class="active"></tr>');
-        $tableRow.append($('<td></td>').text(newFluid.id));
-        $tableRow.append($('<td></td>').text(newFluid.name));
-        let deleteCell = $('<td><i class="fas fa-trash-alt mr-2"></i></td>');
-        deleteCell.on('click', () => {
-            fluids.splice(fluids.indexOf(newFluid), 1);
-            $tableRow.remove();
-            resetSelection();
-        });
-        $tableRow.append(deleteCell);
-        $tableBody.append($tableRow);
-        $tableRow.data('fluid', newFluid);
-
-        $tableRow.click(() => {
-            $tableBody.find('.active').removeClass('active');
-            $tableRow.addClass('active');
-            $('.fluid-properties input[name="muc"]').val(newFluid.muc);
-            $('.fluid-properties input[name="mud"]').val(newFluid.mud);
-            $('.fluid-properties input[name="densityC"]').val(newFluid.densityC);
-            $('.fluid-properties input[name="interfTens"]').val(newFluid.interfTens);
-            $('.fluid-properties input[name="slip"]').val(newFluid.slip);
-        });
-
-        $tableRow.click();
-
-        $('.fluid-properties .copy-button').removeClass('disabled');
+        createNewFluid(newFluid, fluids);
 
         // Clean up modal
         $('#newFluidModal').modal('hide');
@@ -64,12 +38,60 @@ $(document).ready(() => {
         newSlip.val('');
     });
 
-    $('.fluid-properties .copy-button').click((element) => {
+    $('.fluid-properties .copy-button').on('click', (element) => {
         if(!$(element.currentTarget).is('.disabled')) {
             $('#copyFluidModal').modal('show')
         }
     });
+
+    $('#copyFluidModalForm').on('submit', (event) => {
+        event.preventDefault();
+
+        let $activeRow = $('.fluid-properties .table-wrapper tr.active');
+        let fluidToCopy = $activeRow.data('fluid');
+        let newFluid = Object.assign({}, fluidToCopy)
+        let $nameInput = $('#newFluidFromCopyName');
+
+        newFluid.id = nextId++;
+        newFluid.name = $nameInput.val();
+
+        createNewFluid(newFluid, fluids);
+
+        $('#copyFluidModal').modal('hide');
+        $nameInput.val('');
+    })
 });
+
+function createNewFluid(newFluid, fluids) {
+    fluids.push(newFluid);
+
+    let $tableBody = $('.fluid-properties table tbody');
+    let $tableRow = $('<tr class="active"></tr>');
+    $tableRow.append($('<td></td>').text(newFluid.id));
+    $tableRow.append($('<td></td>').text(newFluid.name));
+    let deleteCell = $('<td><i class="fas fa-trash-alt mr-2"></i></td>');
+    deleteCell.find('.fas').on('click', () => {
+        fluids.splice(fluids.indexOf(newFluid), 1);
+        $tableRow.remove();
+        resetSelection();
+    });
+    $tableRow.append(deleteCell);
+    $tableBody.append($tableRow);
+    $tableRow.data('fluid', newFluid);
+
+    $tableRow.on('click', () => {
+        $tableBody.find('.active').removeClass('active');
+        $tableRow.addClass('active');
+        $('.fluid-properties input[name="muc"]').val(newFluid.muc);
+        $('.fluid-properties input[name="mud"]').val(newFluid.mud);
+        $('.fluid-properties input[name="densityC"]').val(newFluid.densityC);
+        $('.fluid-properties input[name="interfTens"]').val(newFluid.interfTens);
+        $('.fluid-properties input[name="slip"]').val(newFluid.slip);
+    });
+
+    $tableRow.click();
+    $('.fluid-properties .copy-button').removeClass('disabled');
+}
 
 function resetSelection() {
     let $fluidProperties = $('.fluid-properties');
