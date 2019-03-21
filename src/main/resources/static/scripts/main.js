@@ -7,6 +7,7 @@ $(document).ready(() => {
 
     // TODO: droplet sequence javascript part
     // TODO: cancel drawing on escape
+    // TODO: cant remove last line by putting cirlces on top of each other
     // TODO: add pumps and drains
     // TODO: design for available elements
     // TODO: make selectable group movable
