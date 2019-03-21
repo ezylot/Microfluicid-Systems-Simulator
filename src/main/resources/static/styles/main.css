@@ -7,6 +7,10 @@ label {
     margin-bottom: 0;
 }
 
+body.drawing {
+    cursor: crosshair;
+}
+
 .icon-box {
     display: flex;
     align-items: center;
@@ -77,6 +81,7 @@ label {
     grid-column: 3 / 4;
     grid-row: 2 / 3;
     flex-direction: column;
+    padding: 10px;
 }
 /*endregion*/
 

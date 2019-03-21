@@ -29,12 +29,30 @@
             <div class="element-palette">
                 <h4 th:text="#{availableElements.header}" class="mb-3"></h4>
 
-                <div th:text="#{availableElements.channel}">Channel</div>
-                <div th:text="#{availableElements.cloggableChannel}">Cloggable Channel</div>
-                <div th:text="#{availableElements.bypassChannel}">Bypass Channel</div>
-                <div th:text="#{availableElements.pressurePump}">Pressure Pump</div>
-                <div th:text="#{availableElements.volumePump}">Volume Pump</div>
-                <div th:text="#{availableElements.drain}">Drain</div>
+                <div>
+                    <i class="fas fa-plus mr-1 createChannelIcon"></i>
+                    <span th:text="#{availableElements.channel}">Channel</span>
+                </div>
+                <div>
+                    <i class="fas fa-plus mr-1 createCloggableChannelIcon"></i>
+                    <span th:text="#{availableElements.cloggableChannel}">Cloggable Channel</span>
+                </div>
+                <div>
+                    <i class="fas fa-plus mr-1 createBypassChannelIcon"></i>
+                    <span th:text="#{availableElements.bypassChannel}">Bypass Channel</span>
+                </div>
+                <div>
+                    <i class="fas fa-plus mr-1 createPressurePumpIcon"></i>
+                    <span th:text="#{availableElements.pressurePump}">Pressure Pump</span>
+                </div>
+                <div>
+                    <i class="fas fa-plus mr-1 createVolumePumpIcon"></i>
+                    <span th:text="#{availableElements.volumePump}">Volume Pump</span>
+                </div>
+                <div>
+                    <i class="fas fa-plus mr-1 createDrainIcon"></i>
+                    <span th:text="#{availableElements.drain}">Drain</span>
+                </div>
             </div>
             <div class="fluid-properties">
                 <h4 th:text="#{fluidProperties.header}"></h4>

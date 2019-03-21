@@ -5,9 +5,15 @@
     const lineColor = '#9c9c9c';
     const lineColorSelected = '#689c52';
 
+    const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
+
+
     let canvasContainer = $('.workspace');
     let backgroundGroup = null;
     let oldSelectedLine = null;
+    let isDragging = false;
+    let currentDrawingState = DrawingStates.none;
+    let currentDrawingLine = null;
 
     canvas.setHeight(canvasContainer.height());
     canvas.setWidth(canvasContainer.width());
@@ -57,7 +63,7 @@
         let panHintText = new fabric.Text('Alt + Drag to move around', {
             left: canvasContainer.width() / 2 - 260,
             top: canvasContainer.height() - 200,
-            opacity: 0.25,
+            opacity: 0.22,
             absolutePositioned: true
         });
 
@@ -78,10 +84,30 @@
 
     canvas.on('mouse:down', opt => {
         if (opt.e.altKey === true) {
-            canvas.isDragging = true;
+            isDragging = true;
             canvas.selection = false;
             canvas.lastPosX = opt.e.clientX;
             canvas.lastPosY = opt.e.clientY;
+        } else if(currentDrawingState === DrawingStates.ready) {
+            //region start drawing line
+            currentDrawingState = DrawingStates.started;
+            let pointer = canvas.getPointer(opt.e);
+            let points = [pointer.x, pointer.y, pointer.x, pointer.y];
+            currentDrawingLine = makeLine(points, {});
+            //endregion
+        } else if(currentDrawingState === DrawingStates.started) {
+            //region end drawing line
+            $('body').removeClass('drawing');
+            canvas.hoverCursor = 'move';
+            canvas.defaultCursor = 'default';
+
+            currentDrawingState = DrawingStates.none;
+            currentDrawingLine = null;
+            canvas.getObjects().forEach(value => {
+                value.setCoords();
+            });
+            mergeCircles(canvas);
+            //endregion
         } else if(opt.target != null && opt.target.type === 'line') {
             if(oldSelectedLine != null) {
                 oldSelectedLine.set({ 'fill': lineColor, 'stroke': lineColor });
@@ -123,8 +149,15 @@
         objectProperties[$input.attr('id')] = $input.val();
     });
 
+    $('.element-palette .createChannelIcon').on('click', () => {
+        currentDrawingState = DrawingStates.ready;
+        $('body').addClass('drawing');
+        canvas.hoverCursor = 'crosshair';
+        canvas.defaultCursor = 'crosshair';
+    });
+
     canvas.on('mouse:move', opt => {
-        if (canvas.isDragging) {
+        if (isDragging) {
             canvas.viewportTransform[4] += opt.e.clientX - canvas.lastPosX;
             canvas.viewportTransform[5] += opt.e.clientY - canvas.lastPosY;
             canvas.requestRenderAll();
@@ -135,15 +168,28 @@
             canvas.lastPosX = opt.e.clientX;
             canvas.lastPosY = opt.e.clientY;
         }
+
+        if(currentDrawingState === DrawingStates.started) {
+            let pointer = canvas.getPointer(opt.e);
+
+            let left = Math.round(pointer.x / grid) * grid;
+            let top = Math.round(pointer.y / grid) * grid;
+
+            currentDrawingLine.set({ x2: left, y2: top });
+            currentDrawingLine.endCircle.set({ left: left - grid/2, top: top - grid/2 })
+            canvas.renderAll();
+        }
     });
 
     canvas.on('mouse:up', () => {
-        canvas.isDragging = false;
-        canvas.selection = true;
-        canvas.getObjects().forEach(value => {
-            value.setCoords();
-        });
-        mergeCircles(canvas);
+        if(isDragging) {
+            isDragging = false;
+            canvas.selection = true;
+            canvas.getObjects().forEach(value => {
+                value.setCoords();
+            });
+            mergeCircles(canvas);
+        }
     });
 
     $(document).keyup(function(e){
@@ -162,10 +208,11 @@
             strokeWidth: 12,
             selectable: false,
             evented: true,
+            hoverCursor : 'default',
         });
         line.hasControls = line.hasBorders = false;
 
-        let circleStart = new fabric.Circle({
+        let startCircle = new fabric.Circle({
             left: coords[0] - grid/2,
             top: coords[1] - grid/2,
             strokeWidth: 5,
@@ -173,11 +220,11 @@
             fill: '#fff',
             stroke: '#666'
         });
-        circleStart.pos = 'start';
-        circleStart.lines = [{line: line, pos: circleStart.pos}];
-        circleStart.hasControls = circleStart.hasBorders = false;
+        startCircle.pos = 'start';
+        startCircle.lines = [{line: line, pos: startCircle.pos}];
+        startCircle.hasControls = startCircle.hasBorders = false;
 
-        let circleEnd = new fabric.Circle({
+        let endCircle = new fabric.Circle({
             left: coords[2] - grid/2,
             top: coords[3] - grid/2,
             strokeWidth: 5,
@@ -186,15 +233,18 @@
             stroke: '#666'
         });
 
-        circleEnd.pos = 'end';
-        circleEnd.lines = [{line: line, pos: circleEnd.pos}];
-        circleEnd.hasControls = circleEnd.hasBorders = false;
+        endCircle.pos = 'end';
+        endCircle.lines = [{line: line, pos: endCircle.pos}];
+        endCircle.hasControls = endCircle.hasBorders = false;
 
         canvas.add(line);
-        canvas.add(circleStart);
-        canvas.add(circleEnd);
+        canvas.add(startCircle);
+        canvas.add(endCircle);
 
         line.properties = properties;
+        line.startCircle = startCircle;
+        line.endCircle = endCircle;
+        return line;
     }
 
     makeLine([ 100, 100, 200, 100 ]);

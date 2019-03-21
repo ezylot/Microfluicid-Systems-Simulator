@@ -5,11 +5,13 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: create new pipe when clicking element in palette
+    // TODO: refactor del key with line.startCircle and start.endCircle
+    // TODO: delete lines if start and end are same
+    // TODO: cancel drawing on escape
     // TODO: droplet sequence
     // TODO: add other element types
     // TODO: design for available elements
-    // TODO: delete lines if start and end are same
     // TODO: make selectable group movable
     // TODO: save and load
+    // TODO: zoom in and out
 });
