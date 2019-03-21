@@ -104,13 +104,12 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
             canvas.defaultCursor = 'default';
 
             currentDrawingState = DrawingStates.none;
+            currentDrawingLine.setCoords();
             currentDrawingLine = null;
-            canvas.getObjects().forEach(value => {
-                value.setCoords();
-            });
             mergeCircles(canvas);
             //endregion
         } else if(opt.target != null && opt.target.type === 'line') {
+            //region Select element and display information
             if(oldSelectedLine != null) {
                 oldSelectedLine.set({ 'fill': lineColor, 'stroke': lineColor });
             }
@@ -141,6 +140,7 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
             linePropertyForm.find('#height').val(height);
             linePropertyForm.data('objectProperties', opt.target.properties);
             linePropertyForm.show();
+            //endregion
         }
     });
 
@@ -180,6 +180,8 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
             currentDrawingLine.set({ x2: left, y2: top });
             currentDrawingLine.endCircle.set({left: left - grid / 2, top: top - grid / 2});
             canvas.renderAll();
+            currentDrawingLine.setCoords();
+            currentDrawingLine.endCircle.setCoords();
         }
     });
 
@@ -234,9 +236,12 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
             }
         });
         canvas.renderAll();
+        canvas.getObjects().forEach(value => {
+            value.setCoords();
+        });
     });
 
-    canvas.on('object:moving', () => {
+    canvas.on('object:moved', () => {
         mergeCircles(canvas);
     });
 
