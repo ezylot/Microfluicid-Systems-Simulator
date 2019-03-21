@@ -7,7 +7,6 @@ $(document).ready(() => {
 
 
     // TODO: fluids - copy function
-    // TODO: fluids - delete function
     // TODO: fluids - save on change function
     // TODO: droplet sequence javascript part
     // TODO: cancel drawing on escape

@@ -30,23 +30,31 @@ $(document).ready(() => {
         let $tableRow = $('<tr class="active"></tr>');
         $tableRow.append($('<td></td>').text(newFluid.id));
         $tableRow.append($('<td></td>').text(newFluid.name));
-        $tableRow.append($('<td><i class="fas fa-trash-alt mr-2"></i></td>'));
+        let deleteCell = $('<td><i class="fas fa-trash-alt mr-2"></i></td>');
+        deleteCell.on('click', () => {
+            fluids.splice(fluids.indexOf(newFluid), 1);
+            $tableRow.remove();
+            resetSelection();
+        });
+        $tableRow.append(deleteCell);
         $tableBody.append($tableRow);
         $tableRow.data('fluid', newFluid);
 
         $tableRow.click(() => {
             $tableBody.find('.active').removeClass('active');
             $tableRow.addClass('active');
-            $('input[name="muc"]').val(newFluid.muc);
-            $('input[name="mud"]').val(newFluid.mud);
-            $('input[name="densityC"]').val(newFluid.densityC);
-            $('input[name="interfTens"]').val(newFluid.interfTens);
-            $('input[name="slip"]').val(newFluid.slip);
+            $('.fluid-properties input[name="muc"]').val(newFluid.muc);
+            $('.fluid-properties input[name="mud"]').val(newFluid.mud);
+            $('.fluid-properties input[name="densityC"]').val(newFluid.densityC);
+            $('.fluid-properties input[name="interfTens"]').val(newFluid.interfTens);
+            $('.fluid-properties input[name="slip"]').val(newFluid.slip);
         });
 
         $tableRow.click();
 
         $('.fluid-properties .copy-button').removeClass('disabled');
+
+        // Clean up modal
         $('#newFluidModal').modal('hide');
         newFluidName.val('');
         newMuc.val('');
@@ -62,3 +70,14 @@ $(document).ready(() => {
         }
     });
 });
+
+function resetSelection() {
+    let $fluidProperties = $('.fluid-properties');
+    $fluidProperties.find('.table-wrapper').find('.active').removeClass('active');
+    $fluidProperties.find('.copy-button').addClass('disabled');
+    $fluidProperties.find('input[name="muc"]').val('');
+    $fluidProperties.find('input[name="mud"]').val('');
+    $fluidProperties.find('input[name="densityC"]').val('');
+    $fluidProperties.find('input[name="interfTens"]').val('');
+    $fluidProperties.find('input[name="slip"]').val('');
+}
