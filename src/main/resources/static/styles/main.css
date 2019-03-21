@@ -118,6 +118,10 @@ body.drawing {
     padding: 6px 4px;
 }
 
+.fluid-properties thead th:first-of-type {
+    width: 30px;
+}
+
 .fluid-properties tbody td {
     padding: 4px 4px;
     cursor: pointer;
@@ -209,6 +213,10 @@ body.drawing {
     border-top: white;
     border-bottom: 2px solid #d7dadc;
     padding: 6px 4px;
+}
+
+.sequence-properties thead th:first-of-type {
+    width: 30px;
 }
 
 .sequence-properties tbody td {
