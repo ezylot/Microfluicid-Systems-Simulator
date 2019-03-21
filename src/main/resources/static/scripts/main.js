@@ -5,7 +5,6 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: delete lines if start and end are same
     // TODO: cancel drawing on escape
     // TODO: droplet sequence
     // TODO: add other element types

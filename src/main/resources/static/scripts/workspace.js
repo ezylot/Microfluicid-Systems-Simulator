@@ -106,7 +106,7 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
             currentDrawingState = DrawingStates.none;
             currentDrawingLine.setCoords();
             currentDrawingLine = null;
-            mergeCircles(canvas);
+            mergeElements(canvas);
             //endregion
         } else if(opt.target != null && opt.target.type === 'line') {
             //region Select element and display information
@@ -214,7 +214,7 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
     makeLine(canvas, [ 300, 150, 300, 100 ]);
     makeLine(canvas, [ 300, 100, 400, 100 ]);
 
-    mergeCircles(canvas);
+    mergeElements(canvas);
     
     canvas.on('object:moving', function(e) {
         let circle = e.target;
@@ -243,7 +243,7 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
     });
 
     canvas.on('object:moved', () => {
-        mergeCircles(canvas);
+        mergeElements(canvas);
     });
 
 })();
@@ -294,7 +294,7 @@ function makeLine(canvas, coords, properties) {
     return line;
 }
 
-function mergeCircles(canvas) {
+function mergeElements(canvas) {
     let circles = {};
 
     canvas.getObjects().forEach(value => {
@@ -310,6 +310,10 @@ function mergeCircles(canvas) {
                 circles[value.left] = {};
             }
             circles[value.left][value.top] = value;
+        } else if(value.type === 'line') {
+            if(value.x1 === value.x2 && value.y1 === value.y2) {
+                canvas.remove(value);
+            }
         }
     })
 }
