@@ -181,6 +181,25 @@ body.drawing {
     padding: 10px;
     flex-direction: column;
 }
+
+.sequence-properties .sequence-property-line {
+    display: flex;
+    align-items: center;
+    margin-left: -15px;
+}
+
+.sequence-properties .sequence-property-line label {
+    font-size: 0.75em;
+
+}
+
+.sequence-properties .sequence-property-line input {
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: right;
+    padding-right: 7px;
+}
+
 /*endregion*/
 
 /*region Selected element properties*/
