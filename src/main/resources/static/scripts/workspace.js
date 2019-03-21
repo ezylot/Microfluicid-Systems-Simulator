@@ -56,7 +56,7 @@
 
         let panHintText = new fabric.Text('Alt + Drag to move around', {
             left: canvasContainer.width() / 2 - 220,
-            top: canvasContainer.height() - 100,
+            top: canvasContainer.height() - 150,
             fill: '#cccccc',
             opacity: 0.7,
             absolutePositioned: true
@@ -135,7 +135,16 @@
         canvas.getObjects().forEach(value => {
             value.setCoords();
         });
-        mergeCircles();
+        mergeCircles(canvas);
+    });
+
+    $(document).keyup(function(e){
+        if(e.keyCode === 46 && oldSelectedLine != null) {
+            $('.element-properties .property-form').hide();
+            $('.element-properties .empty-hint').show();
+            deleteLine(canvas, oldSelectedLine);
+            oldSelectedLine = null;
+        }
     });
 
     function makeLine(coords, properties) {
@@ -189,28 +198,7 @@
     makeLine([ 300, 150, 300, 100 ]);
     makeLine([ 300, 100, 400, 100 ]);
 
-    mergeCircles();
-    
-    function mergeCircles() {
-
-        let circles = {};
-
-        canvas.getObjects().forEach(value => {
-            if(value.type === 'circle') {
-                if(circles[value.left] && circles[value.left][value.top]) {
-                    circles[value.left][value.top].lines = circles[value.left][value.top].lines.concat(value.lines);
-                    canvas.remove(value);
-                    circles[value.left][value.top].bringToFront();
-                    return;
-                }
-
-                if(!circles[value.left]) {
-                    circles[value.left] = {};
-                }
-                circles[value.left][value.top] = value;
-            }
-        })
-    }
+    mergeCircles(canvas);
     
     canvas.on('object:moving', function(e) {
         let circle = e.target;
@@ -235,3 +223,39 @@
         canvas.renderAll();
     });
 })();
+
+function mergeCircles(canvas) {
+    let circles = {};
+
+    canvas.getObjects().forEach(value => {
+        if(value.type === 'circle') {
+            if(circles[value.left] && circles[value.left][value.top]) {
+                circles[value.left][value.top].lines = circles[value.left][value.top].lines.concat(value.lines);
+                canvas.remove(value);
+                circles[value.left][value.top].bringToFront();
+                return;
+            }
+
+            if(!circles[value.left]) {
+                circles[value.left] = {};
+            }
+            circles[value.left][value.top] = value;
+        }
+    })
+}
+
+function deleteLine(canvas, line) {
+    canvas.getObjects().forEach(value => {
+        if (value.type === 'circle') {
+            value.lines = value.lines.filter(value => {
+                return value.line !== line;
+            });
+
+            if(value.lines.length === 0) {
+                canvas.remove(value);
+            }
+        }
+    });
+    canvas.remove(line);
+}
+
