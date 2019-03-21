@@ -5,8 +5,6 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-
-    // TODO: fluids - save on change function
     // TODO: droplet sequence javascript part
     // TODO: cancel drawing on escape
     // TODO: add other element types

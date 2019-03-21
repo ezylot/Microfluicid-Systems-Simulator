@@ -67,7 +67,18 @@ $(document).ready(() => {
 
         $('#copyFluidModal').modal('hide');
         $nameInput.val('');
-    })
+    });
+
+    $('.fluid-properties input').on('input', (event) => {
+        let $activeRow = $('.fluid-properties table tbody .active');
+        if($activeRow.length === 0) return;
+
+        let activeFluid = $activeRow.data('fluid');
+        let $inputField = $(event.target);
+        let inputName = $inputField.attr('name');
+
+        activeFluid[inputName] = $inputField.val();
+    });
 });
 
 function createNewFluid(newFluid, fluids) {
