@@ -6,8 +6,8 @@ $(document).ready(() => {
     });
 
 
-    // TODO: fluids - move delete button to other buttons
     // TODO: fluids - save on change function
+    // TODO: adapt droplet sequence styling to the fluid window
     // TODO: droplet sequence javascript part
     // TODO: cancel drawing on escape
     // TODO: add other element types

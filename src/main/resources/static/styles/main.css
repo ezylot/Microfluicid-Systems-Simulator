@@ -95,9 +95,12 @@ body.drawing {
 
 .fluid-properties .table-wrapper {
     display: inline-block;
-    height: 150px;
-    overflow: auto;
+    min-height: 150px;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
     padding-bottom: 4px;
+    padding-right: 1px;
 }
 
 .fluid-properties h4 {
@@ -105,6 +108,7 @@ body.drawing {
 }
 
 .fluid-properties thead th {
+    font-size: 14px;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -124,11 +128,8 @@ body.drawing {
     background-color: #71e690;
 }
 
-.fluid-properties tbody td:last-of-type {
-    display: flex;
-    height: 33px;
-    justify-content: flex-end;
-    align-items: center;
+.fluid-properties .property-list {
+    padding-top: 5px;
 }
 
 .fluid-properties .fluid-property-line {
@@ -139,7 +140,6 @@ body.drawing {
 
 .fluid-properties .fluid-property-line label {
     font-size: 0.75em;
-
 }
 
 .fluid-properties .fluid-property-line input {

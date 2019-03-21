@@ -44,6 +44,14 @@ $(document).ready(() => {
         }
     });
 
+    $('.fluid-properties .delete-button').on('click', () => {
+        let $activeRow = $('.fluid-properties .table-wrapper tr.active');
+        let fluidToDelete = $activeRow.data('fluid');
+        fluids.splice(fluids.indexOf(fluidToDelete), 1);
+        resetSelection();
+        $activeRow.remove();
+    });
+
     $('#copyFluidModalForm').on('submit', (event) => {
         event.preventDefault();
 
@@ -69,34 +77,35 @@ function createNewFluid(newFluid, fluids) {
     let $tableRow = $('<tr class="active"></tr>');
     $tableRow.append($('<td></td>').text(newFluid.id));
     $tableRow.append($('<td></td>').text(newFluid.name));
-    let deleteCell = $('<td><i class="fas fa-trash-alt mr-2"></i></td>');
-    deleteCell.find('.fas').on('click', () => {
-        fluids.splice(fluids.indexOf(newFluid), 1);
-        $tableRow.remove();
-        resetSelection();
-    });
-    $tableRow.append(deleteCell);
     $tableBody.append($tableRow);
     $tableRow.data('fluid', newFluid);
 
     $tableRow.on('click', () => {
         $tableBody.find('.active').removeClass('active');
         $tableRow.addClass('active');
-        $('.fluid-properties input[name="muc"]').val(newFluid.muc);
-        $('.fluid-properties input[name="mud"]').val(newFluid.mud);
-        $('.fluid-properties input[name="densityC"]').val(newFluid.densityC);
-        $('.fluid-properties input[name="interfTens"]').val(newFluid.interfTens);
-        $('.fluid-properties input[name="slip"]').val(newFluid.slip);
+
+        let $fluidPropertiesWindow = $('.fluid-properties');
+        $fluidPropertiesWindow.find('.copy-button').removeClass('disabled');
+        $fluidPropertiesWindow.find('.delete-button').removeClass('disabled');
+        $fluidPropertiesWindow.find('input[name="muc"]').val(newFluid.muc);
+        $fluidPropertiesWindow.find('input[name="mud"]').val(newFluid.mud);
+        $fluidPropertiesWindow.find('input[name="densityC"]').val(newFluid.densityC);
+        $fluidPropertiesWindow.find('input[name="interfTens"]').val(newFluid.interfTens);
+        $fluidPropertiesWindow.find('input[name="slip"]').val(newFluid.slip);
     });
 
     $tableRow.click();
     $('.fluid-properties .copy-button').removeClass('disabled');
+    $('.fluid-properties .delete-button').removeClass('disabled');
 }
 
 function resetSelection() {
     let $fluidProperties = $('.fluid-properties');
     $fluidProperties.find('.table-wrapper').find('.active').removeClass('active');
+
     $fluidProperties.find('.copy-button').addClass('disabled');
+    $fluidProperties.find('.delete-button').addClass('disabled');
+
     $fluidProperties.find('input[name="muc"]').val('');
     $fluidProperties.find('input[name="mud"]').val('');
     $fluidProperties.find('input[name="densityC"]').val('');
