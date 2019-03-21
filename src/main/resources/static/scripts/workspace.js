@@ -196,6 +196,7 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
     });
 
     $(document).keyup(function(e){
+        // 46 = DELETE key
         if(e.keyCode === 46 && oldSelectedLine != null) {
             $('.element-properties .property-form').hide();
             $('.element-properties .empty-hint').show();
@@ -314,17 +315,22 @@ function mergeCircles(canvas) {
 }
 
 function deleteLine(canvas, line) {
-    canvas.getObjects().forEach(value => {
-        if (value.type === 'circle') {
-            value.lines = value.lines.filter(value => {
-                return value.line !== line;
-            });
+    if(line.startCircle.lines.length === 1) {
+        canvas.remove(line.startCircle);
+    } else {
+        line.startCircle.lines = line.startCircle.lines.filter(value => {
+            return value.line !== line;
+        });
+    }
 
-            if(value.lines.length === 0) {
-                canvas.remove(value);
-            }
-        }
-    });
+    if(line.endCircle.lines.length === 1) {
+        canvas.remove(line.endCircle);
+    } else {
+        line.endCircle.lines = line.endCircle.lines.filter(value => {
+            return value.line !== line;
+        });
+    }
+
     canvas.remove(line);
 }
 
