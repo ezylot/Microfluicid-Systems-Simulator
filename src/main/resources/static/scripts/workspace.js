@@ -41,7 +41,7 @@ const DrawingStates = Object.freeze({ "none": 1, "ready": 2, "started": 3 });
         for (let i = -gridOverlap; i < (canvasContainer.width() / grid) + gridOverlap; i++) {
             let verticalGridLine = new fabric.Line([ i * grid, -gridOverlap * grid, i * grid, canvasContainer.height() + gridOverlap * grid], {
                 stroke: '#eeeeee',
-                selectable: false
+                selectable: false,
             });
             gridLines.push(verticalGridLine);
         }
@@ -256,6 +256,7 @@ function makeLine(canvas, coords, properties) {
         selectable: false,
         evented: true,
         hoverCursor : 'default',
+        perPixelTargetFind: true,
     });
     line.hasControls = line.hasBorders = false;
 
