@@ -5,6 +5,7 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
+    // TODO: Start drawing on grid
     // TODO: refactor del key with line.startCircle and start.endCircle
     // TODO: delete lines if start and end are same
     // TODO: cancel drawing on escape

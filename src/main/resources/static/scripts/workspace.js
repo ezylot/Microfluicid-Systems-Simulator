@@ -188,7 +188,6 @@
             canvas.getObjects().forEach(value => {
                 value.setCoords();
             });
-            mergeCircles(canvas);
         }
     });
 
@@ -278,6 +277,7 @@
                 console.error("Circle to move did not match any end of the connected line");
             }
         });
+        mergeCircles(canvas);
         canvas.renderAll();
     });
 })();
