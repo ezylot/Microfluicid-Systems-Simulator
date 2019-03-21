@@ -1,217 +1,290 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title th:text="#{simulator.htmlTitle}">Microfluidic Systems Simulator</title>
+<head>
+    <title th:text="#{simulator.htmlTitle}">Microfluidic Systems Simulator</title>
 
-        <link rel="apple-touch-icon" sizes="180x180" th:href="@{/favicon/apple-touch-icon.png}" href="../static/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" th:href="@{/favicon/favicon-32x32.png}" href="../static/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" th:href="@{/favicon/favicon-16x16.png}" href="../static/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/favicon/apple-touch-icon.png}"
+          href="../static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/favicon/favicon-32x32.png}"
+          href="../static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/favicon/favicon-16x16.png}"
+          href="../static/favicon/favicon-16x16.png">
 
 
-        <!--suppress SpellCheckingInspection -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <!--suppress SpellCheckingInspection -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-        <!--suppress SpellCheckingInspection -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/css/bootstrap-slider.min.css" integrity="sha256-+xqVrdbLgHjiKF8ULvcwzQ545r7lCVfOqXlNJCB3XOg=" crossorigin="anonymous" />
-        <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
-    </head>
-    <body>
-        <div class="sim-container">
-            <div class="header">
-                <i class="fas fa-folder-open"></i>
-                <i class="fas fa-save"></i>
-                <h2 th:text="#{header.title}"></h2>
+    <!--suppress SpellCheckingInspection -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--suppress SpellCheckingInspection -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <!--suppress SpellCheckingInspection -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/css/bootstrap-slider.min.css"
+          integrity="sha256-+xqVrdbLgHjiKF8ULvcwzQ545r7lCVfOqXlNJCB3XOg=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
+</head>
+<body>
+    <div class="sim-container">
+        <div class="header">
+            <i class="fas fa-folder-open"></i>
+            <i class="fas fa-save"></i>
+            <h2 th:text="#{header.title}"></h2>
+        </div>
+        <div class="workspace">
+            <canvas id="c" style="border: 1px solid rgb(204, 204, 204);width: 100%; height: 100%;"></canvas>
+        </div>
+        <div class="element-palette">
+            <h4 th:text="#{availableElements.header}" class="mb-3"></h4>
+
+            <div>
+                <i class="fas fa-plus mr-1 createChannelIcon"></i>
+                <span th:text="#{availableElements.channel}">Channel</span>
             </div>
-            <div class="workspace">
-                <canvas id="c" style="border: 1px solid rgb(204, 204, 204);width: 100%; height: 100%;"></canvas>
+            <div>
+                <i class="fas fa-plus mr-1 createCloggableChannelIcon"></i>
+                <span th:text="#{availableElements.cloggableChannel}">Cloggable Channel</span>
             </div>
-            <div class="element-palette">
-                <h4 th:text="#{availableElements.header}" class="mb-3"></h4>
-
-                <div>
-                    <i class="fas fa-plus mr-1 createChannelIcon"></i>
-                    <span th:text="#{availableElements.channel}">Channel</span>
-                </div>
-                <div>
-                    <i class="fas fa-plus mr-1 createCloggableChannelIcon"></i>
-                    <span th:text="#{availableElements.cloggableChannel}">Cloggable Channel</span>
-                </div>
-                <div>
-                    <i class="fas fa-plus mr-1 createBypassChannelIcon"></i>
-                    <span th:text="#{availableElements.bypassChannel}">Bypass Channel</span>
-                </div>
-                <div>
-                    <i class="fas fa-plus mr-1 createPressurePumpIcon"></i>
-                    <span th:text="#{availableElements.pressurePump}">Pressure Pump</span>
-                </div>
-                <div>
-                    <i class="fas fa-plus mr-1 createVolumePumpIcon"></i>
-                    <span th:text="#{availableElements.volumePump}">Volume Pump</span>
-                </div>
-                <div>
-                    <i class="fas fa-plus mr-1 createDrainIcon"></i>
-                    <span th:text="#{availableElements.drain}">Drain</span>
-                </div>
+            <div>
+                <i class="fas fa-plus mr-1 createBypassChannelIcon"></i>
+                <span th:text="#{availableElements.bypassChannel}">Bypass Channel</span>
             </div>
-            <div class="fluid-properties">
-                <h4 th:text="#{fluidProperties.header}"></h4>
+            <div>
+                <i class="fas fa-plus mr-1 createPressurePumpIcon"></i>
+                <span th:text="#{availableElements.pressurePump}">Pressure Pump</span>
+            </div>
+            <div>
+                <i class="fas fa-plus mr-1 createVolumePumpIcon"></i>
+                <span th:text="#{availableElements.volumePump}">Volume Pump</span>
+            </div>
+            <div>
+                <i class="fas fa-plus mr-1 createDrainIcon"></i>
+                <span th:text="#{availableElements.drain}">Drain</span>
+            </div>
+        </div>
+        <div class="fluid-properties">
+            <h4 th:text="#{fluidProperties.header}"></h4>
 
-                <div class="table-wrapper">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th th:text="#{fluidProperties.table.id}"></th>
-                            <th th:text="#{fluidProperties.table.name}"></th>
-                            <th>&nbsp;</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+            <div class="table-wrapper">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th th:text="#{fluidProperties.table.id}"></th>
+                        <th th:text="#{fluidProperties.table.name}"></th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
 
+            <div class="property-list mt-auto">
+                <div class="fluid-property-line">
+                    <label for="mucInput" class="col-md-4" th:text="#{fluidProperties.form.muc}"></label>
+                    <input id="mucInput" name="muc" type="text"/>
+                </div>
+                <div class="fluid-property-line">
+                    <label for="mudInput" class="col-md-4" th:text="#{fluidProperties.form.mud}"></label>
+                    <input id="mudInput" name="mud" type="text"/>
+                </div>
+                <div class="fluid-property-line">
+                    <label for="densityCInput" class="col-md-4" th:text="#{fluidProperties.form.densityC}"></label>
+                    <input id="densityCInput" name="densityC" type="text"/>
+                </div>
+                <div class="fluid-property-line">
+                    <label for="interfTensInput" class="col-md-4"
+                           th:text="#{fluidProperties.form.interfacialTension}"></label>
+                    <input id="interfTensInput" name="interfTens" type="text"/>
+                </div>
+                <div class="fluid-property-line">
+                    <label for="slipInput" class="col-md-4" th:text="#{fluidProperties.form.slip}"></label>
+                    <input id="slipInput" name="slip" type="text"/>
                 </div>
 
-                <div class="property-list mt-auto">
-                    <div class="fluid-property-line">
-                        <label for="mucInput" class="col-md-4" th:text="#{fluidProperties.form.muc}"></label>
-                        <input id="mucInput" name="muc" type="text" />
+                <div class="d-flex">
+                    <div class="icon-box ml-auto disabled ml-auto mr-2 copy-button" data-toggle="tooltip"
+                         data-placement="top" th:title="#{fluidProperties.copyButton.tooltip}">
+                        <i class="fas fa-copy"></i>
                     </div>
-                    <div class="fluid-property-line">
-                        <label for="mudInput" class="col-md-4" th:text="#{fluidProperties.form.mud}"></label>
-                        <input id="mudInput" name="mud" type="text" />
-                    </div>
-                    <div class="fluid-property-line">
-                        <label for="densityCInput" class="col-md-4" th:text="#{fluidProperties.form.densityC}"></label>
-                        <input id="densityCInput" name="densityC" type="text" />
-                    </div>
-                    <div class="fluid-property-line">
-                        <label for="interfTensInput" class="col-md-4" th:text="#{fluidProperties.form.interfacialTension}"></label>
-                        <input id="interfTensInput" name="interfTens" type="text" />
-                    </div>
-                    <div class="fluid-property-line">
-                        <label for="slipInput" class="col-md-4" th:text="#{fluidProperties.form.slip}"></label>
-                        <input id="slipInput" name="slip" type="text" />
-                    </div>
-
-                    <div class="d-flex">
-                        <div class="icon-box ml-auto disabled ml-auto mr-2 copy-button" data-toggle="tooltip" data-placement="top" th:title="#{fluidProperties.copyButton.tooltip}">
-                            <i class="fas fa-copy"></i>
+                    <div data-toggle="tooltip" data-placement="top" th:title="#{fluidProperties.newButton.tooltip}">
+                        <div class="icon-box ml-auto" data-toggle="modal" data-target="#newFluidModal">
+                            <i class="fas fa-plus"></i>
                         </div>
-                        <div data-toggle="tooltip" data-placement="top" th:title="#{fluidProperties.newButton.tooltip}">
-                            <div class="icon-box ml-auto" data-toggle="modal" data-target="#newFluidModal">
-                                <i class="fas fa-plus"></i>
-                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sequence-properties">
+            <h4 th:text="#{sequenceProperties.header}"></h4>
+            <div class="table-wrapper">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th th:text="#{sequenceProperties.table.id}"></th>
+                        <th th:text="#{sequenceProperties.table.fluid}"></th>
+                        <th th:text="#{sequenceProperties.table.injectTime}"></th>
+                        <th th:text="#{sequenceProperties.table.type}"></th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="property-list mt-auto">
+                <div class="sequence-property-line">
+                    <label for="injectionTime" class="col-md-4" th:text="#{sequenceProperties.form.injectTime}"></label>
+                    <input id="injectionTime" name="muc" type="text"/>
+                </div>
+                <div class="d-flex">
+                    <div class="icon-box ml-auto disabled ml-auto mr-2 copy-button" data-toggle="tooltip"
+                         data-placement="top" th:title="#{sequenceProperties.copyButton.tooltip}">
+                        <i class="fas fa-copy"></i>
+                    </div>
+                    <div data-toggle="tooltip" data-placement="top" th:title="#{sequenceProperties.newButton.tooltip}">
+                        <div class="icon-box ml-auto" data-toggle="modal" data-target="#newDropletModal">
+                            <i class="fas fa-plus"></i>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="sequence-properties">
-                <h4 th:text="#{sequenceProperties.header}"></h4>
-            </div>
-            <div class="element-properties">
-                <h4 th:text="#{selectedElementProperties.header}" class="mb-3"></h4>
-                <p class="empty-hint" th:text="#{selectedElementProperties.noneSelected}"></p>
-                <div class="property-form line-properties" style="display: none;">
-                    <div class="element-property-line">
-                        <label for="length" class="col-md-4" th:text="#{elementProperties.line.length}"></label>
-                        <input id="length" name="muc" type="number" dir="rtl" />
-                    </div>
-                    <div class="element-property-line">
-                        <label for="width" class="col-md-4" th:text="#{elementProperties.line.width}"></label>
-                        <input id="width" name="muc" type="number" dir="rtl" />
-                    </div>
-                    <div class="element-property-line">
-                        <label for="height" class="col-md-4" th:text="#{elementProperties.line.height}"></label>
-                        <input id="height" name="muc" type="number" dir="rtl" />
-                    </div>
+        </div>
+        <div class="element-properties">
+            <h4 th:text="#{selectedElementProperties.header}" class="mb-3"></h4>
+            <p class="empty-hint" th:text="#{selectedElementProperties.noneSelected}"></p>
+            <div class="property-form line-properties" style="display: none;">
+                <div class="element-property-line">
+                    <label for="length" class="col-md-4" th:text="#{elementProperties.line.length}"></label>
+                    <input id="length" name="muc" type="number" dir="rtl"/>
                 </div>
-            </div>
-            <div class="footer">
-                <div class="playback-progress">
-                    <label for="progressbar">
-                        <span class="progressbar-current">0</span> / <span class="progressbar-max">140</span>
-                    </label>
-                    <input id="progressbar" type="text" data-slider-min="0" data-slider-max="140" data-slider-step="1" data-slider-value="0" />
+                <div class="element-property-line">
+                    <label for="width" class="col-md-4" th:text="#{elementProperties.line.width}"></label>
+                    <input id="width" name="muc" type="number" dir="rtl"/>
                 </div>
-                <div class="sim-controls">
-                    <div class="icon-box"><i class="fas fa-play"></i></div>
-                    <div class="icon-box"><i class="fas fa-caret-left"></i></div>
-                    <div class="icon-box"><i class="fas fa-stop"></i></div>
-                    <div class="icon-box"><i class="fas fa-caret-right"></i></div>
+                <div class="element-property-line">
+                    <label for="height" class="col-md-4" th:text="#{elementProperties.line.height}"></label>
+                    <input id="height" name="muc" type="number" dir="rtl"/>
                 </div>
             </div>
         </div>
+        <div class="footer">
+            <div class="playback-progress">
+                <label for="progressbar">
+                    <span class="progressbar-current">0</span> / <span class="progressbar-max">140</span>
+                </label>
+                <input id="progressbar" type="text" data-slider-min="0" data-slider-max="140" data-slider-step="1"
+                       data-slider-value="0"/>
+            </div>
+            <div class="sim-controls">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="icon-box"><i class="fas fa-caret-left"></i></div>
+                <div class="icon-box"><i class="fas fa-stop"></i></div>
+                <div class="icon-box"><i class="fas fa-caret-right"></i></div>
+            </div>
+        </div>
+    </div>
 
+    <div class="modal fade" id="newDropletModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{sequenceProperties.newModal.header}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="newDropletForm">
+                        <label for="newDropletInjectionTime" th:text="#{sequenceProperties.newModal.injectionTime.label}"></label>
+                        <input required autofocus id="newDropletInjectionTime"
+                               th:placeholder="#{sequenceProperties.newModal.injectionTime.placeholder}"/>
 
-        <div class="modal fade" id="newFluidModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" th:text="#{fluidProperties.newModal.header}"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="newFluidNameForm">
-                            <label for="newFluidName" th:text="#{fluidProperties.newModal.name.label}"></label>
-                            <input required autofocus id="newFluidName" th:placeholder="#{fluidProperties.newModal.name.placeholder}" />
-
-                            <label for="newMucInput" th:text="#{fluidProperties.form.muc}"></label>
-                            <input id="newMucInput" name="newMuc" type="text" />
-                            <label for="newMudInput" th:text="#{fluidProperties.form.mud}"></label>
-                            <input id="newMudInput" name="newMud" type="text" />
-                            <label for="newDensityCInput" th:text="#{fluidProperties.form.densityC}"></label>
-                            <input id="newDensityCInput" name="newDensityC" type="text" />
-                            <label for="newInterfTensInput" th:text="#{fluidProperties.form.interfacialTension}"></label>
-                            <input id="newInterfTensInput" name="newInterfTens" type="text" />
-                            <label for="newSlipInput" th:text="#{fluidProperties.form.slip}"></label>
-                            <input id="newSlipInput" name="newSlip" type="text" />
-
-                            <button type="submit" th:text="#{fluidProperties.newModal.submit}"></button>
-                        </form>
-
-                    </div>
+                        <button type="submit" th:text="#{sequenceProperties.newModal.submit}"></button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="modal fade" id="copyFluidModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" th:text="#{fluidProperties.copyModal.header}"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="copyFluidModalForm">
-                            <label for="newFluidFromCopyName" th:text="#{fluidProperties.copyModal.name.label}"></label>
-                            <input required autofocus id="newFluidFromCopyName" th:placeholder="#{fluidProperties.copyModal.name.placeholder}" />
-                            <button type="submit" th:text="#{fluidProperties.copyModal.submit}"></button>
-                        </form>
 
-                    </div>
+    <div class="modal fade" id="newFluidModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{fluidProperties.newModal.header}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="newFluidForm">
+                        <label for="newFluidName" th:text="#{fluidProperties.newModal.name.label}"></label>
+                        <input required autofocus id="newFluidName"
+                               th:placeholder="#{fluidProperties.newModal.name.placeholder}"/>
+
+                        <label for="newMucInput" th:text="#{fluidProperties.form.muc}"></label>
+                        <input id="newMucInput" name="newMuc" type="text"/>
+                        <label for="newMudInput" th:text="#{fluidProperties.form.mud}"></label>
+                        <input id="newMudInput" name="newMud" type="text"/>
+                        <label for="newDensityCInput" th:text="#{fluidProperties.form.densityC}"></label>
+                        <input id="newDensityCInput" name="newDensityC" type="text"/>
+                        <label for="newInterfTensInput" th:text="#{fluidProperties.form.interfacialTension}"></label>
+                        <input id="newInterfTensInput" name="newInterfTens" type="text"/>
+                        <label for="newSlipInput" th:text="#{fluidProperties.form.slip}"></label>
+                        <input id="newSlipInput" name="newSlip" type="text"/>
+
+                        <button type="submit" th:text="#{fluidProperties.newModal.submit}"></button>
+                    </form>
+
                 </div>
             </div>
         </div>
+    </div>
 
-        <!--suppress SpellCheckingInspection -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-        <!--suppress SpellCheckingInspection -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <!--suppress SpellCheckingInspection -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <!--suppress SpellCheckingInspection -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/bootstrap-slider.min.js" integrity="sha256-nviKEC91moGfyFMMzT31WyNxuAvIIgOSkSGi7K6U7EU=" crossorigin="anonymous"></script>
-        <!--suppress SpellCheckingInspection -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min.js" integrity="sha256-WBL/n3xm7bfMlEkSfLdaXpMVekQhsDVpslNegSlFw5Y=" crossorigin="anonymous"></script>
+    <div class="modal fade" id="copyFluidModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{fluidProperties.copyModal.header}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="copyFluidModalForm">
+                        <label for="newFluidFromCopyName" th:text="#{fluidProperties.copyModal.name.label}"></label>
+                        <input required autofocus id="newFluidFromCopyName"
+                               th:placeholder="#{fluidProperties.copyModal.name.placeholder}"/>
+                        <button type="submit" th:text="#{fluidProperties.copyModal.submit}"></button>
+                    </form>
 
-        <script th:src="@{/scripts/main.js}" src="../static/scripts/main.js"></script>
-        <script th:src="@{/scripts/fluids.js}" src="../static/scripts/workspace.js"></script>
-        <script th:src="@{/scripts/workspace.js}" src="../static/scripts/workspace.js"></script>
-    </body>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--suppress SpellCheckingInspection -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!--suppress SpellCheckingInspection -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <!--suppress SpellCheckingInspection -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <!--suppress SpellCheckingInspection -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/bootstrap-slider.min.js"
+            integrity="sha256-nviKEC91moGfyFMMzT31WyNxuAvIIgOSkSGi7K6U7EU=" crossorigin="anonymous"></script>
+    <!--suppress SpellCheckingInspection -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min.js"
+            integrity="sha256-WBL/n3xm7bfMlEkSfLdaXpMVekQhsDVpslNegSlFw5Y=" crossorigin="anonymous"></script>
+
+    <script th:src="@{/scripts/main.js}" src="../static/scripts/main.js"></script>
+    <script th:src="@{/scripts/workspace.js}" src="../static/scripts/workspace.js"></script>
+    <script th:src="@{/scripts/fluids.js}" src="../static/scripts/fluids.js"></script>
+    <script th:src="@{/scripts/dropletsequence.js}" src="../static/scripts/dropletsequence.js"></script>
+</body>
 </html>

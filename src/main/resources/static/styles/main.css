@@ -179,6 +179,7 @@ body.drawing {
     grid-column: 1 / 2;
     grid-row: 3 / 4;
     padding: 10px;
+    flex-direction: column;
 }
 /*endregion*/
 

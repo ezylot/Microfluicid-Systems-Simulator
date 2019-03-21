@@ -5,8 +5,12 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
+
+    // TODO: fluids - copy function
+    // TODO: fluids - delete function
+    // TODO: fluids - save on change function
+    // TODO: droplet sequence javascript part
     // TODO: cancel drawing on escape
-    // TODO: droplet sequence
     // TODO: add other element types
     // TODO: design for available elements
     // TODO: make selectable group movable

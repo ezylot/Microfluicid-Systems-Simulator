@@ -5,15 +5,15 @@ $(document).ready(() => {
         $(this).find('[autofocus]').focus();
     });
 
-    $('#newFluidNameForm').on('submit', event => {
+    $('#newFluidForm').on('submit', event => {
         event.preventDefault();
 
-        let newFluidName = $('#newFluidNameForm #newFluidName');
-        let newMuc = $('#newFluidNameForm input[name="newMuc"]');
-        let newMud = $('#newFluidNameForm input[name="newMud"]');
-        let newDensityC = $('#newFluidNameForm input[name="newDensityC"]');
-        let newInterfTens = $('#newFluidNameForm input[name="newInterfTens"]');
-        let newSlip = $('#newFluidNameForm input[name="newSlip"]');
+        let newFluidName = $('#newFluidForm #newFluidName');
+        let newMuc = $('#newFluidForm input[name="newMuc"]');
+        let newMud = $('#newFluidForm input[name="newMud"]');
+        let newDensityC = $('#newFluidForm input[name="newDensityC"]');
+        let newInterfTens = $('#newFluidForm input[name="newInterfTens"]');
+        let newSlip = $('#newFluidForm input[name="newSlip"]');
 
         let newFluid = {
             id: fluids.length + 1,
@@ -46,7 +46,7 @@ $(document).ready(() => {
 
         $tableRow.click();
 
-        $('.copy-button').removeClass('disabled');
+        $('.fluid-properties .copy-button').removeClass('disabled');
         $('#newFluidModal').modal('hide');
         newFluidName.val('');
         newMuc.val('');
@@ -61,8 +61,4 @@ $(document).ready(() => {
             $('#copyFluidModal').modal('show')
         }
     });
-
-    // TODO: copy function
-    // TODO: delete function
-    // TODO: save on change function
 });
