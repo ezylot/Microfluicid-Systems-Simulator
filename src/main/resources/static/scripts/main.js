@@ -5,7 +5,10 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: droplet sequence javascript part
+    // TODO: droplet sequence create function
+    // TODO: droplet sequence duplicate function
+    // TODO: droplet sequence clone function
+    // TODO: droplet sequence save function
     // TODO: cancel drawing on escape
     // TODO: cant remove last line by putting cirlces on top of each other
     // TODO: add pumps and drains

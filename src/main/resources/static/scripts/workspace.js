@@ -9,7 +9,7 @@ lineColor[ChannelTypes.bypass]= '#9c5872';
 
 const lineColorSelected = { };
 lineColorSelected[ChannelTypes.normal] = '#689c52';
-lineColorSelected[ChannelTypes.cloggable] = '#9c702e';
+lineColorSelected[ChannelTypes.cloggable] = '#3e299c';
 lineColorSelected[ChannelTypes.bypass] = '#9c3540';
 
 
