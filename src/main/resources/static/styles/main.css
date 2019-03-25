@@ -252,7 +252,7 @@ body.drawing {
     padding-right: 7px;
 }
 
-#newDropletModal form{
+#newDropletModal form {
     display: flex;
     flex-direction: column;
 }
@@ -263,7 +263,7 @@ body.drawing {
     padding: 7px;
 }
 
-#newDropletModal form input {
+#newDropletModal form input, #newDropletModal form select {
     margin-top: 3px;
     margin-bottom: 10px;
     padding: 5px 10px;

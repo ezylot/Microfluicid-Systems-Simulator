@@ -214,10 +214,15 @@
                 <div class="modal-body">
                     <form id="newDropletForm">
                         <label for="newDropletInjectionTime" th:text="#{sequenceProperties.newModal.injectionTime.label}"></label>
-                        <input required autofocus id="newDropletInjectionTime"
-                               th:placeholder="#{sequenceProperties.newModal.injectionTime.placeholder}"/>
+                        <input required autofocus id="newDropletInjectionTime" th:placeholder="#{sequenceProperties.newModal.injectionTime.placeholder}"/>
 
-                        <button type="submit" th:text="#{sequenceProperties.newModal.submit}"></button>
+                        <label for="newPumpSelection" th:text="#{sequenceProperties.newModal.pumpSelection.label}"></label>
+                        <select id="newPumpSelection" name="newPumpSelection"></select>
+
+                        <label for="newFluidType" th:text="#{sequenceProperties.newModal.fluidType.label}"></label>
+                        <select id="newFluidType" name="newFluidType"></select>
+
+                        <button class="mt-4" type="submit" th:text="#{sequenceProperties.newModal.submit}"></button>
                     </form>
                 </div>
             </div>

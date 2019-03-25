@@ -1,5 +1,4 @@
 $(document).ready(() => {
-    let fluids = [];
     let nextId = 0;
 
     $('#newFluidModal').on('shown.bs.modal', () => {
@@ -108,6 +107,10 @@ function createNewFluid(newFluid, fluids) {
     $tableRow.click();
     $('.fluid-properties .copy-button').removeClass('disabled');
     $('.fluid-properties .delete-button').removeClass('disabled');
+
+
+    $('#newFluidType').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
+    $('#fluidType').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
 }
 
 function resetSelection() {

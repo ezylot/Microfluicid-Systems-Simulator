@@ -1,3 +1,6 @@
+let fluids = [];
+let droplets = [];
+
 $(document).ready(() => {
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -5,7 +8,6 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: droplet sequence create function
     // TODO: droplet sequence duplicate function
     // TODO: droplet sequence clone function
     // TODO: droplet sequence save function
