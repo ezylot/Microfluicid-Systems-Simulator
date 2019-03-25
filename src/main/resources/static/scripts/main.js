@@ -12,5 +12,4 @@ $(document).ready(() => {
     // TODO: add pumps and drains
     // TODO: design for available elements
     // TODO: save and load
-    // TODO: zoom in and out
 });

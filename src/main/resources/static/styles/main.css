@@ -11,6 +11,10 @@ body.drawing {
     cursor: crosshair;
 }
 
+input {
+    text-align: right;
+}
+
 .icon-box {
     display: flex;
     align-items: center;
@@ -21,6 +25,19 @@ body.drawing {
     border: 1px solid #EFEFEF;
 }
 
+.unit-input {
+    position: relative;
+}
+
+.unit-input input {
+    padding-right: 32px !important;
+}
+
+.unit-input .unit {
+    position: absolute;
+    right: 8px;
+    z-index: 9;
+}
 
 .icon-box.disabled {
     cursor: no-drop;

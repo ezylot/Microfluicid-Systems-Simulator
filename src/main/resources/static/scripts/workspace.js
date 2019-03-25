@@ -9,7 +9,7 @@ lineColor[ChannelTypes.bypass]= '#9c5872';
 
 const lineColorSelected = { };
 lineColorSelected[ChannelTypes.normal] = '#689c52';
-lineColorSelected[ChannelTypes.cloggable] = '#3e299c';
+lineColorSelected[ChannelTypes.cloggable] = '#50429c';
 lineColorSelected[ChannelTypes.bypass] = '#9c3540';
 
 
@@ -261,7 +261,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
             currentDrawingLine = null;
         }
 
-        if(e.keyCode === 46 && oldSelectedLine != null) {
+        if(e.keyCode === 46 && oldSelectedLine != null && e.target.tagName !== "INPUT") {
             $('.element-properties .property-form').hide();
             $('.element-properties .empty-hint').show();
             deleteLine(canvas, oldSelectedLine);
@@ -271,12 +271,12 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
 
     makeLine(canvas, [ 100, 100, 200, 100 ], ChannelTypes.normal, {});
     makeLine(canvas, [ 200, 100, 200, 50 ], ChannelTypes.normal, {});
-    makeLine(canvas, [ 200, 100, 200, 150 ], ChannelTypes.normal, {});
-    makeLine(canvas, [ 200, 150, 300, 150 ], ChannelTypes.normal, {});
-    makeLine(canvas, [ 200, 50, 300, 50 ], ChannelTypes.normal, {});
-    makeLine(canvas, [ 300, 50, 300, 100 ], ChannelTypes.normal, {});
-    makeLine(canvas, [ 300, 150, 300, 100 ], ChannelTypes.normal, {});
-    makeLine(canvas, [ 300, 100, 400, 100 ], ChannelTypes.normal, {});
+    makeLine(canvas, [ 200, 100, 200, 150 ], ChannelTypes.cloggable, {});
+    makeLine(canvas, [ 200, 150, 300, 150 ], ChannelTypes.cloggable, {});
+    makeLine(canvas, [ 200, 50, 300, 50 ], ChannelTypes.cloggable, {});
+    makeLine(canvas, [ 300, 50, 300, 100 ], ChannelTypes.bypass, {});
+    makeLine(canvas, [ 300, 150, 300, 100 ], ChannelTypes.bypass, {});
+    makeLine(canvas, [ 300, 100, 400, 100 ], ChannelTypes.bypass, {});
 
     mergeElements(canvas);
     
