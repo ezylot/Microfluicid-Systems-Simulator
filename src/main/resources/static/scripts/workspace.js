@@ -119,8 +119,8 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
                 currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType,{});
             } else {
                 let pointer = canvas.getPointer(opt.e, false);
-                let left = Math.floor(pointer.x / grid) * grid;
-                let top = Math.floor(pointer.y / grid) * grid;
+                let left = Math.round(pointer.x / grid) * grid;
+                let top = Math.round(pointer.y / grid) * grid;
                 let points = [left, top, left, top];
                 currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType,{});
             }
@@ -224,8 +224,8 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
         if(currentDrawingState === DrawingStates.started) {
             let pointer = canvas.getPointer(opt.e, false);
 
-            let left = Math.floor(pointer.x / grid) * grid;
-            let top = Math.floor(pointer.y / grid) * grid;
+            let left = Math.round(pointer.x / grid) * grid;
+            let top = Math.round(pointer.y / grid) * grid;
 
             currentDrawingLine.set({ x2: left, y2: top });
             currentDrawingLine.endCircle.set({left: left - grid / 2, top: top - grid / 2});
@@ -245,7 +245,22 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     });
 
     $(document).keyup(function(e){
-        // 46 = DELETE key
+        // 46 = DELETE key, 27 = ESCAPE KEY
+
+        if(e.keyCode === 27 && currentDrawingState === DrawingStates.started) {
+            $('body').removeClass('drawing');
+            canvas.hoverCursor = 'move';
+            canvas.defaultCursor = 'default';
+
+            currentDrawingState = DrawingStates.none;
+            canvas.getObjects().forEach(value => {
+                value.lockMovementX = value.lockMovementY = false
+            });
+
+            deleteLine(canvas, currentDrawingLine);
+            currentDrawingLine = null;
+        }
+
         if(e.keyCode === 46 && oldSelectedLine != null) {
             $('.element-properties .property-form').hide();
             $('.element-properties .empty-hint').show();
@@ -268,8 +283,8 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     canvas.on('object:moving', function(e) {
         let circle = e.target;
 
-        let left = Math.floor(circle.left / grid) * grid;
-        let top = Math.floor(circle.top / grid) * grid;
+        let left = Math.round(circle.left / grid) * grid;
+        let top = Math.round(circle.top / grid) * grid;
 
         circle.set({
             left: left - grid/2,
@@ -352,8 +367,8 @@ function mergeElements(canvas) {
     let circles = {};
 
     canvas.getObjects().forEach(value => {
-        if(value.type === 'circle') {
-            if(circles[value.left] && circles[value.left][value.top]) {
+        if (value.type === 'circle') {
+            if (circles[value.left] && circles[value.left][value.top]) {
                 value.lines.forEach(lineWithPosInfo => {
                     circles[value.left][value.top].lines.push(lineWithPosInfo);
                     if (value === lineWithPosInfo.line.startCircle) {
@@ -367,16 +382,20 @@ function mergeElements(canvas) {
                 return;
             }
 
-            if(!circles[value.left]) {
+            if (!circles[value.left]) {
                 circles[value.left] = {};
             }
             circles[value.left][value.top] = value;
-        } else if(value.type === 'line') {
-            if(value.x1 === value.x2 && value.y1 === value.y2) {
+        } else if (value.type === 'line') {
+            if (value.x1 === value.x2 && value.y1 === value.y2) {
                 canvas.remove(value);
             }
         }
-    })
+    });
+
+    if(canvas.getObjects("circle").length === 1) {
+        canvas.remove(canvas.getObjects("circle")[0]);
+    }
 }
 
 function deleteLine(canvas, line) {
