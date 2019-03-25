@@ -56,7 +56,7 @@ $(document).ready(() => {
 
         let $activeRow = $('.fluid-properties .table-wrapper tr.active');
         let fluidToCopy = $activeRow.data('fluid');
-        let newFluid = Object.assign({}, fluidToCopy)
+        let newFluid = Object.assign({}, fluidToCopy);
         let $nameInput = $('#newFluidFromCopyName');
 
         newFluid.id = nextId++;

@@ -25,6 +25,17 @@ $(document).ready(() => {
         $newFluidType.val('');
         $newPumpSelection.val('');
     });
+
+    $('.sequence-properties .copy-button').on('click', (element) => {
+        if(!$(element.currentTarget).is('.disabled')) {
+            let $activeRow = $('.sequence-properties .table-wrapper tr.active');
+            let dropletToCopy = $activeRow.data('droplet');
+            let newDroplet = Object.assign({}, dropletToCopy);
+            newDroplet.id = nextId++;
+
+            createNewDroplet(newDroplet, droplets);
+        }
+    });
 });
 
 function createNewDroplet(newDroplet, droplets) {
