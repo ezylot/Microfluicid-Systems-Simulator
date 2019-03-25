@@ -8,7 +8,7 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: droplet sequence save function
+    // TODO: Unassign droplet fluid on delete of fluid
     // TODO: cancel drawing on escape
     // TODO: cant remove last line by putting cirlces on top of each other
     // TODO: add pumps and drains

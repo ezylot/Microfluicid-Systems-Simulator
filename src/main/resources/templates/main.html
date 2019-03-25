@@ -139,11 +139,15 @@
             <div class="property-list mt-auto">
                 <div class="sequence-property-line">
                     <label for="pumpSelection" class="col-md-4" th:text="#{sequenceProperties.form.pumpSelection}"></label>
-                    <select id="pumpSelection" name="pumpSelection"></select>
+                    <select id="pumpSelection" name="pumpId">
+                        <option selected value=""></option>
+                    </select>
                 </div>
                 <div class="sequence-property-line">
                     <label for="fluidType" class="col-md-4" th:text="#{sequenceProperties.form.fluidType}"></label>
-                    <select id="fluidType" name="fluidType"></select>
+                    <select id="fluidType" name="fluidId">
+                        <option selected value=""></option>
+                    </select>
                 </div>
                 <div class="sequence-property-line">
                     <label for="injectionTime" class="col-md-4" th:text="#{sequenceProperties.form.injectTime}"></label>
@@ -217,10 +221,14 @@
                         <input required autofocus id="newDropletInjectionTime" th:placeholder="#{sequenceProperties.newModal.injectionTime.placeholder}"/>
 
                         <label for="newPumpSelection" th:text="#{sequenceProperties.newModal.pumpSelection.label}"></label>
-                        <select id="newPumpSelection" name="newPumpSelection"></select>
+                        <select id="newPumpSelection" name="newPumpSelection">
+                            <option selected value=""></option>
+                        </select>
 
                         <label for="newFluidType" th:text="#{sequenceProperties.newModal.fluidType.label}"></label>
-                        <select id="newFluidType" name="newFluidType"></select>
+                        <select id="newFluidType" name="newFluidType">
+                            <option selected value=""></option>
+                        </select>
 
                         <button class="mt-4" type="submit" th:text="#{sequenceProperties.newModal.submit}"></button>
                     </form>
