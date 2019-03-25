@@ -32,6 +32,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     canvas.setHeight(canvasContainer.height());
     canvas.setWidth(canvasContainer.width());
     canvas.calcOffset();
+    canvas.selection = false;
 
     window.onresize = () => {
         canvas.setHeight(canvasContainer.height());
@@ -99,12 +100,14 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     canvas.on('mouse:down', opt => {
         if (opt.e.altKey === true) {
             isDragging = true;
-            canvas.selection = false;
             canvas.lastPosX = opt.e.clientX;
             canvas.lastPosY = opt.e.clientY;
         } else if(currentDrawingState === DrawingStates.ready) {
             //region start drawing line
             currentDrawingState = DrawingStates.started;
+            canvas.getObjects().forEach(value => {
+                value.lockMovementX = value.lockMovementY = true
+            });
 
             if(opt.target && opt.target.type === 'circle') {
                 let points = [
@@ -129,6 +132,10 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
             canvas.defaultCursor = 'default';
 
             currentDrawingState = DrawingStates.none;
+            canvas.getObjects().forEach(value => {
+                value.lockMovementX = value.lockMovementY = false
+            });
+
             currentDrawingLine.setCoords();
             currentDrawingLine = null;
             mergeElements(canvas);
@@ -231,7 +238,6 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     canvas.on('mouse:up', () => {
         if(isDragging) {
             isDragging = false;
-            canvas.selection = true;
             canvas.getObjects().forEach(value => {
                 value.setCoords();
             });
@@ -260,7 +266,6 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     mergeElements(canvas);
     
     canvas.on('object:moving', function(e) {
-        if(currentDrawingState !== DrawingStates.none) return;
         let circle = e.target;
 
         let left = Math.floor(circle.left / grid) * grid;
@@ -301,9 +306,10 @@ function makeLine(canvas, coords, channelType, properties) {
         evented: true,
         hoverCursor : 'default',
         perPixelTargetFind: true,
+        hasControls: false,
+        hasBorders: false,
     });
     line.channelType = channelType;
-    line.hasControls = line.hasBorders = false;
 
     let startCircle = new fabric.Circle({
         left: coords[0] - grid/2,
@@ -311,11 +317,12 @@ function makeLine(canvas, coords, channelType, properties) {
         strokeWidth: 5,
         radius: 10,
         fill: '#fff',
-        stroke: '#666'
+        stroke: '#666',
+        hasControls: false,
+        hasBorders: false,
     });
     startCircle.pos = 'start';
     startCircle.lines = [{line: line, pos: startCircle.pos}];
-    startCircle.hasControls = startCircle.hasBorders = false;
 
     let endCircle = new fabric.Circle({
         left: coords[2] - grid/2,
@@ -323,12 +330,13 @@ function makeLine(canvas, coords, channelType, properties) {
         strokeWidth: 5,
         radius: 10,
         fill: '#fff',
-        stroke: '#666'
+        stroke: '#666',
+        hasControls: false,
+        hasBorders: false,
     });
 
     endCircle.pos = 'end';
     endCircle.lines = [{line: line, pos: endCircle.pos}];
-    endCircle.hasControls = endCircle.hasBorders = false;
 
     canvas.add(line);
     canvas.add(startCircle);
