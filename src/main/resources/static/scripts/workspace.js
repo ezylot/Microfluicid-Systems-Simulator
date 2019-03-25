@@ -116,8 +116,8 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
                 currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType,{});
             } else {
                 let pointer = canvas.getPointer(opt.e, false);
-                let left = Math.round(pointer.x / grid) * grid;
-                let top = Math.round(pointer.y / grid) * grid;
+                let left = Math.floor(pointer.x / grid) * grid;
+                let top = Math.floor(pointer.y / grid) * grid;
                 let points = [left, top, left, top];
                 currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType,{});
             }
@@ -217,8 +217,8 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
         if(currentDrawingState === DrawingStates.started) {
             let pointer = canvas.getPointer(opt.e, false);
 
-            let left = Math.round(pointer.x / grid) * grid;
-            let top = Math.round(pointer.y / grid) * grid;
+            let left = Math.floor(pointer.x / grid) * grid;
+            let top = Math.floor(pointer.y / grid) * grid;
 
             currentDrawingLine.set({ x2: left, y2: top });
             currentDrawingLine.endCircle.set({left: left - grid / 2, top: top - grid / 2});
@@ -263,8 +263,8 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
         if(currentDrawingState !== DrawingStates.none) return;
         let circle = e.target;
 
-        let left = Math.round(circle.left / grid) * grid;
-        let top = Math.round(circle.top / grid) * grid;
+        let left = Math.floor(circle.left / grid) * grid;
+        let top = Math.floor(circle.top / grid) * grid;
 
         circle.set({
             left: left - grid/2,
