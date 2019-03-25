@@ -8,7 +8,6 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: droplet sequence delete function
     // TODO: droplet sequence save function
     // TODO: cancel drawing on escape
     // TODO: cant remove last line by putting cirlces on top of each other

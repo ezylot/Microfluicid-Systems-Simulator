@@ -36,6 +36,15 @@ $(document).ready(() => {
             createNewDroplet(newDroplet, droplets);
         }
     });
+
+
+    $('.sequence-properties .delete-button').on('click', () => {
+        let $activeRow = $('.sequence-properties .table-wrapper tr.active');
+        let dropletToDelete = $activeRow.data('fluid');
+        droplets.splice(droplets.indexOf(dropletToDelete), 1);
+        resetDropletSelection();
+        $activeRow.remove();
+    });
 });
 
 function createNewDroplet(newDroplet, droplets) {
@@ -66,4 +75,14 @@ function createNewDroplet(newDroplet, droplets) {
     $tableRow.click();
     $('.fluid-properties .copy-button').removeClass('disabled');
     $('.fluid-properties .delete-button').removeClass('disabled');
+}
+
+function resetDropletSelection() {
+    let $fluidProperties = $('.sequence-properties');
+    $fluidProperties.find('.table-wrapper').find('.active').removeClass('active');
+
+    $fluidProperties.find('.copy-button').addClass('disabled');
+    $fluidProperties.find('.delete-button').addClass('disabled');
+
+    $fluidProperties.find('input[name="injectionTime"]').val('');
 }

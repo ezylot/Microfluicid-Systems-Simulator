@@ -47,7 +47,7 @@ $(document).ready(() => {
         let $activeRow = $('.fluid-properties .table-wrapper tr.active');
         let fluidToDelete = $activeRow.data('fluid');
         fluids.splice(fluids.indexOf(fluidToDelete), 1);
-        resetSelection();
+        resetFluidSelection();
         $activeRow.remove();
     });
 
@@ -113,7 +113,7 @@ function createNewFluid(newFluid, fluids) {
     $('#fluidType').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
 }
 
-function resetSelection() {
+function resetFluidSelection() {
     let $fluidProperties = $('.fluid-properties');
     $fluidProperties.find('.table-wrapper').find('.active').removeClass('active');
 
