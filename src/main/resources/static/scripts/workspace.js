@@ -105,11 +105,22 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
         } else if(currentDrawingState === DrawingStates.ready) {
             //region start drawing line
             currentDrawingState = DrawingStates.started;
-            let pointer = canvas.getPointer(opt.e, false);
-            let left = Math.round(pointer.x / grid) * grid;
-            let top = Math.round(pointer.y / grid) * grid;
-            let points = [left, top, left, top];
-            currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType,{});
+
+            if(opt.target && opt.target.type === 'circle') {
+                let points = [
+                    opt.target.left + grid/2,
+                    opt.target.top + grid/2,
+                    opt.target.left + grid/2,
+                    opt.target.top + grid/2,
+                ];
+                currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType,{});
+            } else {
+                let pointer = canvas.getPointer(opt.e, false);
+                let left = Math.round(pointer.x / grid) * grid;
+                let top = Math.round(pointer.y / grid) * grid;
+                let points = [left, top, left, top];
+                currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType,{});
+            }
             //endregion
         } else if(currentDrawingState === DrawingStates.started) {
             //region end drawing line
@@ -249,6 +260,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     mergeElements(canvas);
     
     canvas.on('object:moving', function(e) {
+        if(currentDrawingState !== DrawingStates.none) return;
         let circle = e.target;
 
         let left = Math.round(circle.left / grid) * grid;
