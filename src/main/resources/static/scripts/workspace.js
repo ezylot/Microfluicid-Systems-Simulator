@@ -25,9 +25,20 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     let currentDrawingChannelType = null;
     let currentDrawingLine = null;
 
-    $('.element-palette .createChannelIcon').parent().css('color', lineColor[ChannelTypes.normal]);
-    $('.element-palette .createCloggableChannelIcon').parent().css('color', lineColor[ChannelTypes.cloggable]);
-    $('.element-palette .createBypassChannelIcon').parent().css('color', lineColor[ChannelTypes.bypass]);
+    let $createChannelElement = $('.element-palette .createChannelIcon');
+    $createChannelElement
+        .css('cursor', 'pointer')
+        .css('color', lineColor[ChannelTypes.normal]);
+
+    let $createCloggableChannelElement = $('.element-palette .createCloggableChannelIcon');
+    $createCloggableChannelElement
+        .css('cursor', 'pointer')
+        .css('color', lineColor[ChannelTypes.cloggable]);
+
+    let $createBypassChannelElement = $('.element-palette .createBypassChannelIcon');
+    $createBypassChannelElement
+        .css('cursor', 'pointer')
+        .css('color', lineColor[ChannelTypes.bypass]);
 
     canvas.setHeight(canvasContainer.height());
     canvas.setWidth(canvasContainer.width());
@@ -183,7 +194,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
         objectProperties[$input.attr('id')] = $input.val();
     });
 
-    $('.element-palette .createChannelIcon').on('click', () => {
+    $createChannelElement.on('click', () => {
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = ChannelTypes.normal;
         $('body').addClass('drawing');
@@ -192,7 +203,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     });
 
 
-    $('.element-palette .createCloggableChannelIcon').on('click', () => {
+    $createCloggableChannelElement.on('click', () => {
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = ChannelTypes.cloggable;
         $('body').addClass('drawing');
@@ -200,7 +211,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
         canvas.defaultCursor = 'crosshair';
     });
 
-    $('.element-palette .createBypassChannelIcon').on('click', () => {
+    $createBypassChannelElement.on('click', () => {
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = ChannelTypes.bypass;
         $('body').addClass('drawing');
