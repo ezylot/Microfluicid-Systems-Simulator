@@ -23,13 +23,14 @@ pumpColorSelected[PumpTypes.pressure] = '#e5eb3f';
 pumpColorSelected[PumpTypes.volume] = '#50e3e3';
 pumpColorSelected[PumpTypes.drain] = '#915269';
 
+let nextPumpId = 0;
 
 (function () {
     const canvas = new fabric.Canvas('c', {selection: false});
 
     let canvasContainer = $('.workspace');
     let backgroundGroup = null;
-    let oldSelectedLine = null;
+    let oldSelectedElem = null;
     let isDragging = false;
 
     let currentDrawingState = DrawingStates.none;
@@ -178,6 +179,10 @@ pumpColorSelected[PumpTypes.drain] = '#915269';
                 canvas.hoverCursor = 'move';
                 canvas.defaultCursor = 'default';
 
+                let pump = {
+                    id: nextPumpId++,
+                };
+
                 let pumpCircle = opt.target;
                 if (currentDrawingPumpType === PumpTypes.volume) {
                     pumpCircle.set({
@@ -189,6 +194,8 @@ pumpColorSelected[PumpTypes.drain] = '#915269';
                         represents: 'pump',
                         pumpType: PumpTypes.volume
                     });
+                    pump.name = 'V' + pump.id;
+                    pump.type = PumpTypes.volume;
                 } else if (currentDrawingPumpType === PumpTypes.pressure) {
                     pumpCircle.set({
                         left: pumpCircle.left - 8,
@@ -199,6 +206,8 @@ pumpColorSelected[PumpTypes.drain] = '#915269';
                         represents: 'pump',
                         pumpType: PumpTypes.pressure
                     });
+                    pump.name = 'P' + pump.id;
+                    pump.type = PumpTypes.pressure;
                 } else {
                     pumpCircle.set({
                         left: pumpCircle.left - 8,
@@ -209,7 +218,11 @@ pumpColorSelected[PumpTypes.drain] = '#915269';
                         represents: 'pump',
                         pumpType: PumpTypes.drain
                     });
+                    pump.name = 'D' + pump.id;
+                    pump.type = PumpTypes.drain;
                 }
+
+                createPump(pump, pumps);
 
                 currentDrawingState = DrawingStates.none;
                 currentDrawingLine = null;
@@ -218,22 +231,19 @@ pumpColorSelected[PumpTypes.drain] = '#915269';
                 canvas.renderAll();
             }
         } else if (opt.target != null && opt.target.represents === 'line') {
-            //region Select element and display information
-            if (oldSelectedLine != null) {
-                oldSelectedLine.set({
-                    'fill': lineColor[oldSelectedLine.channelType],
-                    'stroke': lineColor[oldSelectedLine.channelType]
-                });
-            }
+            //region Select channel element and display information
+            resetOldSelection(oldSelectedElem);
 
             opt.target.set({
                 'fill': lineColorSelected[opt.target.channelType],
                 'stroke': lineColorSelected[opt.target.channelType]
             });
-            oldSelectedLine = opt.target;
+            canvas.renderAll();
+            oldSelectedElem = opt.target;
 
             let $elementPropertiesWindow = $('.element-properties');
             $elementPropertiesWindow.find('.empty-hint').hide();
+            $elementPropertiesWindow.find('.pump-properties').hide();
 
             let linePropertyForm = $elementPropertiesWindow.find('.line-properties');
 
@@ -255,6 +265,34 @@ pumpColorSelected[PumpTypes.drain] = '#915269';
             linePropertyForm.find('#height').val(height);
             linePropertyForm.data('objectProperties', opt.target.properties);
             linePropertyForm.show();
+            //endregion
+        } else if (opt.target != null && opt.target.represents === 'pump') {
+            //region Select pump element and display information
+            resetOldSelection(oldSelectedElem);
+
+            opt.target.set({
+                'fill': pumpColorSelected[opt.target.pumpType],
+            });
+            canvas.renderAll();
+            oldSelectedElem = opt.target;
+
+            let $elementPropertiesWindow = $('.element-properties');
+            $elementPropertiesWindow.find('.empty-hint').hide();
+            $elementPropertiesWindow.find('.line-properties').hide();
+
+            let pumpPropertiesForm = $elementPropertiesWindow.find('.pump-properties');
+
+            if (opt.target.properties == null) {
+                opt.target.properties = {};
+                opt.target.properties.test = 123;
+                // TODO set default values for pump
+            }
+
+            // TODO display pump values in detail window
+            // TODO display pump name
+            pumpPropertiesForm.find('#test').val(opt.target.properties.test);
+            pumpPropertiesForm.data('objectProperties', opt.target.properties);
+            pumpPropertiesForm.show();
             //endregion
         }
     });
@@ -374,11 +412,15 @@ pumpColorSelected[PumpTypes.drain] = '#915269';
             currentDrawingLine = null;
         }
 
-        if (e.keyCode === 46 && oldSelectedLine != null && e.target.tagName !== "INPUT") {
+        if (e.keyCode === 46 && oldSelectedElem != null && e.target.tagName !== "INPUT") {
             $('.element-properties .property-form').hide();
             $('.element-properties .empty-hint').show();
-            deleteLine(canvas, oldSelectedLine);
-            oldSelectedLine = null;
+            if(oldSelectedElem.represents === 'line') {
+                deleteLine(canvas, oldSelectedElem);
+            } else {
+                // TODO: delete pump and reset to normal node
+            }
+            oldSelectedElem = null;
         }
     });
 
@@ -534,3 +576,25 @@ function deleteLine(canvas, line) {
     canvas.remove(line);
 }
 
+function createPump(newPump, pumps) {
+    pumps.push(newPump);
+    $('#newPumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.name));
+    $('#pumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.name));
+}
+
+function resetOldSelection(oldSelectedElem) {
+    if(oldSelectedElem === null) return;
+
+    if(oldSelectedElem.represents === 'line') {
+        oldSelectedElem.set({
+            'fill': lineColor[oldSelectedElem.channelType],
+            'stroke': lineColor[oldSelectedElem.channelType]
+        });
+    } else if(oldSelectedElem.represents === 'pump') {
+        oldSelectedElem.set({
+            'fill': pumpColor[oldSelectedElem.pumpType],
+        });
+    } else {
+        console.error('Wrong type to reset')
+    }
+}

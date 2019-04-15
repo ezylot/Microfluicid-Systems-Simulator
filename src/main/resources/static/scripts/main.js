@@ -1,4 +1,5 @@
 let fluids = [];
+let pumps = [];
 let droplets = [];
 
 $(document).ready(() => {
@@ -9,7 +10,9 @@ $(document).ready(() => {
     });
 
     // TODO: Unassign droplet fluid on delete of fluid
-    // TODO: add pumps and drains
+    // TODO: Unassign droplet fluid on delete of pump
     // TODO: design for available elements
     // TODO: save and load
+    // TODO: zoom
+    // TODO: droplet
 });
