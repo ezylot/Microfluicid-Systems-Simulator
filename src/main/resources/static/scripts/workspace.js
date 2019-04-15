@@ -1,6 +1,7 @@
 const grid = 10;
 const DrawingStates = Object.freeze({ 'none': 1, 'ready': 2, 'started': 3 });
 const ChannelTypes = Object.freeze({ 'normal': 'normal', 'cloggable': 'cloggable', 'bypass': 'bypass' });
+const PumpTypes = Object.freeze({ 'pressure': 'pressure', 'volume': 'volume', 'drain': 'drain' });
 
 const lineColor = { };
 lineColor[ChannelTypes.normal]= '#9c9c9c';
@@ -12,9 +13,19 @@ lineColorSelected[ChannelTypes.normal] = '#689c52';
 lineColorSelected[ChannelTypes.cloggable] = '#50429c';
 lineColorSelected[ChannelTypes.bypass] = '#9c3540';
 
+const pumpColor = { };
+pumpColor[PumpTypes.pressure]= '#c0c634';
+pumpColor[PumpTypes.volume]= '#46c2c2';
+pumpColor[PumpTypes.drain]= '#3e202e';
 
-(function() {
-    const canvas = new fabric.Canvas('c', { selection: false });
+const pumpColorSelected = { };
+pumpColorSelected[PumpTypes.pressure] = '#e5eb3f';
+pumpColorSelected[PumpTypes.volume] = '#50e3e3';
+pumpColorSelected[PumpTypes.drain] = '#915269';
+
+
+(function () {
+    const canvas = new fabric.Canvas('c', {selection: false});
 
     let canvasContainer = $('.workspace');
     let backgroundGroup = null;
@@ -23,6 +34,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
 
     let currentDrawingState = DrawingStates.none;
     let currentDrawingChannelType = null;
+    let currentDrawingPumpType = null;
     let currentDrawingLine = null;
 
     let $createChannelElement = $('.element-palette .createChannelIcon');
@@ -40,6 +52,10 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
         .css('cursor', 'pointer')
         .css('color', lineColor[ChannelTypes.bypass]);
 
+    let $createPressurePumpElement = $('.element-palette .createPressurePumpIcon');
+    let $createVolumePumpElement = $('.element-palette .createVolumePumpIcon');
+    let $createDrainPumpElement = $('.element-palette .createDrainIcon');
+
     canvas.setHeight(canvasContainer.height());
     canvas.setWidth(canvasContainer.width());
     canvas.calcOffset();
@@ -55,7 +71,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     function redrawBackground() {
         let prevTop = 0;
         let prevLeft = 0;
-        if(backgroundGroup) {
+        if (backgroundGroup) {
             prevTop = backgroundGroup.top;
             prevLeft = backgroundGroup.left;
             canvas.remove(backgroundGroup);
@@ -65,16 +81,18 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
         const gridOverlap = 5;
 
         for (let i = -gridOverlap; i < (canvasContainer.width() / grid) + gridOverlap; i++) {
-            let verticalGridLine = new fabric.Line([ i * grid, -gridOverlap * grid, i * grid, canvasContainer.height() + gridOverlap * grid], {
+            let verticalGridLine = new fabric.Line([i * grid, -gridOverlap * grid, i * grid, canvasContainer.height() + gridOverlap * grid], {
                 stroke: '#eeeeee',
                 selectable: false,
+                represents: 'backgroundline'
             });
             gridLines.push(verticalGridLine);
         }
         for (let i = -gridOverlap; i < (canvasContainer.height() / grid) + gridOverlap; i++) {
-            let horizontalGridLine = new fabric.Line([ -gridOverlap * grid, i * grid,  canvasContainer.width() + gridOverlap * grid, i * grid], {
+            let horizontalGridLine = new fabric.Line([-gridOverlap * grid, i * grid, canvasContainer.width() + gridOverlap * grid, i * grid], {
                 stroke: '#eeeeee',
-                selectable: false
+                selectable: false,
+                represents: 'backgroundline'
             });
             gridLines.push(horizontalGridLine);
         }
@@ -113,51 +131,105 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
             isDragging = true;
             canvas.lastPosX = opt.e.clientX;
             canvas.lastPosY = opt.e.clientY;
-        } else if(currentDrawingState === DrawingStates.ready) {
-            //region start drawing line
-            currentDrawingState = DrawingStates.started;
-            canvas.getObjects().forEach(value => {
-                value.lockMovementX = value.lockMovementY = true
-            });
+        } else if (currentDrawingChannelType !== null) {
+            if (currentDrawingState === DrawingStates.ready) {
+                //region start drawing line
+                currentDrawingState = DrawingStates.started;
+                canvas.getObjects().forEach(value => {
+                    value.lockMovementX = value.lockMovementY = true
+                });
 
-            if(opt.target && opt.target.type === 'circle') {
-                let points = [
-                    opt.target.left + grid/2,
-                    opt.target.top + grid/2,
-                    opt.target.left + grid/2,
-                    opt.target.top + grid/2,
-                ];
-                currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType,{});
-            } else {
-                let pointer = canvas.getPointer(opt.e, false);
-                let left = Math.round(pointer.x / grid) * grid;
-                let top = Math.round(pointer.y / grid) * grid;
-                let points = [left, top, left, top];
-                currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType,{});
+                if (opt.target && opt.target.represents === 'endCircle') {
+                    let points = [
+                        opt.target.left + grid / 2,
+                        opt.target.top + grid / 2,
+                        opt.target.left + grid / 2,
+                        opt.target.top + grid / 2,
+                    ];
+                    currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType, {});
+                } else {
+                    let pointer = canvas.getPointer(opt.e, false);
+                    let left = Math.round(pointer.x / grid) * grid;
+                    let top = Math.round(pointer.y / grid) * grid;
+                    let points = [left, top, left, top];
+                    currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType, {});
+                }
+                //endregion
+            } else if (currentDrawingState === DrawingStates.started) {
+                //region end drawing line
+                $('body').removeClass('drawing');
+                canvas.hoverCursor = 'move';
+                canvas.defaultCursor = 'default';
+
+                currentDrawingState = DrawingStates.none;
+                canvas.getObjects().forEach(value => {
+                    value.lockMovementX = value.lockMovementY = false
+                });
+
+                currentDrawingLine.setCoords();
+                currentDrawingLine = null;
+                currentDrawingChannelType = null;
+                mergeElements(canvas);
+                //endregion
             }
-            //endregion
-        } else if(currentDrawingState === DrawingStates.started) {
-            //region end drawing line
-            $('body').removeClass('drawing');
-            canvas.hoverCursor = 'move';
-            canvas.defaultCursor = 'default';
+        } else if (currentDrawingPumpType !== null) {
+            if (currentDrawingState === DrawingStates.ready && opt.target && opt.target.represents === 'endCircle') {
+                $('body').removeClass('drawing');
+                canvas.hoverCursor = 'move';
+                canvas.defaultCursor = 'default';
 
-            currentDrawingState = DrawingStates.none;
-            canvas.getObjects().forEach(value => {
-                value.lockMovementX = value.lockMovementY = false
-            });
+                let pumpCircle = opt.target;
+                if (currentDrawingPumpType === PumpTypes.volume) {
+                    pumpCircle.set({
+                        left: pumpCircle.left - 8,
+                        top: pumpCircle.top - 8,
+                        radius: 18,
+                        stroke: '#cbcbcb',
+                        fill: pumpColor.volume,
+                        represents: 'pump',
+                        pumpType: PumpTypes.volume
+                    });
+                } else if (currentDrawingPumpType === PumpTypes.pressure) {
+                    pumpCircle.set({
+                        left: pumpCircle.left - 8,
+                        top: pumpCircle.top - 8,
+                        radius: 18,
+                        stroke: '#cbcbcb',
+                        fill: pumpColor.pressure,
+                        represents: 'pump',
+                        pumpType: PumpTypes.pressure
+                    });
+                } else {
+                    pumpCircle.set({
+                        left: pumpCircle.left - 8,
+                        top: pumpCircle.top - 8,
+                        radius: 18,
+                        stroke: '#cbcbcb',
+                        fill: pumpColor.drain,
+                        represents: 'pump',
+                        pumpType: PumpTypes.drain
+                    });
+                }
 
-            currentDrawingLine.setCoords();
-            currentDrawingLine = null;
-            mergeElements(canvas);
-            //endregion
-        } else if(opt.target != null && opt.target.type === 'line') {
+                currentDrawingState = DrawingStates.none;
+                currentDrawingLine = null;
+                currentDrawingPumpType = null;
+
+                canvas.renderAll();
+            }
+        } else if (opt.target != null && opt.target.represents === 'line') {
             //region Select element and display information
-            if(oldSelectedLine != null) {
-                oldSelectedLine.set({ 'fill': lineColor[oldSelectedLine.channelType], 'stroke': lineColor[oldSelectedLine.channelType] });
+            if (oldSelectedLine != null) {
+                oldSelectedLine.set({
+                    'fill': lineColor[oldSelectedLine.channelType],
+                    'stroke': lineColor[oldSelectedLine.channelType]
+                });
             }
 
-            opt.target.set({ 'fill': lineColorSelected[opt.target.channelType], 'stroke': lineColorSelected[opt.target.channelType] });
+            opt.target.set({
+                'fill': lineColorSelected[opt.target.channelType],
+                'stroke': lineColorSelected[opt.target.channelType]
+            });
             oldSelectedLine = opt.target;
 
             let $elementPropertiesWindow = $('.element-properties');
@@ -166,12 +238,12 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
             let linePropertyForm = $elementPropertiesWindow.find('.line-properties');
 
             let length, width, height;
-            if(opt.target.properties == null) {
+            if (opt.target.properties == null) {
                 opt.target.properties = {};
                 length = width = height = 0;
             } else {
                 length = opt.target.properties.length || 0;
-                width  = opt.target.properties.width || 0;
+                width = opt.target.properties.width || 0;
                 height = opt.target.properties.height || 0;
             }
             opt.target.properties.length = length;
@@ -197,6 +269,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     $createChannelElement.on('click', () => {
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = ChannelTypes.normal;
+        currentDrawingPumpType = null;
         $('body').addClass('drawing');
         canvas.hoverCursor = 'crosshair';
         canvas.defaultCursor = 'crosshair';
@@ -206,6 +279,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     $createCloggableChannelElement.on('click', () => {
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = ChannelTypes.cloggable;
+        currentDrawingPumpType = null;
         $('body').addClass('drawing');
         canvas.hoverCursor = 'crosshair';
         canvas.defaultCursor = 'crosshair';
@@ -214,6 +288,34 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     $createBypassChannelElement.on('click', () => {
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = ChannelTypes.bypass;
+        currentDrawingPumpType = null;
+        $('body').addClass('drawing');
+        canvas.hoverCursor = 'crosshair';
+        canvas.defaultCursor = 'crosshair';
+    });
+
+    $createPressurePumpElement.on('click', () => {
+        currentDrawingState = DrawingStates.ready;
+        currentDrawingChannelType = null;
+        currentDrawingPumpType = PumpTypes.pressure;
+        $('body').addClass('drawing');
+        canvas.hoverCursor = 'crosshair';
+        canvas.defaultCursor = 'crosshair';
+    });
+
+    $createVolumePumpElement.on('click', () => {
+        currentDrawingState = DrawingStates.ready;
+        currentDrawingChannelType = null;
+        currentDrawingPumpType = PumpTypes.volume;
+        $('body').addClass('drawing');
+        canvas.hoverCursor = 'crosshair';
+        canvas.defaultCursor = 'crosshair';
+    });
+
+    $createDrainPumpElement.on('click', () => {
+        currentDrawingState = DrawingStates.ready;
+        currentDrawingChannelType = null;
+        currentDrawingPumpType = PumpTypes.drain;
         $('body').addClass('drawing');
         canvas.hoverCursor = 'crosshair';
         canvas.defaultCursor = 'crosshair';
@@ -232,13 +334,13 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
             canvas.lastPosY = opt.e.clientY;
         }
 
-        if(currentDrawingState === DrawingStates.started) {
+        if (currentDrawingState === DrawingStates.started) {
             let pointer = canvas.getPointer(opt.e, false);
 
             let left = Math.round(pointer.x / grid) * grid;
             let top = Math.round(pointer.y / grid) * grid;
 
-            currentDrawingLine.set({ x2: left, y2: top });
+            currentDrawingLine.set({x2: left, y2: top});
             currentDrawingLine.endCircle.set({left: left - grid / 2, top: top - grid / 2});
             canvas.renderAll();
             currentDrawingLine.setCoords();
@@ -247,7 +349,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
     });
 
     canvas.on('mouse:up', () => {
-        if(isDragging) {
+        if (isDragging) {
             isDragging = false;
             canvas.getObjects().forEach(value => {
                 value.setCoords();
@@ -255,10 +357,10 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
         }
     });
 
-    $(document).keyup(function(e){
+    $(document).keyup(function (e) {
         // 46 = DELETE key, 27 = ESCAPE KEY
 
-        if(e.keyCode === 27 && currentDrawingState === DrawingStates.started) {
+        if (e.keyCode === 27 && currentDrawingState === DrawingStates.started) {
             $('body').removeClass('drawing');
             canvas.hoverCursor = 'move';
             canvas.defaultCursor = 'default';
@@ -272,7 +374,7 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
             currentDrawingLine = null;
         }
 
-        if(e.keyCode === 46 && oldSelectedLine != null && e.target.tagName !== "INPUT") {
+        if (e.keyCode === 46 && oldSelectedLine != null && e.target.tagName !== "INPUT") {
             $('.element-properties .property-form').hide();
             $('.element-properties .empty-hint').show();
             deleteLine(canvas, oldSelectedLine);
@@ -280,33 +382,33 @@ lineColorSelected[ChannelTypes.bypass] = '#9c3540';
         }
     });
 
-    makeLine(canvas, [ 100, 100, 200, 100 ], ChannelTypes.normal, {});
-    makeLine(canvas, [ 200, 100, 200, 50 ], ChannelTypes.normal, {});
-    makeLine(canvas, [ 200, 100, 200, 150 ], ChannelTypes.cloggable, {});
-    makeLine(canvas, [ 200, 150, 300, 150 ], ChannelTypes.cloggable, {});
-    makeLine(canvas, [ 200, 50, 300, 50 ], ChannelTypes.cloggable, {});
-    makeLine(canvas, [ 300, 50, 300, 100 ], ChannelTypes.bypass, {});
-    makeLine(canvas, [ 300, 150, 300, 100 ], ChannelTypes.bypass, {});
-    makeLine(canvas, [ 300, 100, 400, 100 ], ChannelTypes.bypass, {});
+    makeLine(canvas, [100, 100, 200, 100], ChannelTypes.normal, {});
+    makeLine(canvas, [200, 100, 200, 50], ChannelTypes.normal, {});
+    makeLine(canvas, [200, 100, 200, 150], ChannelTypes.cloggable, {});
+    makeLine(canvas, [200, 150, 300, 150], ChannelTypes.cloggable, {});
+    makeLine(canvas, [200, 50, 300, 50], ChannelTypes.cloggable, {});
+    makeLine(canvas, [300, 50, 300, 100], ChannelTypes.bypass, {});
+    makeLine(canvas, [300, 150, 300, 100], ChannelTypes.bypass, {});
+    makeLine(canvas, [300, 100, 400, 100], ChannelTypes.bypass, {});
 
     mergeElements(canvas);
-    
-    canvas.on('object:moving', function(e) {
+
+    canvas.on('object:moving', function (e) {
         let circle = e.target;
 
         let left = Math.round(circle.left / grid) * grid;
         let top = Math.round(circle.top / grid) * grid;
 
         circle.set({
-            left: left - grid/2,
-            top: top - grid/2
+            left: left - grid / 2,
+            top: top - grid / 2
         });
 
         circle.lines.forEach(value => {
-            if(value.pos === 'start') {
-                value.line.set({ 'x1': left, 'y1': top });
-            } else if(value.pos === 'end') {
-                value.line.set({ 'x2': left, 'y2': top });
+            if (value.pos === 'start') {
+                value.line.set({'x1': left, 'y1': top});
+            } else if (value.pos === 'end') {
+                value.line.set({'x2': left, 'y2': top});
             } else {
                 console.error('Circle to move did not match any end of the connected line');
             }
@@ -334,6 +436,7 @@ function makeLine(canvas, coords, channelType, properties) {
         perPixelTargetFind: true,
         hasControls: false,
         hasBorders: false,
+        represents: 'line',
     });
     line.channelType = channelType;
 
@@ -346,6 +449,7 @@ function makeLine(canvas, coords, channelType, properties) {
         stroke: '#666',
         hasControls: false,
         hasBorders: false,
+        represents: 'endCircle',
     });
     startCircle.pos = 'start';
     startCircle.lines = [{line: line, pos: startCircle.pos}];
@@ -359,6 +463,7 @@ function makeLine(canvas, coords, channelType, properties) {
         stroke: '#666',
         hasControls: false,
         hasBorders: false,
+        represents: 'endCircle',
     });
 
     endCircle.pos = 'end';
@@ -378,7 +483,7 @@ function mergeElements(canvas) {
     let circles = {};
 
     canvas.getObjects().forEach(value => {
-        if (value.type === 'circle') {
+        if (value.represents === 'endCircle') {
             if (circles[value.left] && circles[value.left][value.top]) {
                 value.lines.forEach(lineWithPosInfo => {
                     circles[value.left][value.top].lines.push(lineWithPosInfo);
@@ -397,7 +502,7 @@ function mergeElements(canvas) {
                 circles[value.left] = {};
             }
             circles[value.left][value.top] = value;
-        } else if (value.type === 'line') {
+        } else if (value.represents === 'line') {
             if (value.x1 === value.x2 && value.y1 === value.y2) {
                 canvas.remove(value);
             }
