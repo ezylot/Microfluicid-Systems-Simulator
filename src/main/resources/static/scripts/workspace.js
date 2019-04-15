@@ -186,8 +186,8 @@ let nextPumpId = 0;
                 let pumpCircle = opt.target;
                 if (currentDrawingPumpType === PumpTypes.volume) {
                     pumpCircle.set({
-                        left: pumpCircle.left - 8,
-                        top: pumpCircle.top - 8,
+                        left: pumpCircle.left,
+                        top: pumpCircle.top,
                         radius: 18,
                         stroke: '#cbcbcb',
                         fill: pumpColor.volume,
@@ -198,8 +198,8 @@ let nextPumpId = 0;
                     pump.type = PumpTypes.volume;
                 } else if (currentDrawingPumpType === PumpTypes.pressure) {
                     pumpCircle.set({
-                        left: pumpCircle.left - 8,
-                        top: pumpCircle.top - 8,
+                        left: pumpCircle.left,
+                        top: pumpCircle.top,
                         radius: 18,
                         stroke: '#cbcbcb',
                         fill: pumpColor.pressure,
@@ -210,8 +210,8 @@ let nextPumpId = 0;
                     pump.type = PumpTypes.pressure;
                 } else {
                     pumpCircle.set({
-                        left: pumpCircle.left - 8,
-                        top: pumpCircle.top - 8,
+                        left: pumpCircle.left,
+                        top: pumpCircle.top,
                         radius: 18,
                         stroke: '#cbcbcb',
                         fill: pumpColor.drain,
@@ -442,8 +442,8 @@ let nextPumpId = 0;
         let top = Math.round(circle.top / grid) * grid;
 
         circle.set({
-            left: left - grid / 2,
-            top: top - grid / 2
+            left: left,
+            top: top
         });
 
         circle.lines.forEach(value => {
@@ -479,12 +479,14 @@ function makeLine(canvas, coords, channelType, properties) {
         hasControls: false,
         hasBorders: false,
         represents: 'line',
+        originX: 'center',
+        originY: 'center',
     });
     line.channelType = channelType;
 
     let startCircle = new fabric.Circle({
-        left: coords[0] - grid/2,
-        top: coords[1] - grid/2,
+        left: coords[0],
+        top: coords[1],
         strokeWidth: 5,
         radius: 10,
         fill: '#fff',
@@ -492,13 +494,15 @@ function makeLine(canvas, coords, channelType, properties) {
         hasControls: false,
         hasBorders: false,
         represents: 'endCircle',
+        originX: 'center',
+        originY: 'center',
     });
     startCircle.pos = 'start';
     startCircle.lines = [{line: line, pos: startCircle.pos}];
 
     let endCircle = new fabric.Circle({
-        left: coords[2] - grid/2,
-        top: coords[3] - grid/2,
+        left: coords[2],
+        top: coords[3],
         strokeWidth: 5,
         radius: 10,
         fill: '#fff',
@@ -506,6 +510,8 @@ function makeLine(canvas, coords, channelType, properties) {
         hasControls: false,
         hasBorders: false,
         represents: 'endCircle',
+        originX: 'center',
+        originY: 'center',
     });
 
     endCircle.pos = 'end';
