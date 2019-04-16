@@ -142,10 +142,10 @@ let nextPumpId = 0;
 
                 if (opt.target && opt.target.represents === 'endCircle') {
                     let points = [
-                        opt.target.left + grid / 2,
-                        opt.target.top + grid / 2,
-                        opt.target.left + grid / 2,
-                        opt.target.top + grid / 2,
+                        opt.target.left,
+                        opt.target.top,
+                        opt.target.left,
+                        opt.target.top,
                     ];
                     currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType, {});
                 } else {
@@ -158,19 +158,20 @@ let nextPumpId = 0;
                 //endregion
             } else if (currentDrawingState === DrawingStates.started) {
                 //region end drawing line
-                $('body').removeClass('drawing');
-                canvas.hoverCursor = 'move';
-                canvas.defaultCursor = 'default';
-
-                currentDrawingState = DrawingStates.none;
-                canvas.getObjects().forEach(value => {
-                    value.lockMovementX = value.lockMovementY = false
-                });
-
                 currentDrawingLine.setCoords();
-                currentDrawingLine = null;
-                currentDrawingChannelType = null;
                 mergeElements(canvas);
+
+                let newStartingCoordsLeft = currentDrawingLine.endCircle.left;
+                let newStartingCoordsTop = currentDrawingLine.endCircle.top;
+
+                let points = [
+                    newStartingCoordsLeft,
+                    newStartingCoordsTop,
+                    newStartingCoordsLeft,
+                    newStartingCoordsTop,
+                ];
+
+                currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType, {});
                 //endregion
             }
         } else if (currentDrawingPumpType !== null) {
@@ -379,7 +380,7 @@ let nextPumpId = 0;
             let top = Math.round(pointer.y / grid) * grid;
 
             currentDrawingLine.set({x2: left, y2: top});
-            currentDrawingLine.endCircle.set({left: left - grid / 2, top: top - grid / 2});
+            currentDrawingLine.endCircle.set({left: left, top: top});
             canvas.renderAll();
             currentDrawingLine.setCoords();
             currentDrawingLine.endCircle.setCoords();

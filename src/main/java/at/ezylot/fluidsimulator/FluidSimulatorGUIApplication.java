@@ -9,5 +9,4 @@ public class FluidSimulatorGUIApplication {
     public static void main(String[] args) {
         SpringApplication.run(FluidSimulatorGUIApplication.class, args);
     }
-
 }
