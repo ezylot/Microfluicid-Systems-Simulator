@@ -7,6 +7,7 @@ $(document).ready(() => {
         let $newDropletInjectionTime = $('#newDropletInjectionTime');
         let $newFluidType = $('#newFluidType');
         let $newPumpSelection = $('#newPumpSelection');
+        let $pOrHRadios = $('#newDropletForm [name="type"]:checked');
 
         let newDroplet = {
             id: nextId++,
@@ -15,6 +16,7 @@ $(document).ready(() => {
             fluidName: $newFluidType.find('>option:selected').text(),
             pumpId: $newPumpSelection.val(),
             pumpName: $newPumpSelection.find('>option:selected').text(),
+            pOrH: $pOrHRadios.val(),
         };
 
         createNewDroplet(newDroplet, droplets);
@@ -45,7 +47,7 @@ $(document).ready(() => {
         $activeRow.remove();
     });
 
-    $('.sequence-properties input').on('input', (event) => {
+    $('.sequence-properties input[name="injectionTime"]').on('input', (event) => {
         let $activeRow = $('.sequence-properties table tbody .active');
         if($activeRow.length === 0) return;
 
@@ -53,6 +55,16 @@ $(document).ready(() => {
         let $inputField = $(event.target);
         activeDroplet.injectionTime = $inputField.val();
         $activeRow.find('[data-attr="injectionTime"]').html($inputField.val());
+    });
+
+    $('.sequence-properties input[name="type"]').on('input', (event) => {
+        let $activeRow = $('.sequence-properties table tbody .active');
+        if($activeRow.length === 0) return;
+
+        let activeDroplet = $activeRow.data('droplet');
+        let $inputField = $(event.target);
+        activeDroplet.pOrH = $inputField.val();
+        $activeRow.find('[data-attr="pOrH"]').html($inputField.val());
     });
 
     $('.sequence-properties #fluidType').on('change', (event) => {
@@ -93,6 +105,7 @@ function createNewDroplet(newDroplet, droplets) {
     $tableRow.append($('<td></td>').attr('data-attr', "fluid").data('fluidId', newDroplet.fluidId).text(newDroplet.fluidName));
     $tableRow.append($('<td></td>').attr('data-attr', "injectionTime").text(newDroplet.injectionTime));
     $tableRow.append($('<td></td>').attr('data-attr', "pump").data('pumpId', newDroplet.pumpId).text(newDroplet.pumpName));
+    $tableRow.append($('<td></td>').attr('data-attr', "pOrH").data('pOrH', newDroplet.pOrH).text(newDroplet.pOrH));
     $tableBody.append($tableRow);
     $tableRow.data('droplet', newDroplet);
 
@@ -107,6 +120,9 @@ function createNewDroplet(newDroplet, droplets) {
         $dropletPropertiesWindow.find('input[name="injectionTime"]').val(newDroplet.injectionTime);
         $dropletPropertiesWindow.find('select[name="pumpSelection"]').val(newDroplet.pumpId);
         $dropletPropertiesWindow.find('select[name="fluidType"]').val(newDroplet.fluidId);
+
+        $dropletPropertiesWindow.find('input[name="type"]').prop('checked', null); // First reset selection
+        $dropletPropertiesWindow.find('input[name="type"][value="'+newDroplet.pOrH+ '"]').prop('checked', true);
 
         $('.sequence-properties #pumpSelection').val(newDroplet.pumpId);
         $('.sequence-properties #fluidType').val(newDroplet.fluidId);
@@ -125,4 +141,5 @@ function resetDropletSelection() {
     $sequenceProperties.find('.delete-button').addClass('disabled');
 
     $sequenceProperties.find('input[name="injectionTime"]').val('');
+    $sequenceProperties.find('input[name="type"]').prop('checked', null);
 }

@@ -9,7 +9,7 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: payload/header property on fluid
+    // TODO: properties for pumps
     // TODO: Unassign droplet fluid on delete of fluid
     // TODO: Unassign droplet fluid on delete of pump
     // TODO: design for available elements
