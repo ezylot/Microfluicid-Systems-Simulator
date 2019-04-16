@@ -34,7 +34,7 @@
             <canvas id="c" style="border: 1px solid rgb(204, 204, 204);width: 100%; height: 100%;"></canvas>
         </div>
         <div class="element-palette">
-            <h4 th:text="#{availableElements.header}" class="mb-3"></h4>
+            <h5 th:text="#{availableElements.header}" class="mb-3"></h5>
 
             <div class="createChannelIcon">
                 <i class="fas fa-plus mr-1"></i>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="fluid-properties">
-            <h4 th:text="#{fluidProperties.header}"></h4>
+            <h5 th:text="#{fluidProperties.header}"></h5>
 
             <div class="table-wrapper">
                 <table class="table table-striped">
@@ -126,7 +126,7 @@
         </div>
 
         <div class="sequence-properties">
-            <h4 th:text="#{sequenceProperties.header}"></h4>
+            <h5 th:text="#{sequenceProperties.header}"></h5>
             <div class="table-wrapper">
                 <table class="table table-striped">
                     <thead>
@@ -188,23 +188,23 @@
             </div>
         </div>
         <div class="element-properties">
-            <h4 th:text="#{selectedElementProperties.header}" class="mb-3"></h4>
+            <h5 th:text="#{selectedElementProperties.header}" class="mb-3"></h5>
             <p class="empty-hint" th:text="#{selectedElementProperties.noneSelected}"></p>
             <div class="property-form line-properties" style="display: none;">
                 <div class="element-property-line unit-input">
                     <label for="length" class="col-md-4" th:text="#{elementProperties.line.length}"></label>
                     <input id="length" name="length" type="number" dir="rtl"/>
-                    <span class="unit" th:text="#{elementProperties.line.length.unit}"></span>
+                    <small class="unit" th:text="#{elementProperties.line.length.unit}"></small>
                 </div>
                 <div class="element-property-line unit-input">
                     <label for="width" class="col-md-4" th:text="#{elementProperties.line.width}"></label>
                     <input id="width" name="width" type="number" dir="rtl"/>
-                    <span class="unit" th:text="#{elementProperties.line.width.unit}"></span>
+                    <small class="unit" th:text="#{elementProperties.line.width.unit}"></small>
                 </div>
                 <div class="element-property-line unit-input">
                     <label for="height" class="col-md-4" th:text="#{elementProperties.line.height}"></label>
                     <input id="height" name="height" type="number" dir="rtl"/>
-                    <span class="unit" th:text="#{elementProperties.line.height.unit}"></span>
+                    <small class="unit" th:text="#{elementProperties.line.height.unit}"></small>
                 </div>
             </div>
 
@@ -289,7 +289,7 @@
                 <div class="modal-body">
                     <form id="newFluidForm">
                         <label for="newFluidName" th:text="#{fluidProperties.newModal.name.label}"></label>
-                        <input required autofocus id="newFluidName" th:placeholder="#{fluidProperties.newModal.name.placeholder}"/>
+                        <input required autofocus id="newFluidName" type="text" th:placeholder="#{fluidProperties.newModal.name.placeholder}"/>
 
                         <label for="newMucInput" th:utext="#{fluidProperties.form.muc}"></label>
                         <input id="newMucInput" name="newMuc" type="number" dir="rtl" th:placeholder="#{fluidProperties.form.muc.placeholder}" />
@@ -333,7 +333,7 @@
                 <div class="modal-body">
                     <form id="copyFluidModalForm">
                         <label for="newFluidFromCopyName" th:text="#{fluidProperties.copyModal.name.label}"></label>
-                        <input required autofocus id="newFluidFromCopyName"
+                        <input required autofocus id="newFluidFromCopyName" type="text"
                                th:placeholder="#{fluidProperties.copyModal.name.placeholder}"/>
                         <button type="submit" th:text="#{fluidProperties.copyModal.submit}"></button>
                     </form>
