@@ -27,10 +27,12 @@ input {
 
 .unit-input {
     position: relative;
+    display: flex;
 }
 
 .unit-input input {
     padding-right: 32px !important;
+    width: 100%;
 }
 
 .unit-input .unit {
@@ -167,7 +169,11 @@ input {
 .fluid-properties .fluid-property-line input {
     width: 100%;
     text-align: right;
-    padding-right: 7px;
+    padding-right: 44px !important;
+}
+
+.fluid-properties .fluid-property-line .unit {
+    top: 5px;
 }
 
 #newFluidModal form,
@@ -353,3 +359,15 @@ input {
     flex-direction: row;
 }
 /*endregion*/
+
+/*region New Fluid form*/
+#newFluidForm .unit-input input {
+     padding-right: 56px !important;
+}
+
+#newFluidForm .unit-input .unit {
+    top: 7px !important;
+}
+
+/*endregion*/
+

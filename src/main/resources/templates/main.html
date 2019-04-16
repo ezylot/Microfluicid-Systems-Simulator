@@ -80,21 +80,26 @@
 
             <div class="property-list mt-auto">
                 <div class="fluid-property-line">
-                    <label for="mucInput" class="col-md-4" th:text="#{fluidProperties.form.muc}"></label>
+                    <label for="mucInput" class="col-md-4" th:utext="#{fluidProperties.form.muc}"></label>
                     <input id="mucInput" name="muc" type="number" dir="rtl" />
                 </div>
                 <div class="fluid-property-line">
-                    <label for="mudInput" class="col-md-4" th:text="#{fluidProperties.form.mud}"></label>
+                    <label for="mudInput" class="col-md-4" th:utext="#{fluidProperties.form.mud}"></label>
                     <input id="mudInput" name="mud" type="number" dir="rtl" />
                 </div>
                 <div class="fluid-property-line">
                     <label for="densityCInput" class="col-md-4" th:text="#{fluidProperties.form.densityC}"></label>
-                    <input id="densityCInput" name="densityC" type="number" dir="rtl" />
+                    <div class="unit-input">
+                        <input id="densityCInput" name="densityC" type="number" dir="rtl" />
+                        <small class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></small>
+                    </div>
                 </div>
                 <div class="fluid-property-line">
-                    <label for="interfTensInput" class="col-md-4"
-                           th:text="#{fluidProperties.form.interfacialTension}"></label>
-                    <input id="interfTensInput" name="interfTens" type="number" dir="rtl" />
+                    <label for="interfacialTensionInput" class="col-md-4" th:text="#{fluidProperties.form.interfacialTension}"></label>
+                    <div class="unit-input">
+                        <input id="interfacialTensionInput" name="interfacialTension" type="number" dir="rtl" />
+                        <small class="unit" th:text="#{fluidProperties.form.interfacialTension.unit}"></small>
+                    </div>
                 </div>
                 <div class="fluid-property-line">
                     <label for="slipInput" class="col-md-4" th:text="#{fluidProperties.form.slip}"></label>
@@ -268,28 +273,29 @@
                 <div class="modal-body">
                     <form id="newFluidForm">
                         <label for="newFluidName" th:text="#{fluidProperties.newModal.name.label}"></label>
-                        <input required autofocus id="newFluidName"
-                               th:placeholder="#{fluidProperties.newModal.name.placeholder}"/>
+                        <input required autofocus id="newFluidName" th:placeholder="#{fluidProperties.newModal.name.placeholder}"/>
 
-                        <label for="newMucInput" th:text="#{fluidProperties.form.muc}"></label>
-                        <input id="newMucInput" name="newMuc" type="number" dir="rtl"
-                               th:placeholder="#{fluidProperties.form.muc.placeholder}" />
+                        <label for="newMucInput" th:utext="#{fluidProperties.form.muc}"></label>
+                        <input id="newMucInput" name="newMuc" type="number" dir="rtl" th:placeholder="#{fluidProperties.form.muc.placeholder}" />
 
-                        <label for="newMudInput" th:text="#{fluidProperties.form.mud}"></label>
-                        <input id="newMudInput" name="newMud" type="number" dir="rtl"
-                               th:placeholder="#{fluidProperties.form.mud.placeholder}" />
+                        <label for="newMudInput" th:utext="#{fluidProperties.form.mud}"></label>
+                        <input id="newMudInput" name="newMud" type="number" dir="rtl" th:placeholder="#{fluidProperties.form.mud.placeholder}" />
+
 
                         <label for="newDensityCInput" th:text="#{fluidProperties.form.densityC}"></label>
-                        <input id="newDensityCInput" name="newDensityC" type="number" dir="rtl"
-                               th:placeholder="#{fluidProperties.form.densityC.placeholder}" />
+                        <div class="unit-input">
+                            <input id="newDensityCInput" name="newDensityC" type="number" dir="rtl" th:placeholder="#{fluidProperties.form.densityC.placeholder}" />
+                            <span class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></span>
+                        </div>
 
-                        <label for="newInterfTensInput" th:text="#{fluidProperties.form.interfacialTension}"></label>
-                        <input id="newInterfTensInput" name="newInterfTens" type="number" dir="rtl"
-                               th:placeholder="#{fluidProperties.form.interfacialTension.placeholder}" />
+                        <label for="newInterfacialTensionInput" th:text="#{fluidProperties.form.interfacialTension}"></label>
+                        <div class="unit-input">
+                            <input id="newInterfacialTensionInput" name="newInterfacialTension" type="number" dir="rtl" th:placeholder="#{fluidProperties.form.interfacialTension.placeholder}" />
+                            <span class="unit" th:utext="#{fluidProperties.form.interfacialTension.unit}"></span>
+                        </div>
 
                         <label for="newSlipInput" th:text="#{fluidProperties.form.slip}"></label>
-                        <input id="newSlipInput" name="newSlip" type="number" dir="rtl"
-                               th:placeholder="#{fluidProperties.form.slip.placeholder}" />
+                        <input id="newSlipInput" name="newSlip" type="number" dir="rtl" th:placeholder="#{fluidProperties.form.slip.placeholder}" />
 
                         <button type="submit" th:text="#{fluidProperties.newModal.submit}"></button>
                     </form>

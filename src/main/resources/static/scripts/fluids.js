@@ -12,7 +12,7 @@ $(document).ready(() => {
         let newMuc = $('#newFluidForm input[name="newMuc"]');
         let newMud = $('#newFluidForm input[name="newMud"]');
         let newDensityC = $('#newFluidForm input[name="newDensityC"]');
-        let newInterfTens = $('#newFluidForm input[name="newInterfTens"]');
+        let newInterfacialTens = $('#newFluidForm input[name="newInterfacialTension"]');
         let newSlip = $('#newFluidForm input[name="newSlip"]');
 
         let newFluid = {
@@ -21,7 +21,7 @@ $(document).ready(() => {
             muc: newMuc.val(),
             mud: newMud.val(),
             densityC: newDensityC.val(),
-            interfTens: newInterfTens.val(),
+            interfacialTension: newInterfacialTens.val(),
             slip: newSlip.val(),
         };
 
@@ -33,7 +33,7 @@ $(document).ready(() => {
         newMuc.val('');
         newMud.val('');
         newDensityC.val('');
-        newInterfTens.val('');
+        newInterfacialTens.val('');
         newSlip.val('');
     });
 
@@ -100,8 +100,9 @@ function createNewFluid(newFluid, fluids) {
         $fluidPropertiesWindow.find('input[name="muc"]').val(newFluid.muc);
         $fluidPropertiesWindow.find('input[name="mud"]').val(newFluid.mud);
         $fluidPropertiesWindow.find('input[name="densityC"]').val(newFluid.densityC);
-        $fluidPropertiesWindow.find('input[name="interfTens"]').val(newFluid.interfTens);
+        $fluidPropertiesWindow.find('input[name="interfacialTension"]').val(newFluid.interfacialTension);
         $fluidPropertiesWindow.find('input[name="slip"]').val(newFluid.slip);
+
     });
 
     $tableRow.click();
@@ -123,6 +124,6 @@ function resetFluidSelection() {
     $fluidProperties.find('input[name="muc"]').val('');
     $fluidProperties.find('input[name="mud"]').val('');
     $fluidProperties.find('input[name="densityC"]').val('');
-    $fluidProperties.find('input[name="interfTens"]').val('');
+    $fluidProperties.find('input[name="interfacialTension"]').val('');
     $fluidProperties.find('input[name="slip"]').val('');
 }
