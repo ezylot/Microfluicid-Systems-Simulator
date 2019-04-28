@@ -411,6 +411,7 @@ let nextPumpId = 0;
 
             deleteLine(canvas, currentDrawingLine);
             currentDrawingLine = null;
+            currentDrawingChannelType = null;
         }
 
         if (e.keyCode === 46 && oldSelectedElem != null && e.target.tagName !== "INPUT") {

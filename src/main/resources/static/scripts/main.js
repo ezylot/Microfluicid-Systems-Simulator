@@ -9,7 +9,12 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: properties for pumps
+    // TODO: default values for channels
+    // TODO: droplets as a rectangle and 2 half circles
+    // TODO: width and length from actual coordiantes (can be unlocked for arbitary positioning)
+    // TODO: fast drawing destroys connections
+    // TODO: "fluid classes" / combinations
+    // TODO: properties for pumps (delta p and V)
     // TODO: Unassign droplet fluid on delete of fluid
     // TODO: Unassign droplet fluid on delete of pump
     // TODO: design for available elements
