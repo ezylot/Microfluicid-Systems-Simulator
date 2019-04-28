@@ -23,6 +23,8 @@ pumpColorSelected[PumpTypes.pressure] = '#e5eb3f';
 pumpColorSelected[PumpTypes.volume] = '#50e3e3';
 pumpColorSelected[PumpTypes.drain] = '#915269';
 
+const channelCircleRadius = 10;
+
 let nextPumpId = 0;
 
 (function () {
@@ -186,41 +188,45 @@ let nextPumpId = 0;
 
                 let pumpCircle = opt.target;
                 if (currentDrawingPumpType === PumpTypes.volume) {
+                    pump.pumpValue = 0;
+                    pump.pumpName = 'V' + pump.id;
+                    pump.type = PumpTypes.volume;
+
                     pumpCircle.set({
-                        left: pumpCircle.left,
-                        top: pumpCircle.top,
                         radius: 18,
                         stroke: '#cbcbcb',
                         fill: pumpColor.volume,
+                        oldRepresents: pumpCircle.represents,
                         represents: 'pump',
-                        pumpType: PumpTypes.volume
+                        pumpType: PumpTypes.volume,
+                        properties: pump,
                     });
-                    pump.name = 'V' + pump.id;
-                    pump.type = PumpTypes.volume;
                 } else if (currentDrawingPumpType === PumpTypes.pressure) {
+                    pump.pumpValue = 0;
+                    pump.pumpName = 'P' + pump.id;
+                    pump.type = PumpTypes.pressure;
                     pumpCircle.set({
-                        left: pumpCircle.left,
-                        top: pumpCircle.top,
                         radius: 18,
                         stroke: '#cbcbcb',
                         fill: pumpColor.pressure,
+                        oldRepresents: pumpCircle.represents,
                         represents: 'pump',
-                        pumpType: PumpTypes.pressure
+                        pumpType: PumpTypes.pressure,
+                        properties: pump,
                     });
-                    pump.name = 'P' + pump.id;
-                    pump.type = PumpTypes.pressure;
                 } else {
+                    pump.pumpValue = 0;
+                    pump.pumpName = 'D' + pump.id;
+                    pump.type = PumpTypes.drain;
                     pumpCircle.set({
-                        left: pumpCircle.left,
-                        top: pumpCircle.top,
                         radius: 18,
                         stroke: '#cbcbcb',
                         fill: pumpColor.drain,
+                        oldRepresents: pumpCircle.represents,
                         represents: 'pump',
-                        pumpType: PumpTypes.drain
+                        pumpType: PumpTypes.drain,
+                        properties: pump,
                     });
-                    pump.name = 'D' + pump.id;
-                    pump.type = PumpTypes.drain;
                 }
 
                 createPump(pump, pumps);
@@ -287,13 +293,6 @@ let nextPumpId = 0;
                 pumpPropertiesForm.hide();
                 $elementPropertiesWindow.find('.empty-hint').show();
                 return;
-            }
-
-            if (opt.target.properties == null) {
-                opt.target.properties = {};
-                opt.target.properties.pumpValue = 0;
-                // TODO: append the count of the pump to it
-                opt.target.properties.pumpName = "Pump " + 0;
             }
 
             pumpPropertiesForm.find('#pumpValue').val(opt.target.properties.pumpValue);
@@ -437,10 +436,20 @@ let nextPumpId = 0;
             $('.element-properties .empty-hint').show();
             if(oldSelectedElem.represents === 'line') {
                 deleteLine(canvas, oldSelectedElem);
-            } else {
-                // TODO: delete pump and reset to normal node
+            } else if(oldSelectedElem.represents === 'pump') {
+
+                pumps.splice(pumps.indexOf(oldSelectedElem.properties), 1);
+
+                oldSelectedElem.represents = oldSelectedElem.oldRepresents;
+                oldSelectedElem.properties = null;
+                oldSelectedElem.set({
+                    radius: channelCircleRadius,
+                    fill: '#fff',
+                    stroke: '#666',
+                });
             }
             oldSelectedElem = null;
+            canvas.renderAll();
         }
     });
 
@@ -508,7 +517,7 @@ function makeLine(canvas, coords, channelType, properties) {
         left: coords[0],
         top: coords[1],
         strokeWidth: 5,
-        radius: 10,
+        radius: channelCircleRadius,
         fill: '#fff',
         stroke: '#666',
         hasControls: false,
@@ -524,7 +533,7 @@ function makeLine(canvas, coords, channelType, properties) {
         left: coords[2],
         top: coords[3],
         strokeWidth: 5,
-        radius: 10,
+        radius: channelCircleRadius,
         fill: '#fff',
         stroke: '#666',
         hasControls: false,
