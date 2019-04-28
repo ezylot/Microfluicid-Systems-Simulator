@@ -283,15 +283,33 @@ let nextPumpId = 0;
 
             let pumpPropertiesForm = $elementPropertiesWindow.find('.pump-properties');
 
-            if (opt.target.properties == null) {
-                opt.target.properties = {};
-                opt.target.properties.test = 123;
-                // TODO set default values for pump
+            if(opt.target.pumpType === PumpTypes.drain) {
+                pumpPropertiesForm.hide();
+                $elementPropertiesWindow.find('.empty-hint').show();
+                return;
             }
 
-            // TODO display pump values in detail window
-            // TODO display pump name
-            pumpPropertiesForm.find('#test').val(opt.target.properties.test);
+            if (opt.target.properties == null) {
+                opt.target.properties = {};
+                opt.target.properties.pumpValue = 0;
+                // TODO: append the count of the pump to it
+                opt.target.properties.pumpName = "Pump " + 0;
+            }
+
+            pumpPropertiesForm.find('#pumpValue').val(opt.target.properties.pumpValue);
+            pumpPropertiesForm.find('#pumpName').val(opt.target.properties.pumpName);
+
+            if(opt.target.pumpType === PumpTypes.pressure) {
+                pumpPropertiesForm.find('#pressure-value-label').show();
+                pumpPropertiesForm.find('#pressure-value-unit').show();
+                pumpPropertiesForm.find('#volume-value-label').hide();
+                pumpPropertiesForm.find('#volume-value-unit').hide();
+            } else {
+                pumpPropertiesForm.find('#pressure-value-label').hide();
+                pumpPropertiesForm.find('#pressure-value-unit').hide();
+                pumpPropertiesForm.find('#volume-value-label').show();
+                pumpPropertiesForm.find('#volume-value-unit').show();
+            }
             pumpPropertiesForm.data('objectProperties', opt.target.properties);
             pumpPropertiesForm.show();
             //endregion

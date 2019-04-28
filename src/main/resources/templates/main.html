@@ -209,10 +209,18 @@
             </div>
 
             <div class="property-form pump-properties" style="display: none;">
+                <div class="element-property-line">
+                    <label for="pumpName" class="col-md-4" th:text="#{elementProperties.pump.name}"></label>
+                    <input id="pumpName" name="pumpName" type="text" />
+                </div>
                 <div class="element-property-line unit-input">
-                    <label for="test" class="col-md-4" th:text="${'test'}"></label>
-                    <input id="test" name="test" type="number" dir="rtl"/>
-                    <span class="unit" th:text="${'test'}"></span>
+                    <label for="pumpValue" class="col-md-4" id="pressure-value-label" th:text="#{elementProperties.pump.pressure.value}"></label>
+                    <label for="pumpValue" class="col-md-4" id="volume-value-label" th:text="#{elementProperties.pump.volume.value}"></label>
+
+                    <input id="pumpValue" name="value" type="number" dir="rtl"/>
+
+                    <span class="unit" id="pressure-value-unit" th:text="#{elementProperties.pump.pressure.unit}"></span>
+                    <span class="unit" id="volume-value-unit" th:text="#{elementProperties.pump.volume.unit}"></span>
                 </div>
             </div>
         </div>
