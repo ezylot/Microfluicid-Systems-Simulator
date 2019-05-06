@@ -12,11 +12,10 @@ $(document).ready(() => {
     // TODO: default values for channels
     // TODO: droplets as a rectangle and 2 half circles
     // TODO: width and length from actual coordiantes (can be unlocked for arbitary positioning)
-    // TODO: fast drawing destroys connections
     // TODO: "fluid classes" / combinations
     // TODO: Unassign droplet fluid on delete of fluid
     // TODO: Unassign droplet fluid on delete of pump
     // TODO: design for available elements
     // TODO: save and load
-    // TODO: zoom
+    // TODO: fast drawing destroys connections
 });

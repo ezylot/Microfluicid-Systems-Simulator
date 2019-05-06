@@ -81,18 +81,18 @@ let nextPumpId = 0;
         }
 
         let gridLines = [];
-        const gridOverlap = 5;
+        const gridOverlap = 10;
 
-        for (let i = -gridOverlap; i < (canvasContainer.width() / grid) + gridOverlap; i++) {
-            let verticalGridLine = new fabric.Line([i * grid, -gridOverlap * grid, i * grid, canvasContainer.height() + gridOverlap * grid], {
+        for (let i = -gridOverlap; i < (canvasContainer.width() / grid / canvas.getZoom()) + gridOverlap; i++) {
+            let verticalGridLine = new fabric.Line([i * grid, -gridOverlap * grid, i * grid, canvasContainer.height() / canvas.getZoom() + gridOverlap * grid], {
                 stroke: '#eeeeee',
                 selectable: false,
                 represents: 'backgroundline'
             });
             gridLines.push(verticalGridLine);
         }
-        for (let i = -gridOverlap; i < (canvasContainer.height() / grid) + gridOverlap; i++) {
-            let horizontalGridLine = new fabric.Line([-gridOverlap * grid, i * grid, canvasContainer.width() + gridOverlap * grid, i * grid], {
+        for (let i = -gridOverlap; i < (canvasContainer.height() / grid / canvas.getZoom()) + gridOverlap; i++) {
+            let horizontalGridLine = new fabric.Line([-gridOverlap * grid, i * grid, canvasContainer.width() / canvas.getZoom() + gridOverlap * grid, i * grid], {
                 stroke: '#eeeeee',
                 selectable: false,
                 represents: 'backgroundline'
@@ -102,29 +102,43 @@ let nextPumpId = 0;
 
         backgroundGroup = new fabric.Group(gridLines, {
             selectable: false,
-            evented: false,
+            evented: false
         });
         canvas.add(backgroundGroup);
         backgroundGroup.sendToBack();
 
         let panHintText = new fabric.Text('Alt + Drag to move around', {
             left: canvasContainer.width() / 2 - 260,
-            top: canvasContainer.height() - 200,
+            top: canvasContainer.height() - 250,
             opacity: 0.22,
             absolutePositioned: true
         });
 
         let delHintText = new fabric.Text('Del key to remove selected element', {
             left: canvasContainer.width() / 2 - 320,
+            top: canvasContainer.height() - 200,
+            opacity: 0.25,
+            absolutePositioned: true
+        });
+
+        let spaceHint = new fabric.Text('Space key to reset zoom and pan', {
+            left: canvasContainer.width() / 2 - 300,
             top: canvasContainer.height() - 150,
             opacity: 0.25,
             absolutePositioned: true
         });
 
+
         backgroundGroup.addWithUpdate(panHintText);
         backgroundGroup.addWithUpdate(delHintText);
-        backgroundGroup.left = prevLeft;
-        backgroundGroup.top = prevTop;
+        backgroundGroup.addWithUpdate(spaceHint);
+
+        backgroundGroup.set({
+            left: - canvas.viewportTransform[4],
+            top: - canvas.viewportTransform[5]
+        });
+        backgroundGroup.setCoords();
+        canvas.renderAll();
     }
 
     redrawBackground();
@@ -383,9 +397,6 @@ let nextPumpId = 0;
             canvas.viewportTransform[5] += opt.e.clientY - canvas.lastPosY;
             canvas.requestRenderAll();
 
-            backgroundGroup.left -= opt.e.clientX - canvas.lastPosX;
-            backgroundGroup.top -= opt.e.clientY - canvas.lastPosY;
-
             canvas.lastPosX = opt.e.clientX;
             canvas.lastPosY = opt.e.clientY;
         }
@@ -407,14 +418,27 @@ let nextPumpId = 0;
     canvas.on('mouse:up', () => {
         if (isDragging) {
             isDragging = false;
+            redrawBackground();
             canvas.getObjects().forEach(value => {
                 value.setCoords();
             });
         }
     });
 
+    canvas.on('mouse:wheel', function (opt) {
+        let delta = opt.e.deltaY;
+        let zoom = canvas.getZoom();
+        zoom = zoom + delta / 1000;
+        if (zoom > 10) zoom = 10;
+        if (zoom < 0.1) zoom = 0.1;
+        canvas.setZoom(zoom);
+        redrawBackground();
+        opt.e.preventDefault();
+        opt.e.stopPropagation();
+    });
+
     $(document).keyup(function (e) {
-        // 46 = DELETE key, 27 = ESCAPE KEY
+        // 46 = DELETE key, 27 = ESCAPE KEY, 32 = SPACE
 
         if (e.keyCode === 27 && currentDrawingState === DrawingStates.started) {
             $('body').removeClass('drawing');
@@ -451,18 +475,13 @@ let nextPumpId = 0;
             oldSelectedElem = null;
             canvas.renderAll();
         }
+
+        if (e.keyCode === 32) {
+            canvas.viewportTransform[4] = canvas.viewportTransform[5] = canvas.lastPosX = canvas.lastPosY = 0;
+            canvas.setZoom(1);
+            redrawBackground();
+        }
     });
-
-    makeLine(canvas, [100, 100, 200, 100], ChannelTypes.normal, {});
-    makeLine(canvas, [200, 100, 200, 50], ChannelTypes.normal, {});
-    makeLine(canvas, [200, 100, 200, 150], ChannelTypes.cloggable, {});
-    makeLine(canvas, [200, 150, 300, 150], ChannelTypes.cloggable, {});
-    makeLine(canvas, [200, 50, 300, 50], ChannelTypes.cloggable, {});
-    makeLine(canvas, [300, 50, 300, 100], ChannelTypes.bypass, {});
-    makeLine(canvas, [300, 150, 300, 100], ChannelTypes.bypass, {});
-    makeLine(canvas, [300, 100, 400, 100], ChannelTypes.bypass, {});
-
-    mergeElements(canvas);
 
     canvas.on('object:moving', function (e) {
         let circle = e.target;
