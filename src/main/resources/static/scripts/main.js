@@ -9,7 +9,6 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: Language switcher
     // TODO: default values for channels
     // TODO: droplets as a rectangle and 2 half circles
     // TODO: width and length from actual coordiantes (can be unlocked for arbitary positioning)
