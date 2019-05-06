@@ -67,6 +67,15 @@ input[type=text], input[type=number], select {
     display: flex;
 }
 
+.btn-link, .btn-link:hover, .btn-link:active, .btn-link:focus {
+    text-decoration: none;
+}
+
+h5 {
+    color: black;
+    text-align: left;
+}
+
 .collapsible-left {
     grid-column: 1 / 2;
     grid-row: 2 / 4;
@@ -74,6 +83,28 @@ input[type=text], input[type=number], select {
     display: flex;
     flex-direction: column;
 }
+
+.collapsible-right {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+    display: flex;
+    flex-direction: column;
+}
+
+/*region Default Values*/
+.default-values {
+    padding-left: 10px;
+}
+
+.default-values b {
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.default-values .unit-input {
+    margin-bottom: 5px;
+}
+/*endregion*/
 
 /*region Header*/
 .header {
@@ -107,8 +138,6 @@ input[type=text], input[type=number], select {
 
 /*region Element Palette*/
 .element-palette {
-    grid-column: 3 / 4;
-    grid-row: 2 / 3;
     flex-direction: column;
     padding: 10px;
 }
@@ -123,16 +152,11 @@ input[type=text], input[type=number], select {
 .fluid-properties .table-wrapper {
     width: 100%;
     display: inline-block;
-    min-height: 300px;
-    height: 100%;
+    min-height: 40px;
     overflow-x: hidden;
     overflow-y: scroll;
     padding-bottom: 4px;
     padding-right: 1px;
-}
-
-.fluid-properties h5 {
-    margin-bottom: 0.5rem;
 }
 
 .fluid-properties thead th {
@@ -226,16 +250,11 @@ input[type=text], input[type=number], select {
 
 .sequence-properties .table-wrapper {
     display: inline-block;
-    min-height: 300px;
-    height: 100%;
+    min-height: 40px;
     overflow-x: hidden;
     overflow-y: scroll;
     padding-bottom: 4px;
     padding-right: 1px;
-}
-
-.sequence-properties h5 {
-    margin-bottom: 0.5rem;
 }
 
 .sequence-properties thead th {
