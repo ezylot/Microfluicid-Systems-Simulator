@@ -62,127 +62,147 @@
                 <span th:text="#{availableElements.drain}">Drain</span>
             </div>
         </div>
-        <div class="fluid-properties">
-            <h5 th:text="#{fluidProperties.header}"></h5>
+        <div class="accordion collapsible-left">
+            <div class="card">
+                <h5><button class="btn btn-link" type="button" data-toggle="collapse" data-target=".fluid-properties" aria-expanded="true" th:text="#{fluidProperties.header}">
+                        Collapsible Group Item #1
+                </button></h5>
+                <div data-parent=".collapsible-left" class="fluid-properties collapse">
 
-            <div class="table-wrapper">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th th:text="#{fluidProperties.table.id}"></th>
-                        <th th:text="#{fluidProperties.table.name}"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="property-list mt-auto">
-                <div class="fluid-property-line">
-                    <label for="mucInput" class="col-md-4" th:utext="#{fluidProperties.form.muc}"></label>
-                    <input id="mucInput" name="muc" type="number" dir="rtl" />
-                </div>
-                <div class="fluid-property-line">
-                    <label for="mudInput" class="col-md-4" th:utext="#{fluidProperties.form.mud}"></label>
-                    <input id="mudInput" name="mud" type="number" dir="rtl" />
-                </div>
-                <div class="fluid-property-line">
-                    <label for="densityCInput" class="col-md-4" th:text="#{fluidProperties.form.densityC}"></label>
-                    <div class="unit-input">
-                        <input id="densityCInput" name="densityC" type="number" dir="rtl" />
-                        <small class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></small>
+                    <div class="table-wrapper">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th th:text="#{fluidProperties.table.id}"></th>
+                                <th th:text="#{fluidProperties.table.name}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-                <div class="fluid-property-line">
-                    <label for="interfacialTensionInput" class="col-md-4" th:text="#{fluidProperties.form.interfacialTension}"></label>
-                    <div class="unit-input">
-                        <input id="interfacialTensionInput" name="interfacialTension" type="number" dir="rtl" />
-                        <small class="unit" th:text="#{fluidProperties.form.interfacialTension.unit}"></small>
-                    </div>
-                </div>
-                <div class="fluid-property-line">
-                    <label for="slipInput" class="col-md-4" th:text="#{fluidProperties.form.slip}"></label>
-                    <input id="slipInput" name="slip" type="number" dir="rtl" />
-                </div>
 
-                <div class="d-flex">
-                    <div class="mr-2 ml-auto" data-toggle="tooltip" data-placement="top"
-                         th:title="#{fluidProperties.newButton.tooltip}">
-                        <div class="icon-box" data-toggle="modal" data-target="#newFluidModal">
-                            <i class="fas fa-plus"></i>
+                    <div class="property-list mt-auto">
+                        <div class="fluid-property-line">
+                            <label for="mucInput" class="col-md-4" th:utext="#{fluidProperties.form.muc}"></label>
+                            <input id="mucInput" name="muc" type="number" dir="rtl"/>
+                        </div>
+                        <div class="fluid-property-line">
+                            <label for="mudInput" class="col-md-4" th:utext="#{fluidProperties.form.mud}"></label>
+                            <input id="mudInput" name="mud" type="number" dir="rtl"/>
+                        </div>
+                        <div class="fluid-property-line">
+                            <label for="densityCInput" class="col-md-4"
+                                   th:text="#{fluidProperties.form.densityC}"></label>
+                            <div class="unit-input">
+                                <input id="densityCInput" name="densityC" type="number" dir="rtl"/>
+                                <small class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></small>
+                            </div>
+                        </div>
+                        <div class="fluid-property-line">
+                            <label for="interfacialTensionInput" class="col-md-4"
+                                   th:text="#{fluidProperties.form.interfacialTension}"></label>
+                            <div class="unit-input">
+                                <input id="interfacialTensionInput" name="interfacialTension" type="number" dir="rtl"/>
+                                <small class="unit" th:text="#{fluidProperties.form.interfacialTension.unit}"></small>
+                            </div>
+                        </div>
+                        <div class="fluid-property-line">
+                            <label for="slipInput" class="col-md-4" th:text="#{fluidProperties.form.slip}"></label>
+                            <input id="slipInput" name="slip" type="number" dir="rtl"/>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="mr-2 ml-auto" data-toggle="tooltip" data-placement="top"
+                                 th:title="#{fluidProperties.newButton.tooltip}">
+                                <div class="icon-box" data-toggle="modal" data-target="#newFluidModal">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                            </div>
+                            <div class="icon-box  disabled mr-2 copy-button" data-toggle="tooltip"
+                                 data-placement="top" th:title="#{fluidProperties.copyButton.tooltip}">
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="icon-box disabled delete-button" data-toggle="tooltip"
+                                 data-placement="top" th:title="#{fluidProperties.delete.tooltip}">
+                                <i class="fas fa-trash"></i>
+                            </div>
                         </div>
                     </div>
-                    <div class="icon-box  disabled mr-2 copy-button" data-toggle="tooltip"
-                         data-placement="top" th:title="#{fluidProperties.copyButton.tooltip}">
-                        <i class="fas fa-copy"></i>
-                    </div>
-                    <div class="icon-box disabled delete-button" data-toggle="tooltip"
-                         data-placement="top" th:title="#{fluidProperties.delete.tooltip}">
-                        <i class="fas fa-trash"></i>
-                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="sequence-properties">
-            <h5 th:text="#{sequenceProperties.header}"></h5>
-            <div class="table-wrapper">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th th:text="#{sequenceProperties.table.id}"></th>
-                        <th th:text="#{sequenceProperties.table.fluid}"></th>
-                        <th th:text="#{sequenceProperties.table.injectTime}"></th>
-                        <th th:text="#{sequenceProperties.table.pump}"></th>
-                        <th th:text="#{sequenceProperties.table.type}"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+            <div class="card">
+                <h5><button class="btn btn-link" type="button" data-toggle="collapse" data-target=".droplet-properties" aria-expanded="false" th:text="#{dropletProperties.header}">
+                    Collapsible Group Item #2
+                </button></h5>
+                <div data-parent=".collapsible-left" class="droplet-properties card collapse"></div>
             </div>
-            <div class="property-list mt-auto">
-                <div class="sequence-property-line">
-                    <label for="pumpSelection" class="col-md-4"
-                           th:text="#{sequenceProperties.form.pumpSelection}"></label>
-                    <select id="pumpSelection" name="pumpId">
-                        <option selected value=""></option>
-                    </select>
-                </div>
-                <div class="sequence-property-line">
-                    <label for="fluidType" class="col-md-4" th:text="#{sequenceProperties.form.fluidType}"></label>
-                    <select id="fluidType" name="fluidId">
-                        <option selected value=""></option>
-                    </select>
-                </div>
-                <div class="sequence-property-line">
-                    <label for="injectionTime" class="col-md-4" th:text="#{sequenceProperties.form.injectTime}"></label>
-                    <input id="injectionTime" name="injectionTime" type="number" dir="rtl" />
-                </div>
 
-                <div class="sequence-property-line">
-                    <label for="typeH" class="col-md-4" th:text="#{sequenceProperties.form.type.header}"></label>
-                    <input id="typeH" type="radio" name="type" value="H" />
-
-                    <label for="typeP" class="col-md-4" th:text="#{sequenceProperties.form.type.payload}"></label>
-                    <input id="typeP" type="radio" name="type" value="P" />
-                </div>
-
-                <div class="d-flex">
-                    <div class="mr-2 ml-auto" data-toggle="tooltip" data-placement="top"
-                         th:title="#{sequenceProperties.newButton.tooltip}">
-                        <div class="icon-box" data-toggle="modal" data-target="#newDropletModal">
-                            <i class="fas fa-plus"></i>
+            <div class="card">
+                <h5><button class="btn btn-link" type="button" data-toggle="collapse" data-target=".sequence-properties" aria-expanded="false" th:text="#{sequenceProperties.header}">
+                    Collapsible Group Item #2
+                </button></h5>
+                <div data-parent=".collapsible-left" class="sequence-properties card collapse">
+                    <div class="table-wrapper">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th th:text="#{sequenceProperties.table.id}"></th>
+                                <th th:text="#{sequenceProperties.table.fluid}"></th>
+                                <th th:text="#{sequenceProperties.table.injectTime}"></th>
+                                <th th:text="#{sequenceProperties.table.pump}"></th>
+                                <th th:text="#{sequenceProperties.table.type}"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="property-list mt-auto">
+                        <div class="sequence-property-line">
+                            <label for="pumpSelection" class="col-md-4"
+                                   th:text="#{sequenceProperties.form.pumpSelection}"></label>
+                            <select id="pumpSelection" name="pumpId">
+                                <option selected value=""></option>
+                            </select>
                         </div>
-                    </div>
-                    <div class="icon-box  disabled mr-2 copy-button" data-toggle="tooltip"
-                         data-placement="top" th:title="#{sequenceProperties.copyButton.tooltip}">
-                        <i class="fas fa-copy"></i>
-                    </div>
-                    <div class="icon-box disabled delete-button" data-toggle="tooltip"
-                         data-placement="top" th:title="#{sequenceProperties.delete.tooltip}">
-                        <i class="fas fa-trash"></i>
+                        <div class="sequence-property-line">
+                            <label for="fluidType" class="col-md-4" th:text="#{sequenceProperties.form.fluidType}"></label>
+                            <select id="fluidType" name="fluidId">
+                                <option selected value=""></option>
+                            </select>
+                        </div>
+                        <div class="sequence-property-line">
+                            <label for="injectionTime" class="col-md-4"
+                                   th:text="#{sequenceProperties.form.injectTime}"></label>
+                            <input id="injectionTime" name="injectionTime" type="number" dir="rtl"/>
+                        </div>
+
+                        <div class="sequence-property-line">
+                            <label for="typeH" class="col-md-4" th:text="#{sequenceProperties.form.type.header}"></label>
+                            <input id="typeH" type="radio" name="type" value="H"/>
+
+                            <label for="typeP" class="col-md-4" th:text="#{sequenceProperties.form.type.payload}"></label>
+                            <input id="typeP" type="radio" name="type" value="P"/>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="mr-2 ml-auto" data-toggle="tooltip" data-placement="top"
+                                 th:title="#{sequenceProperties.newButton.tooltip}">
+                                <div class="icon-box" data-toggle="modal" data-target="#newDropletModal">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                            </div>
+                            <div class="icon-box  disabled mr-2 copy-button" data-toggle="tooltip"
+                                 data-placement="top" th:title="#{sequenceProperties.copyButton.tooltip}">
+                                <i class="fas fa-copy"></i>
+                            </div>
+                            <div class="icon-box disabled delete-button" data-toggle="tooltip"
+                                 data-placement="top" th:title="#{sequenceProperties.delete.tooltip}">
+                                <i class="fas fa-trash"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -283,7 +303,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="newFluidModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-md">

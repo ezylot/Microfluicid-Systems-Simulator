@@ -67,6 +67,14 @@ input[type=text], input[type=number], select {
     display: flex;
 }
 
+.collapsible-left {
+    grid-column: 1 / 2;
+    grid-row: 2 / 4;
+
+    display: flex;
+    flex-direction: column;
+}
+
 /*region Header*/
 .header {
     grid-column: 1 / 4;
@@ -108,15 +116,14 @@ input[type=text], input[type=number], select {
 
 /*region Fluid Properties */
 .fluid-properties {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
     padding: 10px;
     flex-direction: column;
 }
 
 .fluid-properties .table-wrapper {
+    width: 100%;
     display: inline-block;
-    min-height: 100px;
+    min-height: 300px;
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -209,8 +216,6 @@ input[type=text], input[type=number], select {
 
 /*region Droplet Sequence */
 .sequence-properties {
-    grid-column: 1 / 2;
-    grid-row: 3 / 4;
     padding: 10px;
     flex-direction: column;
 }
@@ -221,7 +226,7 @@ input[type=text], input[type=number], select {
 
 .sequence-properties .table-wrapper {
     display: inline-block;
-    min-height: 100px;
+    min-height: 300px;
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
