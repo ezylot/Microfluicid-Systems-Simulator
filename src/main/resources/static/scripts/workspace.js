@@ -200,7 +200,8 @@ let nextPumpId = 0;
                     id: nextPumpId++,
                 };
 
-                let pumpCircle = opt.target;
+                let pumpGroup = opt.target;
+                let pumpCircle = pumpGroup._objects[0];
                 if (currentDrawingPumpType === PumpTypes.volume) {
                     pump.pumpValue = 0;
                     pump.pumpName = 'V' + pump.id;
@@ -210,11 +211,22 @@ let nextPumpId = 0;
                         radius: 18,
                         stroke: '#cbcbcb',
                         fill: pumpColor.volume,
-                        oldRepresents: pumpCircle.represents,
+                    });
+
+                    pumpGroup.set({
+                        oldRepresents: pumpGroup.represents,
                         represents: 'pump',
                         pumpType: PumpTypes.volume,
                         properties: pump,
                     });
+
+                    pumpGroup.addWithUpdate(new fabric.Text('V', {
+                        originX: 'center',
+                        originY: 'center',
+                        left: pumpGroup.left,
+                        top: pumpGroup.top,
+                        fontSize: 20
+                    }));
                 } else if (currentDrawingPumpType === PumpTypes.pressure) {
                     pump.pumpValue = 0;
                     pump.pumpName = 'P' + pump.id;
@@ -223,11 +235,22 @@ let nextPumpId = 0;
                         radius: 18,
                         stroke: '#cbcbcb',
                         fill: pumpColor.pressure,
-                        oldRepresents: pumpCircle.represents,
+                    });
+
+                    pumpGroup.set({
+                        oldRepresents: pumpGroup.represents,
                         represents: 'pump',
                         pumpType: PumpTypes.pressure,
                         properties: pump,
                     });
+
+                    pumpGroup.addWithUpdate(new fabric.Text('P', {
+                        originX: 'center',
+                        originY: 'center',
+                        left: pumpGroup.left,
+                        top: pumpGroup.top,
+                        fontSize: 20
+                    }));
                 } else {
                     pump.pumpValue = 0;
                     pump.pumpName = 'D' + pump.id;
@@ -236,7 +259,10 @@ let nextPumpId = 0;
                         radius: 18,
                         stroke: '#cbcbcb',
                         fill: pumpColor.drain,
-                        oldRepresents: pumpCircle.represents,
+                    });
+
+                    pumpGroup.set({
+                        oldRepresents: pumpGroup.represents,
                         represents: 'pump',
                         pumpType: PumpTypes.drain,
                         properties: pump,
@@ -291,7 +317,7 @@ let nextPumpId = 0;
             //region Select pump element and display information
             resetOldSelection(oldSelectedElem);
 
-            opt.target.set({
+            opt.target._objects[0].set({
                 'fill': pumpColorSelected[opt.target.pumpType],
             });
             canvas.renderAll();
@@ -466,11 +492,15 @@ let nextPumpId = 0;
 
                 oldSelectedElem.represents = oldSelectedElem.oldRepresents;
                 oldSelectedElem.properties = null;
-                oldSelectedElem.set({
+                oldSelectedElem._objects[0].set({
                     radius: channelCircleRadius,
                     fill: '#fff',
                     stroke: '#666',
                 });
+
+                if(oldSelectedElem._objects.length >= 2) {
+                    oldSelectedElem.remove(oldSelectedElem._objects[1]);
+                }
             }
             oldSelectedElem = null;
             canvas.renderAll();
@@ -532,7 +562,7 @@ function makeLine(canvas, coords, channelType, properties) {
     });
     line.channelType = channelType;
 
-    let startCircle = new fabric.Circle({
+    let startCircle = new fabric.Group([new fabric.Circle({
         left: coords[0],
         top: coords[1],
         strokeWidth: 5,
@@ -541,14 +571,19 @@ function makeLine(canvas, coords, channelType, properties) {
         stroke: '#666',
         hasControls: false,
         hasBorders: false,
+        originX: 'center',
+        originY: 'center'
+    })], {
         represents: 'endCircle',
+        pos: 'start',
+        lines: [{line: line, pos: 'start'}],
         originX: 'center',
         originY: 'center',
+        hasControls: false,
+        hasBorders: false,
     });
-    startCircle.pos = 'start';
-    startCircle.lines = [{line: line, pos: startCircle.pos}];
 
-    let endCircle = new fabric.Circle({
+    let endCircle = new fabric.Group([new fabric.Circle({
         left: coords[2],
         top: coords[3],
         strokeWidth: 5,
@@ -557,13 +592,17 @@ function makeLine(canvas, coords, channelType, properties) {
         stroke: '#666',
         hasControls: false,
         hasBorders: false,
-        represents: 'endCircle',
         originX: 'center',
         originY: 'center',
+    })], {
+        represents: 'endCircle',
+        pos: 'end',
+        lines: [{line: line, pos: 'end'}],
+        originX: 'center',
+        originY: 'center',
+        hasControls: false,
+        hasBorders: false,
     });
-
-    endCircle.pos = 'end';
-    endCircle.lines = [{line: line, pos: endCircle.pos}];
 
     canvas.add(line);
     canvas.add(startCircle);
