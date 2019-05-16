@@ -253,6 +253,47 @@ h5 {
 }
 /*endregion*/
 
+/*region Droplet properties*/
+.droplet-properties {
+    padding: 10px;
+    flex-direction: column;
+    display: flex;
+}
+
+.droplet-properties .table-wrapper {
+    width: 100%;
+    display: inline-block;
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-bottom: 4px;
+    padding-right: 1px;
+    margin-bottom: 10pxde;
+}
+
+.droplet-properties thead th {
+    font-size: 14px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    border-top: white;
+    border-bottom: 2px solid #d7dadc;
+    padding: 6px 4px;
+}
+
+.droplet-properties tbody td {
+    padding: 4px 4px;
+    cursor: pointer;
+    border: none;
+}
+
+.droplet-properties tbody tr.active {
+    background-color: #71e690;
+}
+
+/*endregion*/
+
 /*region Droplet Sequence */
 .sequence-properties {
     padding: 10px;
@@ -321,18 +362,18 @@ h5 {
     padding-right: 7px;
 }
 
-#newDropletModal form {
+#newDropletInjectionModal form {
     display: flex;
     flex-direction: column;
 }
 
-#newDropletModal form button {
+#newDropletInjectionModal form button {
     background: #d03f3f;
     border: none;
     padding: 7px;
 }
 
-#newDropletModal form input, #newDropletModal form select {
+#newDropletInjectionModal form input, #newDropletInjectionModal form select {
     margin-top: 3px;
     margin-bottom: 10px;
     padding: 5px 10px;

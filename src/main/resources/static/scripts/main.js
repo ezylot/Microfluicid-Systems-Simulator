@@ -1,6 +1,15 @@
 let fluids = [];
 let pumps = [];
 let droplets = [];
+let dropletSequence = [];
+
+let defaultValues = {
+    length: 0,
+    width: 0,
+    height: 0,
+    pressure: 0,
+    volume: 0,
+};
 
 $(document).ready(() => {
     $('[data-toggle="tooltip"]').tooltip();
@@ -9,10 +18,9 @@ $(document).ready(() => {
         $('.footer .progressbar-current').text(slideEvt.value);
     });
 
-    // TODO: default values for channels
+    // TODO: fluids -> droplets -> droplet-injection
     // TODO: droplets as a rectangle and 2 half circles
-    // TODO: width and length from actual coordiantes (can be unlocked for arbitary positioning)
-    // TODO: "fluid classes" / combinations
+    // TODO: width and length from actual coordinates (can be unlocked for arbitary positioning)
     // TODO: Unassign droplet fluid on delete of fluid
     // TODO: Unassign droplet fluid on delete of pump
     // TODO: design for available elements
