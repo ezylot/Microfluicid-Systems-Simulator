@@ -163,13 +163,13 @@ let nextPumpId = 0;
                         opt.target.left,
                         opt.target.top,
                     ];
-                    currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType, {});
+                    currentDrawingLine = makeChannel(canvas, points, currentDrawingChannelType, {});
                 } else {
                     let pointer = canvas.getPointer(opt.e, false);
                     let left = Math.round(pointer.x / grid) * grid;
                     let top = Math.round(pointer.y / grid) * grid;
                     let points = [left, top, left, top];
-                    currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType, {});
+                    currentDrawingLine = makeChannel(canvas, points, currentDrawingChannelType, {});
                 }
                 //endregion
             } else if (currentDrawingState === DrawingStates.started) {
@@ -187,7 +187,7 @@ let nextPumpId = 0;
                     newStartingCoordsTop,
                 ];
 
-                currentDrawingLine = makeLine(canvas, points, currentDrawingChannelType, {});
+                currentDrawingLine = makeChannel(canvas, points, currentDrawingChannelType, {});
                 //endregion
             }
         } else if (currentDrawingPumpType !== null) {
@@ -545,7 +545,7 @@ let nextPumpId = 0;
 
 })();
 
-function makeLine(canvas, coords, channelType, properties) {
+function makeChannel(canvas, coords, channelType, properties) {
     let line = new fabric.Line(coords, {
         fill: lineColor[channelType],
         stroke: lineColor[channelType],
@@ -608,7 +608,11 @@ function makeLine(canvas, coords, channelType, properties) {
     canvas.add(startCircle);
     canvas.add(endCircle);
 
-    line.properties = properties;
+    line.properties = $.extend({}, properties, {
+        height: defaultValues.height,
+        length: defaultValues.length,
+        width: defaultValues.width,
+    });
     line.startCircle = startCircle;
     line.endCircle = endCircle;
     return line;
