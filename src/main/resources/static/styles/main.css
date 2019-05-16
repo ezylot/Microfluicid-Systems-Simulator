@@ -91,6 +91,20 @@ h5 {
     flex-direction: column;
 }
 
+.card {
+    height: 100%;
+    display: contents;
+}
+
+.card .btn {
+    border-top: 1px solid #e2e2e2;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.collapse.show {
+    flex: 1;
+}
+
 /*region Default Values*/
 .default-values {
     padding-left: 10px;
@@ -147,12 +161,13 @@ h5 {
 .fluid-properties {
     padding: 10px;
     flex-direction: column;
+    display: flex;
 }
 
 .fluid-properties .table-wrapper {
     width: 100%;
     display: inline-block;
-    min-height: 40px;
+    flex: 1;
     overflow-x: hidden;
     overflow-y: scroll;
     padding-bottom: 4px;
@@ -241,6 +256,7 @@ h5 {
 /*region Droplet Sequence */
 .sequence-properties {
     padding: 10px;
+    display: flex;
     flex-direction: column;
 }
 
@@ -250,7 +266,7 @@ h5 {
 
 .sequence-properties .table-wrapper {
     display: inline-block;
-    min-height: 40px;
+    flex: 1;
     overflow-x: hidden;
     overflow-y: scroll;
     padding-bottom: 4px;
