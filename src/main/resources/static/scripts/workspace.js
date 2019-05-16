@@ -203,7 +203,7 @@ let nextPumpId = 0;
                 let pumpGroup = opt.target;
                 let pumpCircle = pumpGroup._objects[0];
                 if (currentDrawingPumpType === PumpTypes.volume) {
-                    pump.pumpValue = 0;
+                    pump.pumpValue = defaultValues.volume;
                     pump.pumpName = 'V' + pump.id;
                     pump.type = PumpTypes.volume;
 
@@ -228,7 +228,7 @@ let nextPumpId = 0;
                         fontSize: 20
                     }));
                 } else if (currentDrawingPumpType === PumpTypes.pressure) {
-                    pump.pumpValue = 0;
+                    pump.pumpValue = defaultValues.pressure;
                     pump.pumpName = 'P' + pump.id;
                     pump.type = PumpTypes.pressure;
                     pumpCircle.set({
@@ -252,7 +252,6 @@ let nextPumpId = 0;
                         fontSize: 20
                     }));
                 } else {
-                    pump.pumpValue = 0;
                     pump.pumpName = 'D' + pump.id;
                     pump.type = PumpTypes.drain;
                     pumpCircle.set({
