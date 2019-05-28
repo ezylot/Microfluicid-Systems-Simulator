@@ -29,6 +29,7 @@ let nextPumpId = 0;
 
 (function () {
     const canvas = new fabric.Canvas('c', {selection: false});
+    canvasToSave = canvas;
 
     let canvasContainer = $('.workspace');
     let backgroundGroup = null;

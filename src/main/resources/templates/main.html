@@ -27,7 +27,9 @@
     <div class="sim-container">
         <div class="header">
             <i class="fas fa-folder-open"></i>
-            <i class="fas fa-save"></i>
+            <a class="fas fa-save" download></a>
+            <input type="file" id="fileupload" style="display: none" />
+
             <h3 th:text="#{header.title}"></h3>
 
             <div class="ml-auto mr-3 dropdown">
@@ -531,6 +533,7 @@
     <script th:src="@{/scripts/fluids.js}" src="../static/scripts/fluids.js"></script>
     <script th:src="@{/scripts/droplet.js}" src="../static/scripts/droplet.js"></script>
     <script th:src="@{/scripts/dropletInejctions.js}" src="../static/scripts/dropletInejctions.js"></script>
-    <script th:src="@{/scripts/dropletInejctions.js}" src="../static/scripts/footer.js"></script>
+    <script th:src="@{/scripts/footer.js}" src="../static/scripts/footer.js"></script>
+    <script th:src="@{/scripts/save-manager.js}" src="../static/scripts/save-manager.js"></script>
 </body>
 </html>
