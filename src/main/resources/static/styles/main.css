@@ -251,6 +251,16 @@ h5 {
     margin-bottom: 10px;
     padding: 5px 10px;
 }
+
+#newFluidForm .unit-input input {
+    padding-right: 60px !important;
+    box-shadow: inset -54px 0 0 0 rgba(237,237,237,0.56);
+}
+
+#newFluidForm .unit-input .unit {
+    top: 7px !important;
+}
+
 /*endregion*/
 
 /*region Droplet properties*/
@@ -268,7 +278,7 @@ h5 {
     overflow-y: scroll;
     padding-bottom: 4px;
     padding-right: 1px;
-    margin-bottom: 10pxde;
+    margin-bottom: 10px;
 }
 
 .droplet-properties thead th {
@@ -292,20 +302,66 @@ h5 {
     background-color: #71e690;
 }
 
+.droplet-properties .droplet-property-line {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    margin-left: -15px;
+}
+
+.droplet-properties .droplet-property-line label {
+    font-size: 0.75em;
+}
+
+.droplet-properties .droplet-property-line select {
+    width: 100%;
+    padding-right: 7px;
+    height: 30px;
+}
+
+.droplet-properties .droplet-property-line input {
+    width: 100%;
+    text-align: right;
+    padding-right: 7px;
+}
+
+#newDropletForm, #copyDropletModalForm{
+    display: flex;
+    flex-direction: column;
+}
+
+#newDropletForm button,
+#copyDropletModalForm button {
+    background: #d03f3f;
+    border: none;
+    padding: 7px;
+}
+
+#copyDropletModalForm input {
+    margin-top: 3px;
+    margin-bottom: 30px;
+    padding: 5px 10px;
+}
+
+#newDropletForm input, #newDropletForm select {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+}
+
 /*endregion*/
 
-/*region Droplet Sequence */
-.sequence-properties {
+/*region Droplet Injections */
+.injection-properties {
     padding: 10px;
     display: flex;
     flex-direction: column;
 }
 
-.sequence-properties .property-list {
+.injection-properties .property-list {
     padding-top: 5px;
 }
 
-.sequence-properties .table-wrapper {
+.injection-properties .table-wrapper {
     display: inline-block;
     flex: 1;
     overflow-x: hidden;
@@ -314,7 +370,7 @@ h5 {
     padding-right: 1px;
 }
 
-.sequence-properties thead th {
+.injection-properties thead th {
     font-size: 14px;
     position: -webkit-sticky;
     position: sticky;
@@ -325,38 +381,38 @@ h5 {
     padding: 6px 4px;
 }
 
-.sequence-properties thead th:first-of-type {
+.injection-properties thead th:first-of-type {
     width: 30px;
 }
 
-.sequence-properties tbody td {
+.injection-properties tbody td {
     padding: 4px 4px;
     cursor: pointer;
     border: none;
 }
 
-.sequence-properties tbody tr.active {
+.injection-properties tbody tr.active {
     background-color: #71e690;
 }
 
-.sequence-properties .sequence-property-line {
+.injection-properties .injection-property-line {
     margin-bottom: 8px;
     display: flex;
     align-items: center;
     margin-left: -15px;
 }
 
-.sequence-properties .sequence-property-line label {
+.injection-properties .injection-property-line label {
     font-size: 0.75em;
 }
 
-.sequence-properties .sequence-property-line select {
+.injection-properties .injection-property-line select {
     width: 100%;
     padding-right: 7px;
     height: 30px;
 }
 
-.sequence-properties .sequence-property-line input {
+.injection-properties .injection-property-line input {
     width: 100%;
     text-align: right;
     padding-right: 7px;
@@ -447,15 +503,4 @@ h5 {
 }
 /*endregion*/
 
-/*region New Fluid form*/
-#newFluidForm .unit-input input {
-    padding-right: 60px !important;
-    box-shadow: inset -54px 0 0 0 rgba(237,237,237,0.56);
-}
-
-#newFluidForm .unit-input .unit {
-    top: 7px !important;
-}
-
-/*endregion*/
 

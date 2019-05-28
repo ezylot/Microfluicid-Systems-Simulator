@@ -49,6 +49,15 @@ $(document).ready(() => {
         fluids.splice(fluids.indexOf(fluidToDelete), 1);
         resetFluidSelection();
         $activeRow.remove();
+
+        $('#newDropletFluidSelection option[value=\"' + fluidToDelete.id + '\"]').remove();
+        $('#fluidId option[value=\"' + fluidToDelete.id + '\"]').remove();
+
+        droplets.forEach(value => {
+            if(value.fluidId === fluidToDelete.id) {
+                value.fluidId = null;
+            }
+        })
     });
 
     $('#copyFluidModalForm').on('submit', (event) => {
@@ -110,8 +119,8 @@ function createNewFluid(newFluid, fluids) {
     $('.fluid-properties .delete-button').removeClass('disabled');
 
 
-    $('#newFluidType').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
-    $('#fluidType').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
+    $('#newDropletFluidSelection').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
+    $('#fluidId').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
 }
 
 function resetFluidSelection() {

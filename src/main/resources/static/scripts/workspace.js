@@ -674,8 +674,8 @@ function deleteLine(canvas, line) {
 
 function createPump(newPump, pumps) {
     pumps.push(newPump);
-    $('#newPumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.name));
-    $('#pumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.name));
+    $('#newPumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.pumpName));
+    $('#pumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.pumpName));
 }
 
 function resetOldSelection(oldSelectedElem) {
