@@ -209,6 +209,8 @@ let nextPumpId = 0;
                 currentDrawingPumpType = null;
 
                 canvas.renderAll();
+            } else  if(currentDrawingState === DrawingStates.ready && opt.target && opt.target.represents === 'endCircle'){
+                // TODO: change pump type
             }
         } else if (opt.target != null && opt.target.represents === 'line') {
             //region Select channel element and display information
