@@ -73,11 +73,7 @@ let nextPumpId = 0;
     };
 
     function redrawBackground() {
-        let prevTop = 0;
-        let prevLeft = 0;
         if (backgroundGroup) {
-            prevTop = backgroundGroup.top;
-            prevLeft = backgroundGroup.left;
             canvas.remove(backgroundGroup);
         }
 
@@ -197,78 +193,15 @@ let nextPumpId = 0;
                 canvas.hoverCursor = 'move';
                 canvas.defaultCursor = 'default';
 
+                let pumpGroup = opt.target;
+
                 let pump = {
+                    top: pumpGroup.top,
+                    left: pumpGroup.left,
                     id: nextPumpId++,
                 };
 
-                let pumpGroup = opt.target;
-                let pumpCircle = pumpGroup._objects[0];
-                if (currentDrawingPumpType === PumpTypes.volume) {
-                    pump.pumpValue = defaultValues.volume;
-                    pump.pumpName = 'V' + pump.id;
-                    pump.type = PumpTypes.volume;
-
-                    pumpCircle.set({
-                        radius: 18,
-                        stroke: '#cbcbcb',
-                        fill: pumpColor.volume,
-                    });
-
-                    pumpGroup.set({
-                        oldRepresents: pumpGroup.represents,
-                        represents: 'pump',
-                        pumpType: PumpTypes.volume,
-                        properties: pump,
-                    });
-
-                    pumpGroup.addWithUpdate(new fabric.Text('V', {
-                        originX: 'center',
-                        originY: 'center',
-                        left: pumpGroup.left,
-                        top: pumpGroup.top,
-                        fontSize: 20
-                    }));
-                } else if (currentDrawingPumpType === PumpTypes.pressure) {
-                    pump.pumpValue = defaultValues.pressure;
-                    pump.pumpName = 'P' + pump.id;
-                    pump.type = PumpTypes.pressure;
-                    pumpCircle.set({
-                        radius: 18,
-                        stroke: '#cbcbcb',
-                        fill: pumpColor.pressure,
-                    });
-
-                    pumpGroup.set({
-                        oldRepresents: pumpGroup.represents,
-                        represents: 'pump',
-                        pumpType: PumpTypes.pressure,
-                        properties: pump,
-                    });
-
-                    pumpGroup.addWithUpdate(new fabric.Text('P', {
-                        originX: 'center',
-                        originY: 'center',
-                        left: pumpGroup.left,
-                        top: pumpGroup.top,
-                        fontSize: 20
-                    }));
-                } else {
-                    pump.pumpName = 'D' + pump.id;
-                    pump.type = PumpTypes.drain;
-                    pumpCircle.set({
-                        radius: 18,
-                        stroke: '#cbcbcb',
-                        fill: pumpColor.drain,
-                    });
-
-                    pumpGroup.set({
-                        oldRepresents: pumpGroup.represents,
-                        represents: 'pump',
-                        pumpType: PumpTypes.drain,
-                        properties: pump,
-                    });
-                }
-
+                createPumpElement(pumpGroup, currentDrawingPumpType, pump);
                 createPump(pump, pumps);
 
                 currentDrawingState = DrawingStates.none;
@@ -671,6 +604,77 @@ function deleteLine(canvas, line) {
     }
 
     canvas.remove(line);
+}
+
+function createPumpElement(pumpGroup, pumpType, pump) {
+    let pumpCircle = pumpGroup._objects[0];
+
+    if(pumpType === PumpTypes.drain) {
+        pump.pumpName = 'D' + pump.id;
+        pump.type = PumpTypes.drain;
+        pumpCircle.set({
+            radius: 18,
+            stroke: '#cbcbcb',
+            fill: pumpColor.drain,
+        });
+
+        pumpGroup.set({
+            oldRepresents: pumpGroup.represents,
+            represents: 'pump',
+            pumpType: PumpTypes.drain,
+            properties: pump,
+        });
+    } else if(pumpType === PumpTypes.pressure) {
+
+        pump.pumpValue = defaultValues.pressure;
+        pump.pumpName = 'P' + pump.id;
+        pump.type = PumpTypes.pressure;
+        pumpCircle.set({
+            radius: 18,
+            stroke: '#cbcbcb',
+            fill: pumpColor.pressure,
+        });
+
+        pumpGroup.set({
+            oldRepresents: pumpGroup.represents,
+            represents: 'pump',
+            pumpType: PumpTypes.pressure,
+            properties: pump,
+        });
+
+        pumpGroup.addWithUpdate(new fabric.Text('P', {
+            originX: 'center',
+            originY: 'center',
+            left: pumpGroup.left,
+            top: pumpGroup.top,
+            fontSize: 20
+        }));
+    } else {
+        pump.pumpValue = defaultValues.volume;
+        pump.pumpName = 'V' + pump.id;
+        pump.type = PumpTypes.volume;
+
+        pumpCircle.set({
+            radius: 18,
+            stroke: '#cbcbcb',
+            fill: pumpColor.volume,
+        });
+
+        pumpGroup.set({
+            oldRepresents: pumpGroup.represents,
+            represents: 'pump',
+            pumpType: PumpTypes.volume,
+            properties: pump,
+        });
+
+        pumpGroup.addWithUpdate(new fabric.Text('V', {
+            originX: 'center',
+            originY: 'center',
+            left: pumpGroup.left,
+            top: pumpGroup.top,
+            fontSize: 20
+        }));
+    }
 }
 
 function createPump(newPump, pumps) {

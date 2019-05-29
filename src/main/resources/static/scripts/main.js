@@ -14,7 +14,6 @@ let defaultValues = {
 
 $(document).ready(() => {
     $('[data-toggle="tooltip"]').tooltip();
-    // TODO: save and load
 
     // TODO: replace one pump with another
     // TODO: cancel pump draw with escape

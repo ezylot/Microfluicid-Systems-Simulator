@@ -60,9 +60,19 @@ $(document).ready(() => {
                     makeChannel(canvasToSave, [line.x1, line.y1, line.x2, line.y2], ChannelTypes[line.channelType], line.properties);
                 });
 
-                // TODO: restore pumps/drains
-
                 mergeElements(canvasToSave);
+
+                object.pumps.forEach(pump => {
+                    createPump(pump, pumps);
+                    canvasToSave.getObjects("group")
+                        .filter(circleGroup => circleGroup.represents === 'endCircle')
+                        .filter(circleGroup => circleGroup.top === pump.top && circleGroup.left === circleGroup.left)
+                        .forEach(circleGroup => {
+                            createPumpElement(circleGroup, PumpTypes[pump.type], pump);
+                            createPump(pump, pumps);
+                        });
+                });
+
             };
             reader.readAsText(file);
         }
