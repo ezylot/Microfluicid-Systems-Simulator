@@ -414,6 +414,15 @@ let nextPumpId = 0;
             currentDrawingChannelType = null;
         }
 
+
+        if (e.keyCode === 27 && currentDrawingPumpType !== null) {
+            $('body').removeClass('drawing');
+            canvas.hoverCursor = 'move';
+            canvas.defaultCursor = 'default';
+
+            currentDrawingPumpType = null;
+        }
+
         if (e.keyCode === 46 && oldSelectedElem != null && e.target.tagName !== "INPUT") {
             $('.element-properties .property-form').hide();
             $('.element-properties .empty-hint').show();

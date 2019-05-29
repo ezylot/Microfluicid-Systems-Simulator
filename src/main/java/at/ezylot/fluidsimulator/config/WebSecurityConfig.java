@@ -19,13 +19,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("microfluidic").password(passwordEncoder().encode("CKwx3y7j")).roles("USER");
+            .withUser("microfluidic").password(passwordEncoder().encode("CKwx3y7j")).roles("USER");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/").hasRole("USER")
-                .and()
-                .httpBasic();
+            .and()
+            .httpBasic();
     }
 }
