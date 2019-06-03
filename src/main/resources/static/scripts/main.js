@@ -11,6 +11,13 @@ resetValues();
 $(document).ready(() => {
     $('[data-toggle="tooltip"]').tooltip();
 
+    // TODO: possibility to define "complete" channels in fluid simumlation
+    // TODO: Color at droplet properties
+    // TODO: remove drain from injection time pump selectiopn
+    // TODO: injection table: use names instead of ids
+    // TODO: disable property input fields until selection is made
+    // TODO: switch zoom direction
+    // TODO: fix pump selection/highlight color
     // TODO: save/replace width/height/length not working (always default value)
     // TODO: replace one pump with another
     // TODO: Unassign droplet fluid on delete of pump
