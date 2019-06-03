@@ -140,12 +140,8 @@
 
                     <div class="property-list mt-auto">
                         <div class="fluid-property-line">
-                            <label for="mucInput" class="col-md-4" th:utext="#{fluidProperties.form.muc}"></label>
-                            <input id="mucInput" name="muc" type="number" dir="rtl"/>
-                        </div>
-                        <div class="fluid-property-line">
-                            <label for="mudInput" class="col-md-4" th:utext="#{fluidProperties.form.mud}"></label>
-                            <input id="mudInput" name="mud" type="number" dir="rtl"/>
+                            <label for="muInput" class="col-md-4" th:utext="#{fluidProperties.form.mu}"></label>
+                            <input id="muInput" name="mu" type="number" dir="rtl"/>
                         </div>
                         <div class="fluid-property-line">
                             <label for="densityCInput" class="col-md-4"
@@ -154,18 +150,6 @@
                                 <input id="densityCInput" name="densityC" type="number" dir="rtl"/>
                                 <small class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></small>
                             </div>
-                        </div>
-                        <div class="fluid-property-line">
-                            <label for="interfacialTensionInput" class="col-md-4"
-                                   th:text="#{fluidProperties.form.interfacialTension}"></label>
-                            <div class="unit-input">
-                                <input id="interfacialTensionInput" name="interfacialTension" type="number" dir="rtl"/>
-                                <small class="unit" th:text="#{fluidProperties.form.interfacialTension.unit}"></small>
-                            </div>
-                        </div>
-                        <div class="fluid-property-line">
-                            <label for="slipInput" class="col-md-4" th:text="#{fluidProperties.form.slip}"></label>
-                            <input id="slipInput" name="slip" type="number" dir="rtl"/>
                         </div>
 
                         <div class="d-flex">
@@ -184,6 +168,41 @@
                                 <i class="fas fa-trash"></i>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target=".phase-properties" aria-expanded="true" >
+                    <h5 th:text="#{phaseProperties.header}"></h5>
+                </button>
+                <div data-parent=".collapsible-left" class="phase-properties collapse">
+
+                    <div class="phase-property-line">
+                        <label for="contPhaseFluid" th:text="#{phaseProperties.form.contPhaseFluid}"></label>
+                        <select id="contPhaseFluid" name="contPhaseFluid">
+                            <option selected value=""></option>
+                        </select>
+                    </div>
+
+                    <div class="phase-property-line">
+                        <label for="disptPhaseFluid" th:text="#{phaseProperties.form.disptPhaseFluid}"></label>
+                        <select id="disptPhaseFluid" name="disptPhaseFluid">
+                            <option selected value=""></option>
+                        </select>
+                    </div>
+
+                    <div class="phase-property-line">
+                        <label for="interfacialTensionInput" th:text="#{phaseProperties.form.interfacialTension}"></label>
+                        <div class="unit-input">
+                            <input id="interfacialTensionInput" name="interfacialTension" type="number" dir="rtl"/>
+                            <small class="unit" th:text="#{phaseProperties.form.interfacialTension.unit}"></small>
+                        </div>
+                    </div>
+
+                    <div class="phase-property-line">
+                        <label for="slipInput" th:text="#{phaseProperties.form.slip}"></label>
+                        <input id="slipInput" name="slip" type="number" dir="rtl" th:placeholder="#{phaseProperties.form.slip.placeholder}" />
                     </div>
                 </div>
             </div>
@@ -209,12 +228,6 @@
                     </div>
 
                     <div class="property-list mt-auto">
-                        <div class="droplet-property-line">
-                            <label for="fluidId" class="col-md-4" th:text="#{dropletProperties.form.fluidType}"></label>
-                            <select id="fluidId" name="fluidId">
-                                <option selected value=""></option>
-                            </select>
-                        </div>
                         <div class="droplet-property-line">
                             <label for="volume" class="col-md-4"
                                    th:text="#{dropletProperties.form.volume}"></label>
@@ -364,11 +377,6 @@
                         <label for="newDropletName" th:text="#{dropletProperties.newModal.newName}"></label>
                         <input type="text" required autofocus id="newDropletName" th:placeholder="#{dropletProperties.newModal.newName.placeholder}"/>
 
-                        <label for="newDropletFluidSelection" th:text="#{dropletProperties.newModal.newFluidSelect}"></label>
-                        <select id="newDropletFluidSelection" name="newDropletFluidSelection">
-                            <option selected value=""></option>
-                        </select>
-
                         <label for="newDropletVolume" th:text="#{dropletProperties.newModal.newVolume}"></label>
                         <input required autofocus id="newDropletVolume"
                                dir="rtl" type="number"
@@ -452,27 +460,14 @@
                         <label for="newFluidName" th:text="#{fluidProperties.newModal.name.label}"></label>
                         <input required autofocus id="newFluidName" type="text" th:placeholder="#{fluidProperties.newModal.name.placeholder}"/>
 
-                        <label for="newMucInput" th:utext="#{fluidProperties.form.muc}"></label>
-                        <input id="newMucInput" name="newMuc" type="number" step="0.000001" dir="rtl" th:placeholder="#{fluidProperties.form.muc.placeholder}" />
-
-                        <label for="newMudInput" th:utext="#{fluidProperties.form.mud}"></label>
-                        <input id="newMudInput" name="newMud" type="number" step="0.000001" dir="rtl" th:placeholder="#{fluidProperties.form.mud.placeholder}" />
-
+                        <label for="newMuInput" th:utext="#{fluidProperties.form.mu}"></label>
+                        <input id="newMuInput" name="newMu" type="number" step="0.000001" dir="rtl" th:placeholder="#{fluidProperties.form.mu.placeholder}" />
 
                         <label for="newDensityCInput" th:text="#{fluidProperties.form.densityC}"></label>
                         <div class="unit-input">
                             <input id="newDensityCInput" name="newDensityC" type="number" step="0.000001" dir="rtl"  th:placeholder="#{fluidProperties.form.densityC.placeholder}" />
                             <span class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></span>
                         </div>
-
-                        <label for="newInterfacialTensionInput" th:text="#{fluidProperties.form.interfacialTension}"></label>
-                        <div class="unit-input">
-                            <input id="newInterfacialTensionInput" name="newInterfacialTension" type="number" step="0.000001" dir="rtl" th:placeholder="#{fluidProperties.form.interfacialTension.placeholder}" />
-                            <span class="unit" th:utext="#{fluidProperties.form.interfacialTension.unit}"></span>
-                        </div>
-
-                        <label for="newSlipInput" th:text="#{fluidProperties.form.slip}"></label>
-                        <input id="newSlipInput" name="newSlip" type="number" step="0.000001" dir="rtl" th:placeholder="#{fluidProperties.form.slip.placeholder}" />
 
                         <button type="submit" th:text="#{fluidProperties.newModal.submit}"></button>
                     </form>
@@ -524,6 +519,7 @@
 
     <script th:src="@{/scripts/main.js}" src="../static/scripts/main.js"></script>
     <script th:src="@{/scripts/simulated-fluid.js}" src="../static/scripts/simulated-fluid.js"></script>
+    <script th:src="@{/scripts/phases.js}" src="../static/scripts/phases.js"></script>
     <script th:src="@{/scripts/workspace.js}" src="../static/scripts/workspace.js"></script>
     <script th:src="@{/scripts/defaultvalues.js}" src="../static/scripts/defaultvalues.js"></script>
     <script th:src="@{/scripts/fluids.js}" src="../static/scripts/fluids.js"></script>

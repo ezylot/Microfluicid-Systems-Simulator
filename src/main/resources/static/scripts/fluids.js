@@ -9,20 +9,14 @@ $(document).ready(() => {
         event.preventDefault();
 
         let newFluidName = $('#newFluidForm #newFluidName');
-        let newMuc = $('#newFluidForm input[name="newMuc"]');
-        let newMud = $('#newFluidForm input[name="newMud"]');
+        let newMu = $('#newFluidForm input[name="newMu"]');
         let newDensityC = $('#newFluidForm input[name="newDensityC"]');
-        let newInterfacialTens = $('#newFluidForm input[name="newInterfacialTension"]');
-        let newSlip = $('#newFluidForm input[name="newSlip"]');
 
         let newFluid = {
             id: nextId++,
             name: newFluidName.val(),
-            muc: newMuc.val(),
-            mud: newMud.val(),
+            mu: newMu.val(),
             densityC: newDensityC.val(),
-            interfacialTension: newInterfacialTens.val(),
-            slip: newSlip.val(),
         };
 
         createNewFluid(newFluid, fluids);
@@ -30,11 +24,8 @@ $(document).ready(() => {
         // Clean up modal
         $('#newFluidModal').modal('hide');
         newFluidName.val('');
-        newMuc.val('');
-        newMud.val('');
+        newMu.val('');
         newDensityC.val('');
-        newInterfacialTens.val('');
-        newSlip.val('');
     });
 
     $('.fluid-properties .copy-button').on('click', (element) => {
@@ -50,14 +41,10 @@ $(document).ready(() => {
         resetFluidSelection();
         $activeRow.remove();
 
-        $('#newDropletFluidSelection option[value=\"' + fluidToDelete.id + '\"]').remove();
-        $('#fluidId option[value=\"' + fluidToDelete.id + '\"]').remove();
+        $('#contPhaseFluid option[value=\"' + fluidToDelete.id + '\"]').remove();
+        $('#disptPhaseFluid option[value=\"' + fluidToDelete.id + '\"]').remove();
 
-        droplets.forEach(value => {
-            if(value.fluidId === fluidToDelete.id) {
-                value.fluidId = null;
-            }
-        })
+        // TODO: remove fluids from phase properties
     });
 
     $('#copyFluidModalForm').on('submit', (event) => {
@@ -106,12 +93,8 @@ function createNewFluid(newFluid, fluids) {
         let $fluidPropertiesWindow = $('.fluid-properties');
         $fluidPropertiesWindow.find('.copy-button').removeClass('disabled');
         $fluidPropertiesWindow.find('.delete-button').removeClass('disabled');
-        $fluidPropertiesWindow.find('input[name="muc"]').val(newFluid.muc);
-        $fluidPropertiesWindow.find('input[name="mud"]').val(newFluid.mud);
+        $fluidPropertiesWindow.find('input[name="mu"]').val(newFluid.mu);
         $fluidPropertiesWindow.find('input[name="densityC"]').val(newFluid.densityC);
-        $fluidPropertiesWindow.find('input[name="interfacialTension"]').val(newFluid.interfacialTension);
-        $fluidPropertiesWindow.find('input[name="slip"]').val(newFluid.slip);
-
     });
 
     $tableRow.click();
@@ -119,8 +102,8 @@ function createNewFluid(newFluid, fluids) {
     $('.fluid-properties .delete-button').removeClass('disabled');
 
 
-    $('#newDropletFluidSelection').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
-    $('#fluidId').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
+    $('#contPhaseFluid').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
+    $('#disptPhaseFluid').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
 }
 
 function resetFluidSelection() {
@@ -130,9 +113,6 @@ function resetFluidSelection() {
     $fluidProperties.find('.copy-button').addClass('disabled');
     $fluidProperties.find('.delete-button').addClass('disabled');
 
-    $fluidProperties.find('input[name="muc"]').val('');
-    $fluidProperties.find('input[name="mud"]').val('');
+    $fluidProperties.find('input[name="mu"]').val('');
     $fluidProperties.find('input[name="densityC"]').val('');
-    $fluidProperties.find('input[name="interfacialTension"]').val('');
-    $fluidProperties.find('input[name="slip"]').val('');
 }

@@ -13,7 +13,7 @@ repositories {
     mavenCentral()
 
     flatDir {
-        dirs 'libs'
+        dirs 'lib'
     }
 }
 
@@ -24,7 +24,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     
-    implementation files('libs/at.jku.iic.droplet.electric.simulator.jar')
+    implementation files('lib/at.jku.iic.droplet.electric.simulator.jar')
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

@@ -271,6 +271,36 @@ h5 {
 
 /*endregion*/
 
+
+
+/*region Droplet properties*/
+.phase-property-line {
+    padding: 10px;
+    flex-direction: column;
+    display: flex;
+}
+
+.phase-properties .phase-property-line {
+    margin-bottom: 8px;
+    display: flex;
+}
+
+.phase-properties .phase-property-line label {
+    font-size: 0.75em;
+}
+
+.phase-properties .phase-property-line .unit-input {
+    width: 100%;
+}
+
+.phase-properties .phase-property-line input, .phase-properties .phase-property-line select {
+    width: 100%;
+    text-align: right;
+    padding-right: 7px;
+    height: 30px;
+}
+/*endregion*/
+
 /*region Droplet properties*/
 .droplet-properties {
     padding: 10px;

@@ -4,6 +4,7 @@ let pumps = [];
 let droplets = [];
 let dropletInjections = [];
 
+let phaseProperties = { };
 let defaultValues = { };
 
 resetValues();
@@ -11,9 +12,10 @@ resetValues();
 $(document).ready(() => {
     $('[data-toggle="tooltip"]').tooltip();
 
+    // TODO: adapt save manager to new phase properties
+    // TODO: Add fields to fluid table
     // TODO: possibility to define "complete" channels in fluid simumlation
     // TODO: Color at droplet properties
-    // TODO: remove drain from injection time pump selectiopn
     // TODO: injection table: use names instead of ids
     // TODO: disable property input fields until selection is made
     // TODO: switch zoom direction

@@ -736,8 +736,11 @@ function createPumpElement(pumpGroup, pumpType, pump) {
 
 function createPump(newPump, pumps) {
     pumps.push(newPump);
-    $('#newPumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.pumpName));
-    $('#pumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.pumpName));
+
+    if(newPump.pumpType !== PumpTypes.drain) {
+        $('#newPumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.pumpName));
+        $('#pumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.pumpName));
+    }
 }
 
 function resetOldSelection(oldSelectedElem) {

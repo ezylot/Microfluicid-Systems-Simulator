@@ -6,6 +6,8 @@ $(document).ready(() => {
                 pumps: pumps,
                 droplets: droplets,
                 dropletInjections: dropletInjections,
+                phaseProperties: phaseProperties,
+                defaultValues: defaultValues,
                 canvas: {
                     lines: canvasToSave.getObjects("line")
                         .map(line => {
@@ -45,6 +47,8 @@ $(document).ready(() => {
                 resetValues();
                 $(window).trigger('resize');
 
+                setDefaultValues(object.defaultValues);
+
                 object.fluids.forEach(value => {
                     createNewFluid(value, fluids);
                 });
@@ -73,6 +77,7 @@ $(document).ready(() => {
                         });
                 });
 
+                setPhaseProperties(object.phaseProperties);
             };
             reader.readAsText(file);
         }

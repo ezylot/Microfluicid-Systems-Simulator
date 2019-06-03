@@ -9,13 +9,11 @@ $(document).ready(() => {
         event.preventDefault();
 
         let newDropletName = $('#newDropletModal #newDropletName');
-        let newDropletFluidSelection = $('#newDropletModal #newDropletFluidSelection');
         let newDropletVolume = $('#newDropletModal #newDropletVolume');
 
         let newDroplet = {
             id: nextId++,
             name: newDropletName.val(),
-            fluidId: newDropletFluidSelection.val(),
             volume: newDropletVolume.val()
         };
 
@@ -25,7 +23,6 @@ $(document).ready(() => {
         $('#newDropletModal').modal('hide');
 
         newDropletName.val('');
-        newDropletFluidSelection.val('');
         newDropletVolume.val('');
     });
 
@@ -79,15 +76,6 @@ $(document).ready(() => {
 
         activeDroplet[inputName] = $inputField.val();
     });
-
-    $('.droplet-properties #fluidId').on('change', (event) => {
-        let $activeRow = $('.droplet-properties table tbody .active');
-        if($activeRow.length === 0) return;
-
-        let activeDroplet = $activeRow.data('droplet');
-        let $select = $(event.target);
-        activeDroplet.fluidId = $select.val();
-    });
 });
 
 function createNewDroplet(newDroplet, droplets) {
@@ -107,7 +95,6 @@ function createNewDroplet(newDroplet, droplets) {
         let $dropletProperties = $('.droplet-properties');
         $dropletProperties.find('.copy-button').removeClass('disabled');
         $dropletProperties.find('.delete-button').removeClass('disabled');
-        $dropletProperties.find('select[name="fluidId"]').val(newDroplet.fluidId);
         $dropletProperties.find('input[name="volume"]').val(newDroplet.volume);
     });
 
@@ -126,6 +113,5 @@ function resetDropletSelection() {
     $dropletProperties.find('.copy-button').addClass('disabled');
     $dropletProperties.find('.delete-button').addClass('disabled');
 
-    $dropletProperties.find('select[name="fluidId"]').val('');
     $dropletProperties.find('input[name="volume"]').val('');
 }
