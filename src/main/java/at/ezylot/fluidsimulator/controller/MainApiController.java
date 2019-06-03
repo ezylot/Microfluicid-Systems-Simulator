@@ -7,17 +7,16 @@ import at.jku.iic.droplet.basic.architecture.physical.PhysicalChannel;
 import at.jku.iic.droplet.basic.architecture.physical.PhysicalEdge;
 import at.jku.iic.droplet.basic.architecture.physical.PhysicalPump;
 import at.jku.iic.droplet.basic.architecture.physical.PressurePump;
-import at.jku.iic.droplet.basic.architecture.utility.ComponentByNameSearcher;
 import at.jku.iic.droplet.basic.injection.physical.PhysicalDropletInjectionSequence;
 import at.jku.iic.droplet.basic.injection.physical.PhysicalDropletInjectionTime;
 import at.jku.iic.droplet.basic.injection.physical.PhysicalPayloadInjectionTime;
 import at.jku.iic.droplet.basic.physics.FluidProperties;
 import at.jku.iic.droplet.electric.simulator.PhysicalSimulator;
 import at.jku.iic.droplet.electric.simulator.state.PhysicalSystemState;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -37,7 +36,7 @@ public class MainApiController {
 
 
     @GetMapping("/simulate")
-    public List<PhysicalSystemState> simulate(HttpRequest request) {
+    public List<PhysicalSystemState> simulate(HttpServletRequest request) {
         final double width = 100e-06;
         final double widthSmall = 30e-06;
         final double height = 53e-06;

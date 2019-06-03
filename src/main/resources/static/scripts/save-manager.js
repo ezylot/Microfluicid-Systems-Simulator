@@ -1,36 +1,7 @@
 $(document).ready(() => {
     $('.fa-save').click(function (event) {
         let file =  new Blob([
-            JSON.stringify({
-                fluids: fluids,
-                pumps: pumps,
-                droplets: droplets,
-                dropletInjections: dropletInjections,
-                phaseProperties: phaseProperties,
-                defaultValues: defaultValues,
-                canvas: {
-                    lines: canvasToSave.getObjects("line")
-                        .map(line => {
-                            return {
-                                channelType: line.channelType,
-                                x1: line.x1,
-                                x2: line.x2,
-                                y1: line.y1,
-                                y2: line.y2,
-                                properties: line.properties
-                            }
-                        }),
-                    pumps: canvasToSave.getObjects("group")
-                        .filter(group => !!group.oldRepresents)
-                        .map(group => {
-                            return {
-                                properties: group.properties,
-                                oldRepresents: group.oldRepresents,
-                                pumpType: group.pumpType,
-                            }
-                        })
-                }
-            }, null, 2)
+            getSaveAsJson()
         ], {type : 'application/json'});
         event.target.href = URL.createObjectURL(file);
         event.target.download = 'microfluidic-' + Date.now() + '.save';
@@ -86,3 +57,36 @@ $(document).ready(() => {
         document.getElementById('fileupload').click();
     });
 });
+
+function getSaveAsJson() {
+    return JSON.stringify({
+        fluids: fluids,
+        pumps: pumps,
+        droplets: droplets,
+        dropletInjections: dropletInjections,
+        phaseProperties: phaseProperties,
+        defaultValues: defaultValues,
+        canvas: {
+            lines: canvasToSave.getObjects("line")
+                .map(line => {
+                    return {
+                        channelType: line.channelType,
+                        x1: line.x1,
+                        x2: line.x2,
+                        y1: line.y1,
+                        y2: line.y2,
+                        properties: line.properties
+                    }
+                }),
+            pumps: canvasToSave.getObjects("group")
+                .filter(group => !!group.oldRepresents)
+                .map(group => {
+                    return {
+                        properties: group.properties,
+                        oldRepresents: group.oldRepresents,
+                        pumpType: group.pumpType,
+                    }
+                })
+        }
+    }, null, 2);
+}
