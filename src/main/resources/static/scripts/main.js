@@ -11,8 +11,6 @@ resetValues();
 $(document).ready(() => {
     $('[data-toggle="tooltip"]').tooltip();
 
-    // TODO: warn when switching lanugages that work must be saved or else it is lost
-    // TODO: comma values @ fluid properties
     // TODO: save/replace width/height/length not working (always default value)
     // TODO: replace one pump with another
     // TODO: length from actual coordinates (can be unlocked for arbitary positioning)
