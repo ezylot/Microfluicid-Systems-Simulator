@@ -291,8 +291,13 @@ let nextPumpId = 0;
     $('.element-properties .property-form').on('input', 'input', (event) => {
         let $input = $(event.target);
         let objectProperties = $input.closest('.property-form').data('objectProperties');
-
         objectProperties[$input.attr('id')] = $input.val();
+
+        if($input.is($('.element-properties .property-form.line-properties input[name=width]'))) {
+            console.assert(!!oldSelectedElem);
+            oldSelectedElem.strokeWidth = objectProperties.width;
+            canvas.renderAll();
+        }
     });
 
     $createChannelElement.on('click', () => {

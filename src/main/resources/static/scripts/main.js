@@ -11,8 +11,10 @@ resetValues();
 $(document).ready(() => {
     $('[data-toggle="tooltip"]').tooltip();
 
+    // TODO: comma values @ fluid properties
+    // TODO: save/replace width/height/length not working (always default value)
     // TODO: replace one pump with another
-    // TODO: width and length from actual coordinates (can be unlocked for arbitary positioning)
+    // TODO: length from actual coordinates (can be unlocked for arbitary positioning)
     // TODO: Unassign droplet fluid on delete of pump
     // TODO: design for available elements
     // TODO: fast drawing destroys connections
@@ -27,7 +29,7 @@ function resetValues() {
     defaultValues = {
         length: 0,
         width: 16,
-        height: 0,
+        height: 16,
         pressure: 0,
         volume: 0,
     };
