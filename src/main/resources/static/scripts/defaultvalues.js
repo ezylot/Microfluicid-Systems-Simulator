@@ -1,5 +1,4 @@
 $(document).ready(() => {
-    $('input#default-length').on('change', event => { defaultValues.length = parseInt(event.target.value); });
     $('input#default-width').on('change', event => { defaultValues.width = parseInt(event.target.value); });
     $('input#default-height').on('change', event => { defaultValues.height = parseInt(event.target.value); });
     $('input#default-pressure-pumpValue').on('change', event => { defaultValues.pressure = parseInt(event.target.value); });

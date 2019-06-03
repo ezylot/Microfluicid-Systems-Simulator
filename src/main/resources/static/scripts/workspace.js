@@ -227,20 +227,19 @@ let nextPumpId = 0;
 
             let linePropertyForm = $elementPropertiesWindow.find('.line-properties');
 
-            let length, width, height;
+            let width, height;
             if (opt.target.properties == null) {
                 opt.target.properties = {};
-                length = width = height = 0;
+                width = defaultValues.width;
+                height = defaultValues.height;
             } else {
-                length = opt.target.properties.length || 0;
                 width = opt.target.properties.width || 0;
                 height = opt.target.properties.height || 0;
             }
-            opt.target.properties.length = length;
             opt.target.properties.width = width;
             opt.target.properties.height = height;
 
-            linePropertyForm.find('#length').val(length);
+            linePropertyForm.find('#length').val(calculateLength(opt.target));
             linePropertyForm.find('#width').val(width);
             linePropertyForm.find('#height').val(height);
             linePropertyForm.data('objectProperties', opt.target.properties);
@@ -479,6 +478,10 @@ let nextPumpId = 0;
             } else {
                 console.error('Circle to move did not match any end of the connected line');
             }
+
+            if(oldSelectedElem === value.line) {
+                $('.element-properties').find('.line-properties').find('#length').val(calculateLength(value.line));
+            }
         });
         canvas.renderAll();
         canvas.getObjects().forEach(value => {
@@ -524,6 +527,14 @@ let nextPumpId = 0;
     */
 
 })();
+
+/**
+ * Calculates the length of a line
+ * @param {fabric.Line} line
+ */
+function calculateLength(line) {
+    return Math.sqrt(Math.pow(line.x1 - line.x2, 2) + Math.pow(line.y1 - line.y2, 2)).toFixed(2);
+}
 
 function makeChannel(canvas, coords, channelType, properties) {
     let line = new fabric.Line(coords, {
@@ -590,7 +601,6 @@ function makeChannel(canvas, coords, channelType, properties) {
 
     line.properties = $.extend({}, properties, {
         height: defaultValues.height,
-        length: defaultValues.length,
         width: defaultValues.width,
     });
     line.startCircle = startCircle;

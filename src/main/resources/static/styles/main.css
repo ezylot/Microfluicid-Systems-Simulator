@@ -37,6 +37,14 @@ input[type=text], input[type=number], select {
     box-shadow: inset -30px 0 0 0 rgba(237,237,237,0.56);
 }
 
+.unit-input input[disabled] {
+    padding-right: 36px !important;
+    width: 100%;
+    box-shadow: inset -30px 0 0 0 rgba(204, 204, 204, 0.56);
+    background-color: rgb(238, 238, 238);
+}
+
+
 .unit-input .unit {
     position: absolute;
     right: 6px;

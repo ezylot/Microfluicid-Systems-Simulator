@@ -93,11 +93,6 @@
                 <div class="default-values collapse" data-parent=".collapsible-right">
                     <b th:text="#{availableElements.defaultValues.channel}"></b>
                     <div class="unit-input">
-                        <label for="default-length" class="col-md-4" th:text="#{elementProperties.line.length}"></label>
-                        <input id="default-length" name="default-length" type="number" dir="rtl" value="0" />
-                        <small class="unit" th:text="#{elementProperties.line.length.unit}"></small>
-                    </div>
-                    <div class="unit-input">
                         <label for="default-width" class="col-md-4" th:text="#{elementProperties.line.width}"></label>
                         <input id="default-width" name="default-width" type="number" dir="rtl" value="0" />
                         <small class="unit" th:text="#{elementProperties.line.width.unit}"></small>
@@ -307,7 +302,7 @@
             <div class="property-form line-properties" style="display: none;">
                 <div class="element-property-line unit-input">
                     <label for="length" class="col-md-4" th:text="#{elementProperties.line.length}"></label>
-                    <input id="length" name="length" type="number" dir="rtl"/>
+                    <input disabled id="length" name="length" type="number" dir="rtl"/>
                     <small class="unit" th:text="#{elementProperties.line.length.unit}"></small>
                 </div>
                 <div class="element-property-line unit-input">

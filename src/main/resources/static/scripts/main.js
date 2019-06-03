@@ -13,7 +13,6 @@ $(document).ready(() => {
 
     // TODO: save/replace width/height/length not working (always default value)
     // TODO: replace one pump with another
-    // TODO: length from actual coordinates (can be unlocked for arbitary positioning)
     // TODO: Unassign droplet fluid on delete of pump
     // TODO: design for available elements
     // TODO: fast drawing destroys connections
@@ -26,7 +25,6 @@ function resetValues() {
     dropletInjections = [];
 
     defaultValues = {
-        length: 0,
         width: 16,
         height: 16,
         pressure: 0,

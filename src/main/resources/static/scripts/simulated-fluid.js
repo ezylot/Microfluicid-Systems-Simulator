@@ -28,7 +28,7 @@ class SimulatedFluid {
 
     /**
      * Draws this SimulatedFluid as a line on the canvas
-     * @param canvas fabric.Canvas
+     * @param {fabric.Canvas} canvas The canvas on which the fluid should be drawn
      */
     draw(canvas) {
 
