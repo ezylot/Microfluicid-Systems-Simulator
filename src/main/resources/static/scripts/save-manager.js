@@ -42,6 +42,7 @@ $(document).ready(() => {
                 let object = JSON.parse(reader.result);
 
                 canvasToSave.clear();
+                resetValues();
                 $(window).trigger('resize');
 
                 object.fluids.forEach(value => {
@@ -63,13 +64,12 @@ $(document).ready(() => {
                 mergeElements(canvasToSave);
 
                 object.pumps.forEach(pump => {
-                    createPump(pump, pumps);
                     canvasToSave.getObjects("group")
                         .filter(circleGroup => circleGroup.represents === 'endCircle')
-                        .filter(circleGroup => circleGroup.top === pump.top && circleGroup.left === circleGroup.left)
+                        .filter(circleGroup => circleGroup.top === pump.top && circleGroup.left === pump.left)
                         .forEach(circleGroup => {
-                            createPumpElement(circleGroup, PumpTypes[pump.type], pump);
                             createPump(pump, pumps);
+                            createPumpElement(circleGroup, PumpTypes[pump.type], pump);
                         });
                 });
 

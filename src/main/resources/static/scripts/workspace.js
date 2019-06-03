@@ -23,8 +23,6 @@ pumpColorSelected[PumpTypes.pressure] = '#e5eb3f';
 pumpColorSelected[PumpTypes.volume] = '#50e3e3';
 pumpColorSelected[PumpTypes.drain] = '#915269';
 
-const channelCircleRadius = 10;
-
 let nextPumpId = 0;
 
 (function () {
@@ -437,7 +435,7 @@ let nextPumpId = 0;
                 oldSelectedElem.represents = oldSelectedElem.oldRepresents;
                 oldSelectedElem.properties = null;
                 oldSelectedElem._objects[0].set({
-                    radius: channelCircleRadius,
+                    radius: calculateRadius(),
                     fill: '#fff',
                     stroke: '#666',
                 });
@@ -487,13 +485,46 @@ let nextPumpId = 0;
         mergeElements(canvas);
     });
 
+
+    /*
+
+    let channel1 = makeChannel(canvas, [100, 100, 400, 200], ChannelTypes.normal, {});
+    let channel2 = makeChannel(canvas, [400, 200, 700, 600], ChannelTypes.normal, {});
+    let channel3 = makeChannel(canvas, [100, 100, 800, 100], ChannelTypes.normal, {});
+    mergeElements(canvas);
+
+    let simulatedFluid1 = new SimulatedFluid(channel1, 0.1, channel1, 0.3);
+    let simulatedFluid2 = new SimulatedFluid(channel1, 0.5, channel2, 0.6);
+    let simulatedFluid3 = new SimulatedFluid(channel3, 0.1, channel3, 0.2);
+
+    simulatedFluid1.draw(canvas);
+    simulatedFluid2.draw(canvas);
+    simulatedFluid3.draw(canvas);
+
+    let fluidMover = window.setInterval(function() {
+        simulatedFluid3.changePosition(
+            channel3,
+            simulatedFluid3.startPercentage + 0.003,
+            channel3,
+            simulatedFluid3.endPercentage + 0.003
+        );
+        simulatedFluid3.draw(canvas)
+
+
+        if(simulatedFluid3.endPercentage > 0.9) {
+            window.clearInterval(fluidMover);
+        }
+    }, 50);
+
+    */
+
 })();
 
 function makeChannel(canvas, coords, channelType, properties) {
     let line = new fabric.Line(coords, {
         fill: lineColor[channelType],
         stroke: lineColor[channelType],
-        strokeWidth: 12,
+        strokeWidth: defaultValues.width,
         selectable: false,
         evented: true,
         hoverCursor : 'default',
@@ -510,7 +541,7 @@ function makeChannel(canvas, coords, channelType, properties) {
         left: coords[0],
         top: coords[1],
         strokeWidth: 5,
-        radius: channelCircleRadius,
+        radius: calculateRadius(),
         fill: '#fff',
         stroke: '#666',
         hasControls: false,
@@ -531,7 +562,7 @@ function makeChannel(canvas, coords, channelType, properties) {
         left: coords[2],
         top: coords[3],
         strokeWidth: 5,
-        radius: channelCircleRadius,
+        radius: calculateRadius(),
         fill: '#fff',
         stroke: '#666',
         hasControls: false,
@@ -624,7 +655,7 @@ function createPumpElement(pumpGroup, pumpType, pump) {
         pump.pumpName = 'D' + pump.id;
         pump.type = PumpTypes.drain;
         pumpCircle.set({
-            radius: 18,
+            radius: calculatePumpRadius(),
             stroke: '#cbcbcb',
             fill: pumpColor.drain,
         });
@@ -641,7 +672,7 @@ function createPumpElement(pumpGroup, pumpType, pump) {
         pump.pumpName = 'P' + pump.id;
         pump.type = PumpTypes.pressure;
         pumpCircle.set({
-            radius: 18,
+            radius: calculatePumpRadius(),
             stroke: '#cbcbcb',
             fill: pumpColor.pressure,
         });
@@ -666,7 +697,7 @@ function createPumpElement(pumpGroup, pumpType, pump) {
         pump.type = PumpTypes.volume;
 
         pumpCircle.set({
-            radius: 18,
+            radius: calculatePumpRadius(),
             stroke: '#cbcbcb',
             fill: pumpColor.volume,
         });
@@ -709,4 +740,12 @@ function resetOldSelection(oldSelectedElem) {
     } else {
         console.error('Wrong type to reset')
     }
+}
+
+function calculateRadius() {
+    return defaultValues.width / 2 + 6;
+}
+
+function calculatePumpRadius() {
+    return defaultValues.width / 2 + 10;
 }
