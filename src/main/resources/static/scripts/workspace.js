@@ -490,7 +490,7 @@ let nextPumpId = 0;
         mergeElements(canvas);
     });
 
-
+    console.log("done");
     /*
 
     let channel1 = makeChannel(canvas, [100, 100, 400, 200], ChannelTypes.normal, {});
