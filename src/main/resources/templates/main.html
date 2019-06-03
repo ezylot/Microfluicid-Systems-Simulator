@@ -41,7 +41,7 @@
                         aria-expanded="false"
                         th:text="#{languageSwitcher.button}">
                 </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-menu dropdown-menu-right lanugage-switcher" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" th:href="@{''(lang='de')}" th:text="#{languageSwitcher.german}">German</a>
                     <a class="dropdown-item" th:href="@{''(lang='en')}" th:text="#{languageSwitcher.english}">English</a>
                 </div>
@@ -536,5 +536,6 @@
     <script th:src="@{/scripts/dropletInejctions.js}" src="../static/scripts/dropletInejctions.js"></script>
     <script th:src="@{/scripts/footer.js}" src="../static/scripts/footer.js"></script>
     <script th:src="@{/scripts/save-manager.js}" src="../static/scripts/save-manager.js"></script>
+    <script th:src="@{/scripts/language-switcher.js}" src="../static/scripts/language-switcher.js"></script>
 </body>
 </html>
