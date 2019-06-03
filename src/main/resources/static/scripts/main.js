@@ -3,6 +3,8 @@ let fluids = [];
 let pumps = [];
 let droplets = [];
 let dropletInjections = [];
+let states = [];
+
 
 let phaseProperties = { };
 let defaultValues = { };
@@ -32,6 +34,7 @@ function resetValues() {
     pumps = [];
     droplets = [];
     dropletInjections = [];
+    states = [];
 
     defaultValues = {
         width: 16,

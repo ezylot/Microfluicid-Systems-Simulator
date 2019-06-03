@@ -281,7 +281,7 @@
                         </div>
                         <div class="injection-property-line">
                             <label for="injectionTime" class="col-md-4" th:text="#{injectionProperties.form.injectTime}"></label>
-                            <input id="injectionTime" name="injectionTime" type="number" dir="rtl"/>
+                            <input id="injectionTime" name="injectionTime" type="number" dir="rtl" step="0.001" />
                         </div>
                         <div class="injection-property-line">
                             <label for="pumpSelection" class="col-md-4" th:text="#{injectionProperties.form.pumpSelection}"></label>
@@ -349,10 +349,9 @@
         <div class="footer">
             <div class="playback-progress">
                 <label for="progressbar">
-                    <span class="progressbar-current">0</span> / <span class="progressbar-max">140</span>
+                    <span class="progressbar-current">0</span> / <span class="progressbar-max">0</span>
                 </label>
-                <input id="progressbar" type="text" data-slider-min="0" data-slider-max="140" data-slider-step="1"
-                       data-slider-value="0"/>
+                <input id="progressbar" type="text" data-slider-min="0" data-slider-max="0" data-slider-step="1" data-slider-value="0"/>
             </div>
             <div class="sim-controls">
                 <div class="icon-box"><i class="fas fa-play"></i></div>
@@ -427,10 +426,9 @@
                             <option selected value=""></option>
                         </select>
 
-                        <label for="newDropletInjectionTime"
-                               th:text="#{injectionProperties.newModal.injectionTime.label}"></label>
+                        <label for="newDropletInjectionTime" th:text="#{injectionProperties.newModal.injectionTime.label}"></label>
                         <input required autofocus id="newDropletInjectionTime"
-                               dir="rtl" type="number"
+                               dir="rtl" type="number" step="0.001"
                                th:placeholder="#{injectionProperties.newModal.injectionTime.placeholder}"/>
 
                         <label for="newPumpSelection"

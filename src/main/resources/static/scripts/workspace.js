@@ -492,40 +492,6 @@ let nextPumpId = 0;
     canvas.on('object:moved', () => {
         mergeElements(canvas);
     });
-
-    console.log("done");
-    /*
-
-    let channel1 = makeChannel(canvas, [100, 100, 400, 200], ChannelTypes.normal, {});
-    let channel2 = makeChannel(canvas, [400, 200, 700, 600], ChannelTypes.normal, {});
-    let channel3 = makeChannel(canvas, [100, 100, 800, 100], ChannelTypes.normal, {});
-    mergeElements(canvas);
-
-    let simulatedFluid1 = new SimulatedFluid(channel1, 0.1, channel1, 0.3);
-    let simulatedFluid2 = new SimulatedFluid(channel1, 0.5, channel2, 0.6);
-    let simulatedFluid3 = new SimulatedFluid(channel3, 0.1, channel3, 0.2);
-
-    simulatedFluid1.draw(canvas);
-    simulatedFluid2.draw(canvas);
-    simulatedFluid3.draw(canvas);
-
-    let fluidMover = window.setInterval(function() {
-        simulatedFluid3.changePosition(
-            channel3,
-            simulatedFluid3.startPercentage + 0.003,
-            channel3,
-            simulatedFluid3.endPercentage + 0.003
-        );
-        simulatedFluid3.draw(canvas)
-
-
-        if(simulatedFluid3.endPercentage > 0.9) {
-            window.clearInterval(fluidMover);
-        }
-    }, 50);
-
-    */
-
 })();
 
 /**
@@ -683,8 +649,8 @@ function createPumpElement(pumpGroup, pumpType, pump) {
         });
     } else if(pumpType === PumpTypes.pressure) {
 
-        pump.pumpValue = defaultValues.pressure;
-        pump.pumpName = 'P' + pump.id;
+        pump.pumpValue = pump.pumpValue || defaultValues.pressure;
+        pump.pumpName = pump.pumpName || 'P' + pump.id;
         pump.type = PumpTypes.pressure;
         pumpCircle.set({
             radius: calculatePumpRadius(),
@@ -707,8 +673,8 @@ function createPumpElement(pumpGroup, pumpType, pump) {
             fontSize: 20
         }));
     } else {
-        pump.pumpValue = defaultValues.volume;
-        pump.pumpName = 'V' + pump.id;
+        pump.pumpValue = pump.pumpValue || defaultValues.volume;
+        pump.pumpName = pump.pumpName || 'V' + pump.id;
         pump.type = PumpTypes.volume;
 
         pumpCircle.set({

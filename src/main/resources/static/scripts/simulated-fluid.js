@@ -86,7 +86,8 @@ class SimulatedFluid {
 
             let simulatedFluidGroup = new fabric.Group([ startCircle, simulatedFluid, endCircle ], {
                 selectable: false,
-                evented: false
+                evented: false,
+                represents: 'simulatedDroplet'
             });
 
             this._drawnGroup = simulatedFluidGroup;
@@ -190,6 +191,12 @@ class SimulatedFluid {
         }
     }
 
+    remove(canvas) {
+        if(this._drawnGroup != null) {
+            canvas.remove(this._drawnGroup);
+            this._drawnGroup = null;
+        }
+    }
 
     changePosition(startChannel, startPercentage, endChannel, endPercentage) {
         this._startChannel = startChannel;
