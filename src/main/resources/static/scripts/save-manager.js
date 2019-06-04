@@ -24,14 +24,6 @@ $(document).ready(() => {
                     createNewFluid(value, fluids);
                 });
 
-                object.droplets.forEach(value => {
-                    createNewDroplet(value, droplets);
-                });
-
-                object.dropletInjections.forEach(value => {
-                    createNewInjection(value, dropletInjections);
-                });
-
                 object.canvas.lines.forEach(line => {
                     makeChannel(canvasToSave, [line.x1, line.y1, line.x2, line.y2], ChannelTypes[line.channelType], line.properties);
                 });
@@ -49,6 +41,15 @@ $(document).ready(() => {
                 });
 
                 setPhaseProperties(object.phaseProperties);
+
+                object.droplets.forEach(value => {
+                    createNewDroplet(value, droplets);
+                });
+
+                object.dropletInjections.forEach(value => {
+                    createNewInjection(value, dropletInjections);
+
+                });
             };
             reader.readAsText(file);
         }

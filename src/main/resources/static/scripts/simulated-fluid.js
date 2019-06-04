@@ -31,12 +31,6 @@ class SimulatedFluid {
      * @param {fabric.Canvas} canvas The canvas on which the fluid should be drawn
      */
     draw(canvas) {
-
-        if(this._drawnGroup != null) {
-            canvas.remove(this._drawnGroup);
-            this._drawnGroup = null;
-        }
-
         if(this._startChannel === this._endChannel) {
             let start = {x: this._startChannel.x1, y: this._startChannel.y1};
             let end = {x: this._startChannel.x2, y: this._startChannel.y2};
@@ -48,52 +42,68 @@ class SimulatedFluid {
                 start.x + this._endPercentage * vector.x,
                 start.y + this._endPercentage * vector.y,
             ];
+            if(this._drawnGroup && this._drawnGroup.length === 3) {
+                // If we already initialized the group we just change the coordinates here to improve performance
+                let fluidLine = this._drawnGroup[0];
+                let startCircle = this._drawnGroup[1];
+                let endCircle = this._drawnGroup[2];
 
-            let simulatedFluid = new fabric.Line(coords, {
-                fill: this._fluidColor,
-                stroke: this._fluidColor,
-                strokeWidth: this._startChannel.strokeWidth,
-                selectable: false,
-                evented: true,
-                hasControls: false,
-                hasBorders: false,
-                represents: 'SimulatedFluid',
-                originX: 'center',
-                originY: 'center',
-            });
+                fluidLine.set({'x1': coords[0], 'y1': coords[1], 'x2': coords[2], 'y2': coords[3]});
+                startCircle.set({'left': coords[0], 'top': coords[1]});
+                endCircle.set({'left': coords[2], 'top': coords[3]});
+            } else {
+                if(this._drawnGroup != null) {
+                    canvas.remove(this._drawnGroup);
+                }
+                let simulatedFluid = new fabric.Line(coords, {
+                    fill: this._fluidColor,
+                    stroke: this._fluidColor,
+                    strokeWidth: this._startChannel.strokeWidth,
+                    selectable: false,
+                    evented: true,
+                    hasControls: false,
+                    hasBorders: false,
+                    represents: 'SimulatedFluid',
+                    originX: 'center',
+                    originY: 'center',
+                });
 
-            let startCircle = new fabric.Circle({
-                left: coords[0],
-                top: coords[1],
-                radius: this._startChannel.strokeWidth / 2,
-                fill: this._fluidColor,
-                hasControls: false,
-                hasBorders: false,
-                originX: 'center',
-                originY: 'center',
-            });
+                let startCircle = new fabric.Circle({
+                    left: coords[0],
+                    top: coords[1],
+                    radius: this._startChannel.strokeWidth / 2,
+                    fill: this._fluidColor,
+                    hasControls: false,
+                    hasBorders: false,
+                    originX: 'center',
+                    originY: 'center',
+                });
 
-            let endCircle = new fabric.Circle({
-                left: coords[2],
-                top: coords[3],
-                radius: this._startChannel.strokeWidth / 2,
-                fill: this._fluidColor,
-                hasControls: false,
-                hasBorders: false,
-                originX: 'center',
-                originY: 'center',
-            });
+                let endCircle = new fabric.Circle({
+                    left: coords[2],
+                    top: coords[3],
+                    radius: this._startChannel.strokeWidth / 2,
+                    fill: this._fluidColor,
+                    hasControls: false,
+                    hasBorders: false,
+                    originX: 'center',
+                    originY: 'center',
+                });
 
-            let simulatedFluidGroup = new fabric.Group([ startCircle, simulatedFluid, endCircle ], {
-                selectable: false,
-                evented: false,
-                represents: 'simulatedDroplet'
-            });
+                this._drawnGroup = new fabric.Group([ startCircle, simulatedFluid, endCircle ], {
+                    selectable: false,
+                    evented: false,
+                    represents: 'simulatedDroplet'
+                });
+            }
 
-            this._drawnGroup = simulatedFluidGroup;
-            canvas.add(simulatedFluidGroup);
-            simulatedFluidGroup.bringToFront();
+            canvas.add(this._drawnGroup);
+            this._drawnGroup.bringToFront();
         } else {
+            if(this._drawnGroup != null) {
+                canvas.remove(this._drawnGroup);
+            }
+
             let otherStartCircle = null;
             let cornerCircle = null;
             let otherEndCircle = null;

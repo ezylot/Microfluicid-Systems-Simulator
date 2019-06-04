@@ -1,7 +1,7 @@
 let playerInterval = null;
 let currentFrame = null;
-let maxFrame = 0;
-let fluidsInLastState = [];
+let maxFrame = -1;
+let fluidsToSimulate = [];
 
 $(document).ready(() => {
     $('.footer .fa-play').click(event => {
@@ -11,7 +11,7 @@ $(document).ready(() => {
         }
 
         startSimulation().then(value => {
-            fluidsInLastState = [];
+            fluidsToSimulate = [];
             maxFrame = states.length;
 
             $('.progressbar-max').text(states.length);
@@ -27,11 +27,37 @@ $(document).ready(() => {
             play();
         });
     });
+
+    $('.footer').on('click', '.fa-pause', event => {
+        if(maxFrame === -1) {
+            return;
+        }
+
+        if(!!playerInterval) {
+            window.clearInterval(playerInterval);
+            playerInterval = null;
+        }
+
+        $(event.target).removeClass('fas fa-pause').addClass('fab fa-rev');
+    });
+
+    $('.footer').on('click', '.fa-rev', event => {
+        $(event.target).removeClass('fab fa-rev').addClass('fas fa-pause');
+        play();
+    });
 });
 
 function goTo(val) {
-    $('.footer #progressbar').attr('data-slider-value', val);
+    $('.progressbar-current').text(val);
+    $('.footer #progressbar')
+        .attr('data-slider-value', val)
+        .slider('setValue', val);
     currentFrame = val;
+
+    if(!playerInterval) {
+        // We are currently in the pause function, so we draw only a single frame
+        redrawFunction();
+    }
 }
 
 function play() {
@@ -40,52 +66,64 @@ function play() {
         playerInterval = null;
     }
 
-    playerInterval = window.setInterval(() => {
-        if(currentFrame === maxFrame) {
-            window.clearInterval(playerInterval);
-            playerInterval = null;
-            return;
+    playerInterval = window.setInterval(function() {
+        redrawFunction();
+        goTo(currentFrame + 1);
+    }, 20);
+}
+
+function redrawFunction() {
+    if (!!playerInterval && currentFrame >= maxFrame) {
+        window.clearInterval(playerInterval);
+        playerInterval = null;
+        return;
+    }
+
+    states[currentFrame].dropletStates.forEach(value => {
+        let injectionTime = value.dropletInjectionTime;
+        //TODO: determine color from injection data
+
+        let dropletName = value.name;
+        if (!fluidsToSimulate[dropletName]) {
+            fluidsToSimulate[dropletName] = new SimulatedFluid(null, 0, null, 0);
         }
 
-        let currentFrameObject = states[currentFrame];
+        if (value.dropletPositions.length === 1) {
+            let dropletPosition = value.dropletPositions[0];
+            let channel = getLineFromCoords(canvasToSave, dropletPosition.edge);
 
-        fluidsInLastState.forEach(value => value.remove(canvasToSave));
-        fluidsInLastState = [];
-        currentFrameObject.dropletStates.forEach(value => {
-            let injectionTime = value.dropletInjectionTime;
-            //TODO: determine color from injection data
+            fluidsToSimulate[dropletName].changePosition(
+                channel,
+                dropletPosition.headPosition,
+                channel,
+                dropletPosition.tailPosition,
+            );
+        } else if (value.dropletPositions.length === 2) {
+            let channel1 = getLineFromCoords(canvasToSave, value.dropletPositions[0].edge);
+            let channel2 = getLineFromCoords(canvasToSave, value.dropletPositions[1].edge);
 
-            let simulatedFluid1 = null;
-            if(value.dropletPositions.length === 1) {
-                let dropletPosition = value.dropletPositions[0];
-                let channel = getLineFromCoords(canvasToSave, dropletPosition.edge);
-                simulatedFluid1 = new SimulatedFluid(
-                    channel,
-                    dropletPosition.headPosition,
-                    channel,
-                    dropletPosition.tailPosition,
-                );
-            } else if(value.dropletPositions.length === 2) {
-                let channel1 = getLineFromCoords(canvasToSave, value.dropletPositions[0].edge);
-                let channel2 = getLineFromCoords(canvasToSave, value.dropletPositions[1].edge);
-                simulatedFluid1 = new SimulatedFluid(
-                    channel1,
-                    value.dropletPositions[0].tailPosition,
-                    channel2,
-                    value.dropletPositions[1].headPosition,
-                );
-            } else {
-                currentFrame++;
-                return;
-                // TODO: implement multi channel spanning droplets
-            }
+            fluidsToSimulate[dropletName].changePosition(
+                channel1,
+                value.dropletPositions[0].tailPosition,
+                channel2,
+                value.dropletPositions[1].headPosition,
+            );
+        } else if (value.dropletPositions.length === 0) {
+            fluidsToSimulate[dropletName].remove(canvasToSave);
+            delete fluidsToSimulate[dropletName];
+        } else {
+            // TODO: implement multi channel spanning droplets
+            debugger;
+            fluidsToSimulate[dropletName].remove(canvasToSave);
+            delete fluidsToSimulate[dropletName];
+        }
+    });
 
-            simulatedFluid1.draw(canvasToSave);
-            fluidsInLastState.push(simulatedFluid1);
-        });
-        currentFrame++;
-    }, 50);
+    for (let key in fluidsToSimulate) {
+        fluidsToSimulate[key].draw(canvasToSave);
+    }
 }
+
 /**
  * @param {fabric.Canvas} canvas
  * @param {Object} coords

@@ -14,7 +14,7 @@ resetValues();
 $(document).ready(() => {
     $('[data-toggle="tooltip"]').tooltip();
 
-    // TODO: adapt save manager to new phase properties
+    // TODO: back and forward buttons in footer
     // TODO: Add fields to fluid table
     // TODO: possibility to define "complete" channels in fluid simumlation
     // TODO: Color at droplet properties

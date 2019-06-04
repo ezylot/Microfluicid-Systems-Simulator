@@ -32,7 +32,7 @@ $(document).ready(() => {
     $('.injection-properties .copy-button').on('click', (element) => {
         if(!$(element.currentTarget).is('.disabled')) {
             let $activeRow = $('.injection-properties .table-wrapper tr.active');
-            let injectionToCopy = $activeRow.data('droplet');
+            let injectionToCopy = $activeRow.data('injection');
             let newInjection = Object.assign({}, injectionToCopy);
             let $nameInput = $('#newInjectionFromCopyName');
 
@@ -44,7 +44,7 @@ $(document).ready(() => {
 
     $('.injection-properties .delete-button').on('click', () => {
         let $activeRow = $('.injection-properties .table-wrapper tr.active');
-        let injectionToDelete = $activeRow.data('droplet');
+        let injectionToDelete = $activeRow.data('injection');
         dropletInjections.splice(dropletInjections.indexOf(injectionToDelete), 1);
         resetInjectionSelection();
         $activeRow.remove();
@@ -59,6 +59,9 @@ $(document).ready(() => {
         let inputName = $inputField.attr('name');
 
         activeInjection[inputName] = $inputField.val();
+        if(inputName === 'injectionTime') {
+            $activeRow.find('.injectionTime').text(activeInjection.injectionTime);
+        }
     });
 
     $('.injection-properties select').on('change', (event) => {
@@ -70,6 +73,14 @@ $(document).ready(() => {
         let inputName = $select.attr('name');
 
         activeInjection[inputName] = $select.val();
+
+        if(inputName === 'injectionPumpId') {
+            $activeRow.find('.injectionPumpId').text(activeInjection.injectionPumpId);
+        }
+
+        if(inputName === 'dropletId') {
+            $activeRow.find('.dropletId').text(activeInjection.dropletId);
+        }
     });
 });
 
@@ -78,10 +89,10 @@ function createNewInjection(newInjection, injections) {
 
     let $tableBody = $('.injection-properties table tbody');
     let $tableRow = $('<tr class="active"></tr>');
-    $tableRow.append($('<td></td>').text(newInjection.id));
-    $tableRow.append($('<td></td>').text(newInjection.dropletId));
-    $tableRow.append($('<td></td>').text(newInjection.injectionTime));
-    $tableRow.append($('<td></td>').text(newInjection.injectionPumpId));
+    $tableRow.append($('<td class="id"></td>').text(newInjection.id));
+    $tableRow.append($('<td class="dropletId"></td>').text(newInjection.dropletId));
+    $tableRow.append($('<td class="injectionTime"></td>').text(newInjection.injectionTime));
+    $tableRow.append($('<td class="injectionPumpId"></td>').text(newInjection.injectionPumpId));
     $tableBody.append($tableRow);
     $tableRow.data('injection', newInjection);
 

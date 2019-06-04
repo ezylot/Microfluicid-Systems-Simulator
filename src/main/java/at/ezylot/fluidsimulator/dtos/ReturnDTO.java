@@ -27,11 +27,13 @@ public class ReturnDTO {
 
 
     public static class PhysicalDropletStateDTO {
+        private final String name;
         private final List<DropletPositionDTO> dropletPositions;
         private final PhysicalDropletInjectionTimeDTO dropletInjectionTime;
 
 
         PhysicalDropletStateDTO(PhysicalDropletState state) {
+            this.name = state.getName();
             this.dropletPositions = state.getDropletPositions().stream().map(DropletPositionDTO::new).collect(Collectors.toList());
             this.dropletInjectionTime = new PhysicalDropletInjectionTimeDTO(state.getDropletInjectionTime());
         }
@@ -42,6 +44,10 @@ public class ReturnDTO {
 
         public PhysicalDropletInjectionTimeDTO getDropletInjectionTime() {
             return dropletInjectionTime;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 
@@ -60,13 +66,16 @@ public class ReturnDTO {
 
             if(dropletPosition instanceof DropletHeadPosition) {
                 this.headPosition = ((DropletHeadPosition) dropletPosition).headPosition / dropletPosition.edge.getLength();
-                this.tailPosition = null;
+                this.tailPosition = 0.0;
             } else if(dropletPosition instanceof DropletTailPosition) {
-                this.headPosition = null;
+                this.headPosition = 1.0;
                 this.tailPosition = ((DropletTailPosition) dropletPosition).tailPosition / dropletPosition.edge.getLength();
             } else if(dropletPosition instanceof DropletRangePosition) {
                 this.headPosition = ((DropletRangePosition) dropletPosition).furthestPosition / dropletPosition.edge.getLength();
                 this.tailPosition = ((DropletRangePosition) dropletPosition).nearestPosition / dropletPosition.edge.getLength();
+            } else if(dropletPosition instanceof DropletInjectionPosition) {
+                this.headPosition = 0.0;
+                this.tailPosition = 0.0;
             } else {
                 this.headPosition = null;
                 this.tailPosition = null;
