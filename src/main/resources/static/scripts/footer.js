@@ -12,7 +12,11 @@ $(document).ready(() => {
             playerInterval = null;
         }
 
-        startSimulation().then(value => {
+        for (let key in fluidsToSimulate) {
+            fluidsToSimulate[key].remove(canvasToSave);
+        }
+
+        loadSimulation().then(value => {
             fluidsToSimulate = [];
             maxFrame = states.length;
 
@@ -152,7 +156,7 @@ function getLineFromCoords(canvas, coords) {
         .filter(value => value.y2 === coords.y2)[0];
 }
 
-function startSimulation() {
+function loadSimulation() {
     let json = getSaveAsJson();
 
     return jQuery.ajax({
