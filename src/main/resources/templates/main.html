@@ -24,6 +24,19 @@
     <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
 </head>
 <body>
+    <div id="exampleToast" role="alert" aria-live="assertive" aria-atomic="true" class="d-none toast" data-delay="4000">
+        <div class="toast-header">
+            <strong class="primary-text mr-auto"></strong>
+            <small class="muted-text"></small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+        </div>
+    </div>
+    <div id="toast-container" class="position-absolute w-100 p-4"></div>
+
     <div class="sim-container">
         <div class="header">
             <i class="fas fa-folder-open"></i>
@@ -515,6 +528,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min.js"
             integrity="sha256-WBL/n3xm7bfMlEkSfLdaXpMVekQhsDVpslNegSlFw5Y=" crossorigin="anonymous"></script>
 
+    <script th:src="@{/scripts/toast.js}" src="../static/scripts/toast.js"></script>
     <script th:src="@{/scripts/main.js}" src="../static/scripts/main.js"></script>
     <script th:src="@{/scripts/simulated-fluid.js}" src="../static/scripts/simulated-fluid.js"></script>
     <script th:src="@{/scripts/phases.js}" src="../static/scripts/phases.js"></script>

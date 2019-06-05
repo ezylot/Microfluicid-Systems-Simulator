@@ -1,78 +1,56 @@
 package at.ezylot.fluidsimulator.controller;
 
+import at.ezylot.fluidsimulator.dtos.ErrorResponse;
 import at.ezylot.fluidsimulator.dtos.LineCoords;
 import at.ezylot.fluidsimulator.dtos.ReturnDTO;
-import at.jku.iic.droplet.basic.architecture.Edge;
 import at.jku.iic.droplet.basic.architecture.EndPoint;
-import at.jku.iic.droplet.basic.architecture.physical.*;
+import at.jku.iic.droplet.basic.architecture.physical.CloggablePhysicalChannel;
+import at.jku.iic.droplet.basic.architecture.physical.PhysicalBiochip;
+import at.jku.iic.droplet.basic.architecture.physical.PhysicalBypassChannel;
+import at.jku.iic.droplet.basic.architecture.physical.PhysicalChannel;
+import at.jku.iic.droplet.basic.architecture.physical.PhysicalEdge;
+import at.jku.iic.droplet.basic.architecture.physical.PhysicalPump;
+import at.jku.iic.droplet.basic.architecture.physical.PressurePump;
+import at.jku.iic.droplet.basic.architecture.physical.VolumetricFlowRatePump;
 import at.jku.iic.droplet.basic.injection.physical.PhysicalDropletInjectionSequence;
 import at.jku.iic.droplet.basic.injection.physical.PhysicalDropletInjectionTime;
 import at.jku.iic.droplet.basic.injection.physical.PhysicalPayloadInjectionTime;
 import at.jku.iic.droplet.basic.physics.FluidProperties;
 import at.jku.iic.droplet.electric.simulator.PhysicalSimulator;
-import at.jku.iic.droplet.electric.simulator.state.PhysicalDropletState;
 import at.jku.iic.droplet.electric.simulator.state.PhysicalSystemState;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 public class MainApiController {
+    private final MessageSource messageSource;
 
-    private static ArrayList<EndPoint<PhysicalEdge>> getEndPoints(int amount, int startIdx) {
-
-        ArrayList<EndPoint<PhysicalEdge>> endPoints = new ArrayList<>(amount);
-        for (int i = 0; i < amount; i++) {
-            endPoints.add(new EndPoint<>(startIdx + i + 1));
-        }
-        return endPoints;
+    public MainApiController(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
-
-    @PostMapping("/simulateOld")
-    public List<PhysicalSystemState> simulateOld() {
-        final double width = 100e-06;
-        final double height = 53e-06;
-        final double widthSmall = 30e-06;
-        double dropletVolume = width * 2 * height * width;
-
-        ArrayList<EndPoint<PhysicalEdge>> eP = getEndPoints(4, 0);
-
-        PhysicalPump p1 = new PressurePump(eP.get(0), eP.get(2), "p1", 3000);
-
-        // Input channel
-        PhysicalChannel c1 = new PhysicalChannel(eP.get(0), eP.get(1), "c1", width, height, 3 * width);
-        PhysicalChannel c2 = new PhysicalChannel(eP.get(1), eP.get(2), "c2", width, height, 3 * width);
-
-        CloggablePhysicalChannel c3 = new CloggablePhysicalChannel(eP.get(1), eP.get(3), "c3", height, widthSmall, width);
-        CloggablePhysicalChannel c4 = new CloggablePhysicalChannel(eP.get(3), eP.get(2), "c4", height, widthSmall, width);
-
-        List<PhysicalEdge> edges = new LinkedList<>();
-        edges.add(c1);
-        edges.add(c2);
-        edges.add(c3);
-        edges.add(c4);
-
-        // The droplet length is 2 times the default channel width
-        FluidProperties waterInOilDropletProperties = FluidProperties.getWaterInOilDropletProperties();
-        PhysicalBiochip chip = new PhysicalBiochip(edges, Collections.singletonList(p1), waterInOilDropletProperties, dropletVolume, dropletVolume);
-
-        List<PhysicalDropletInjectionTime> waterDropletInjections = Collections
-            .singletonList(new PhysicalPayloadInjectionTime(p1, 0, chip.payloadDropletVolume));
-
-        PhysicalSimulator simulator = new PhysicalSimulator(chip, new PhysicalDropletInjectionSequence(waterDropletInjections));
-        List<PhysicalSystemState> states = simulator.simulate(0.0001, true);
-
-        return states;
-    }
-
 
     @PostMapping("/simulate")
-    public List<ReturnDTO> simulate(@RequestBody JsonNode body) throws IOException {
+    public ResponseEntity simulate(@RequestBody JsonNode body) {
+        Optional<ErrorResponse> errors = validateNodeCounts(body);
+        if(errors.isPresent()) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errors.get());
+        }
+
         Map<AbstractMap.SimpleEntry<String, String>, Integer> corners = new HashMap<>();
         Integer idCounter = 1;
         for (final JsonNode line : body.get("canvas").get("lines")) {
@@ -89,7 +67,7 @@ public class MainApiController {
 
         Map<AbstractMap.SimpleEntry<String, String>, EndPoint<PhysicalEdge>> eP = corners.entrySet().stream()
             .collect(Collectors.toMap(
-                o -> o.getKey(),
+                Map.Entry::getKey,
                 o -> new EndPoint<>(o.getValue())
             ));
 
@@ -98,8 +76,26 @@ public class MainApiController {
         List<EndPoint<PhysicalEdge>> groundNodes = new ArrayList<>();
         for (final JsonNode pumpToCheck : body.get("pumps")) {
             if (pumpToCheck.get("type").asText().equals("drain")) {
-                groundNodes.add(eP.get(new AbstractMap.SimpleEntry(pumpToCheck.get("left").asText(), pumpToCheck.get("top").asText())));
+                groundNodes.add(eP.get(new AbstractMap.SimpleEntry<>(pumpToCheck.get("left").asText(), pumpToCheck.get("top").asText())));
             }
+        }
+
+        if (groundNodes.size() == 0) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                new ErrorResponse(
+                    "error",
+                    messageSource.getMessage("simulation-error.no-ground", new String[]{}, LocaleContextHolder.getLocale())
+                )
+            );
+        }
+
+        if (groundNodes.size() == body.get("pumps").size()) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                new ErrorResponse(
+                    "error",
+                    messageSource.getMessage("simulation-error.only-ground", new String[]{}, LocaleContextHolder.getLocale())
+                )
+            );
         }
 
         for (final JsonNode pump : body.get("pumps")) {
@@ -108,7 +104,7 @@ public class MainApiController {
                 pumps.put(
                     pump.get("id").asInt(),
                     new PressurePump(
-                        eP.get(new AbstractMap.SimpleEntry(pump.get("left").asText(), pump.get("top").asText())),
+                        eP.get(new AbstractMap.SimpleEntry<>(pump.get("left").asText(), pump.get("top").asText())),
                         groundNodes.get(0),
                         pump.get("pumpName").asText(),
                         pump.get("pumpValue").asDouble()
@@ -118,7 +114,7 @@ public class MainApiController {
                 pumps.put(
                     pump.get("id").asInt(),
                     new VolumetricFlowRatePump(
-                        eP.get(new AbstractMap.SimpleEntry(pump.get("left").asText(), pump.get("top").asText())),
+                        eP.get(new AbstractMap.SimpleEntry<>(pump.get("left").asText(), pump.get("top").asText())),
                         groundNodes.get(0),
                         pump.get("pumpName").asText(),
                         pump.get("pumpValue").asDouble()
@@ -165,33 +161,37 @@ public class MainApiController {
             length = length * 10;
 
             PhysicalEdge edge = null;
-            if(channelType.equals("normal")) {
-                edge = new PhysicalChannel(
-                    startEp,
-                    endEp,
-                    "c" + idCounter.toString(),
-                    newWidth,
-                    newHeight,
-                    length
-                );
-            } else if(channelType.equals("cloggable")) {
-                edge = new CloggablePhysicalChannel(
-                    startEp,
-                    endEp,
-                    "c" + idCounter.toString(),
-                    newWidth,
-                    newHeight,
-                    length
-                );
-            } else if(channelType.equals("bypass")) {
-                edge = new PhysicalBypassChannel(
-                    startEp,
-                    endEp,
-                    "c" + idCounter.toString(),
-                    newWidth,
-                    newHeight,
-                    length
-                );
+            switch (channelType) {
+                case "normal":
+                    edge = new PhysicalChannel(
+                        startEp,
+                        endEp,
+                        "c" + idCounter.toString(),
+                        newWidth,
+                        newHeight,
+                        length
+                    );
+                    break;
+                case "cloggable":
+                    edge = new CloggablePhysicalChannel(
+                        startEp,
+                        endEp,
+                        "c" + idCounter.toString(),
+                        newWidth,
+                        newHeight,
+                        length
+                    );
+                    break;
+                case "bypass":
+                    edge = new PhysicalBypassChannel(
+                        startEp,
+                        endEp,
+                        "c" + idCounter.toString(),
+                        newWidth,
+                        newHeight,
+                        length
+                    );
+                    break;
             }
             edges.add(edge);
             idCounter++;
@@ -253,7 +253,7 @@ public class MainApiController {
         PhysicalSimulator simulator = new PhysicalSimulator(chip, new PhysicalDropletInjectionSequence(injections));
         List<PhysicalSystemState> states = simulator.simulate(0.0001, true);
 
-        return states.stream()
+        List<ReturnDTO> returnStateDTOs = states.stream()
             .map(ReturnDTO::new)
             .peek(returnDTO -> returnDTO.getDropletStates().forEach(physicalDropletStateDTO -> {
                 physicalDropletStateDTO.getDropletPositions().forEach(dropletPositionDTO -> {
@@ -262,15 +262,45 @@ public class MainApiController {
                 });
             }))
             .collect(Collectors.toList());
+
+        return ResponseEntity.ok(returnStateDTOs);
+    }
+
+    private Optional<ErrorResponse> validateNodeCounts(JsonNode body) {
+        if(body.get("canvas").get("lines").size() == 0) {
+            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.no-channel", new String[]{}, LocaleContextHolder.getLocale())));
+        }
+
+        if(body.get("pumps").size() < 2) {
+            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.too-few-pumps", new String[]{}, LocaleContextHolder.getLocale())));
+        }
+
+        if(body.get("fluids").size() == 0) {
+            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.no-fluids", new String[]{}, LocaleContextHolder.getLocale())));
+        }
+
+        if(body.get("phaseProperties").size() != 4) {
+            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.phase-properties-empty", new String[]{}, LocaleContextHolder.getLocale())));
+        }
+
+        if(body.get("droplets").size() == 0) {
+            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.no-droplets", new String[]{}, LocaleContextHolder.getLocale())));
+        }
+
+        if(body.get("dropletInjections").size() == 0) {
+            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.no-injections", new String[]{}, LocaleContextHolder.getLocale())));
+        }
+
+        return Optional.empty();
     }
 
     private static class FluidDTO {
-        public Integer id;
-        public String name;
-        public Double mu;
-        public Double density;
+        Integer id;
+        String name;
+        Double mu;
+        Double density;
 
-        public FluidDTO(Integer id, String name, Double mu, Double density) {
+        FluidDTO(Integer id, String name, Double mu, Double density) {
             this.id = id;
             this.name = name;
             this.mu = mu;
@@ -279,11 +309,11 @@ public class MainApiController {
     }
 
     private static class DropletDTO {
-        public Integer id;
-        public String name;
-        public Double volume;
+        Integer id;
+        String name;
+        Double volume;
 
-        public DropletDTO(Integer id, String name, Double volume) {
+        DropletDTO(Integer id, String name, Double volume) {
             this.id = id;
             this.name = name;
             this.volume = volume;

@@ -167,6 +167,16 @@ function loadSimulation() {
         'dataType': 'json',
         'success': function (data) {
             states = data;
+        },
+        'error': function (response) {
+            if (response.status === 422 && response.responseJSON.status === "error") {
+                new Toast("Error from server", response.responseJSON.status, response.responseJSON.message).show();
+            } else if(response.status === 500 && response.responseJSON.error === "Internal Server Error"){
+                console.error("Unknown error while communicating with simulator server", response);
+                new Toast("Error from server", response.responseJSON.error, response.responseJSON.message).show();
+            } else {
+                new Toast("Unknown error from server. More details in developer console or in the server logs").show();
+            }
         }
     });
 }

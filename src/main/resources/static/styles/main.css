@@ -61,6 +61,24 @@ input[type=text], input[type=number], select {
     opacity: 0.6;
 }
 
+/*region toasts */
+#toast-container {
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+}
+
+#toast-container .toast {
+    width: 500px;
+    background: #FFFFFF;
+}
+#toast-container .toast .toast-header {
+    background: #ff9191;
+}
+/*endregion*/
+
 .sim-container {
     height: 100%;
     width: 100%;
