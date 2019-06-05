@@ -294,7 +294,7 @@ let nextPumpId = 0;
 
         if($input.is($('.element-properties .property-form.line-properties input[name=width]'))) {
             console.assert(!!oldSelectedElem);
-            oldSelectedElem.strokeWidth = objectProperties.width;
+            oldSelectedElem.set('strokeWidth', objectProperties.width);
             canvas.renderAll();
         }
     });
@@ -506,7 +506,7 @@ function makeChannel(canvas, coords, channelType, properties) {
     let line = new fabric.Line(coords, {
         fill: lineColor[channelType],
         stroke: lineColor[channelType],
-        strokeWidth: defaultValues.width,
+        strokeWidth: properties.width || defaultValues.width,
         selectable: false,
         evented: true,
         hoverCursor : 'default',
@@ -516,6 +516,7 @@ function makeChannel(canvas, coords, channelType, properties) {
         represents: 'line',
         originX: 'center',
         originY: 'center',
+        objectCaching: false
     });
     line.channelType = channelType;
 
