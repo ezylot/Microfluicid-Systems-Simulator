@@ -4,7 +4,9 @@ let maxFrame = -1;
 let fluidsToSimulate = [];
 
 $(document).ready(() => {
-    $('.footer .fa-play').click(event => {
+    $('.footer #progressbar').slider();
+
+    $('.footer .start-simulate').click(event => {
         if(!!playerInterval) {
             window.clearInterval(playerInterval);
             playerInterval = null;
@@ -18,6 +20,7 @@ $(document).ready(() => {
             $('.footer #progressbar')
                 .attr('data-slider-value', 0)
                 .attr('data-slider-max', states.length)
+                .slider('destroy')
                 .slider()
                 .on('slide', function (slideEvt) {
                     goTo(slideEvt.value);
@@ -43,7 +46,18 @@ $(document).ready(() => {
 
     $('.footer').on('click', '.fa-rev', event => {
         $(event.target).removeClass('fab fa-rev').addClass('fas fa-pause');
+        if (currentFrame >= maxFrame) {
+            goTo(0);
+        }
         play();
+    });
+
+    $('.footer').on('click', '.fa-caret-right', event => {
+        goTo(currentFrame + 1);
+    });
+
+    $('.footer').on('click', '.fa-caret-left', event => {
+        goTo(currentFrame - 1);
     });
 });
 
@@ -69,16 +83,17 @@ function play() {
     playerInterval = window.setInterval(function() {
         redrawFunction();
         goTo(currentFrame + 1);
+
+        if (currentFrame >= maxFrame) {
+            window.clearInterval(playerInterval);
+            playerInterval = null;
+            $('.fa-pause').removeClass('fas fa-pause').addClass('fab fa-rev');
+        }
+
     }, 20);
 }
 
 function redrawFunction() {
-    if (!!playerInterval && currentFrame >= maxFrame) {
-        window.clearInterval(playerInterval);
-        playerInterval = null;
-        return;
-    }
-
     states[currentFrame].dropletStates.forEach(value => {
         let injectionTime = value.dropletInjectionTime;
         //TODO: determine color from injection data

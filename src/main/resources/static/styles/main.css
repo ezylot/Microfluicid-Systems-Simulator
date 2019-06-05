@@ -67,7 +67,7 @@ input[type=text], input[type=number], select {
 
     display: grid;
     grid-template-columns: 300px 3fr 300px;
-    grid-template-rows: 55px 1fr 1fr 100px;
+    grid-template-rows: 55px 1fr 1fr 110px;
 }
 
 .sim-container > div {
@@ -538,6 +538,11 @@ h5 {
 .footer .sim-controls {
     display: flex;
     flex-direction: row;
+}
+
+.footer .start-simulate {
+    padding: 2px 6px;
+    margin: 6px 16px 2px 0;
 }
 /*endregion*/
 
