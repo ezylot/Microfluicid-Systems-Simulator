@@ -75,6 +75,14 @@ $(document).ready(() => {
         let inputName = $inputField.attr('name');
 
         activeDroplet[inputName] = $inputField.val();
+
+        if(inputName === 'volume') {
+            $activeRow.find('.volume').text(formatVolume(activeDroplet.volume));
+        }
+
+        if(inputName === 'name') {
+            $activeRow.find('.name').text(activeDroplet.name);
+        }
     });
 });
 
@@ -83,8 +91,9 @@ function createNewDroplet(newDroplet, droplets) {
 
     let $tableBody = $('.droplet-properties table tbody');
     let $tableRow = $('<tr class="active"></tr>');
-    $tableRow.append($('<td></td>').text(newDroplet.id));
-    $tableRow.append($('<td></td>').text(newDroplet.name));
+    $tableRow.append($('<td class="id"></td>').text(newDroplet.id));
+    $tableRow.append($('<td class="name"></td>').text(newDroplet.name));
+    $tableRow.append($('<td class="volume"></td>').text(formatVolume(newDroplet.volume)));
     $tableBody.append($tableRow);
     $tableRow.data('droplet', newDroplet);
 
@@ -95,6 +104,7 @@ function createNewDroplet(newDroplet, droplets) {
         let $dropletProperties = $('.droplet-properties');
         $dropletProperties.find('.copy-button').removeClass('disabled');
         $dropletProperties.find('.delete-button').removeClass('disabled');
+        $dropletProperties.find('input[name="name"]').val(newDroplet.name);
         $dropletProperties.find('input[name="volume"]').val(newDroplet.volume);
     });
 
@@ -104,6 +114,13 @@ function createNewDroplet(newDroplet, droplets) {
 
     $('#newDropletSelection').append($('<option>').attr('value', newDroplet.id).text(newDroplet.name));
     $('#dropletSelection').append($('<option>').attr('value', newDroplet.id).text(newDroplet.name));
+}
+
+function formatVolume(volume) {
+    if(volume < 0.0001 || volume > 10E6) {
+        return Number(volume).toPrecision(4);
+    }
+    return Number(volume).toFixed(volume.length - 2);
 }
 
 function resetDropletSelection() {

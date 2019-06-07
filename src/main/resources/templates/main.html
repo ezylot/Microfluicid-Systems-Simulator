@@ -233,6 +233,7 @@
                             <tr>
                                 <th th:text="#{dropletProperties.table.id}"></th>
                                 <th th:text="#{dropletProperties.table.name}"></th>
+                                <th th:text="#{dropletProperties.table.volume}"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -245,6 +246,11 @@
                             <label for="volume" class="col-md-4"
                                    th:text="#{dropletProperties.form.volume}"></label>
                             <input id="volume" name="volume" type="number" dir="rtl"/>
+                        </div>
+                        <div class="droplet-property-line">
+                            <label for="name" class="col-md-4"
+                                   th:text="#{dropletProperties.form.name}"></label>
+                            <input id="name" name="name" type="text" />
                         </div>
                         <div class="d-flex">
                             <div class="mr-2 ml-auto" data-toggle="tooltip" data-placement="top"
