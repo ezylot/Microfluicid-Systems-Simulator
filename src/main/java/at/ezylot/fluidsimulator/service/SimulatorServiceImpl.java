@@ -1,6 +1,5 @@
-package at.ezylot.fluidsimulator.controller;
+package at.ezylot.fluidsimulator.service;
 
-import at.ezylot.fluidsimulator.dtos.ErrorResponse;
 import at.ezylot.fluidsimulator.dtos.LineCoords;
 import at.ezylot.fluidsimulator.dtos.ReturnDTO;
 import at.jku.iic.droplet.basic.architecture.EndPoint;
@@ -19,13 +18,10 @@ import at.jku.iic.droplet.basic.physics.FluidProperties;
 import at.jku.iic.droplet.electric.simulator.PhysicalSimulator;
 import at.jku.iic.droplet.electric.simulator.state.PhysicalSystemState;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -33,24 +29,20 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RestController
-public class MainApiController {
+@Service
+public class SimulatorServiceImpl implements SimulatorService {
+
     private final MessageSource messageSource;
 
-    public MainApiController(MessageSource messageSource) {
+    public SimulatorServiceImpl(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
-    @PostMapping("/simulate")
-    public ResponseEntity simulate(@RequestBody JsonNode body) {
-        Optional<ErrorResponse> errors = validateNodeCounts(body);
-        if(errors.isPresent()) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errors.get());
-        }
-
+    @NotNull
+    @Override
+    public List<ReturnDTO> simulate(@NotNull JsonNode body) {
         Map<AbstractMap.SimpleEntry<String, String>, Integer> corners = new HashMap<>();
         Integer idCounter = 1;
         for (final JsonNode line : body.get("canvas").get("lines")) {
@@ -81,21 +73,11 @@ public class MainApiController {
         }
 
         if (groundNodes.size() == 0) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                new ErrorResponse(
-                    "error",
-                    messageSource.getMessage("simulation-error.no-ground", new String[]{}, LocaleContextHolder.getLocale())
-                )
-            );
+            throw new IllegalArgumentException(messageSource.getMessage("simulation-error.no-ground", new String[]{}, LocaleContextHolder.getLocale()));
         }
 
         if (groundNodes.size() == body.get("pumps").size()) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                new ErrorResponse(
-                    "error",
-                    messageSource.getMessage("simulation-error.only-ground", new String[]{}, LocaleContextHolder.getLocale())
-                )
-            );
+            throw new IllegalArgumentException(messageSource.getMessage("simulation-error.only-ground", new String[]{}, LocaleContextHolder.getLocale()));
         }
 
         for (final JsonNode pump : body.get("pumps")) {
@@ -253,7 +235,7 @@ public class MainApiController {
         PhysicalSimulator simulator = new PhysicalSimulator(chip, new PhysicalDropletInjectionSequence(injections));
         List<PhysicalSystemState> states = simulator.simulate(0.0001, true);
 
-        List<ReturnDTO> returnStateDTOs = states.stream()
+        return states.stream()
             .map(ReturnDTO::new)
             .peek(returnDTO -> returnDTO.getDropletStates().forEach(physicalDropletStateDTO -> {
                 physicalDropletStateDTO.getDropletPositions().forEach(dropletPositionDTO -> {
@@ -262,36 +244,6 @@ public class MainApiController {
                 });
             }))
             .collect(Collectors.toList());
-
-        return ResponseEntity.ok(returnStateDTOs);
-    }
-
-    private Optional<ErrorResponse> validateNodeCounts(JsonNode body) {
-        if(body.get("canvas").get("lines").size() == 0) {
-            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.no-channel", new String[]{}, LocaleContextHolder.getLocale())));
-        }
-
-        if(body.get("pumps").size() < 2) {
-            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.too-few-pumps", new String[]{}, LocaleContextHolder.getLocale())));
-        }
-
-        if(body.get("fluids").size() == 0) {
-            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.no-fluids", new String[]{}, LocaleContextHolder.getLocale())));
-        }
-
-        if(body.get("phaseProperties").size() != 4) {
-            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.phase-properties-empty", new String[]{}, LocaleContextHolder.getLocale())));
-        }
-
-        if(body.get("droplets").size() == 0) {
-            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.no-droplets", new String[]{}, LocaleContextHolder.getLocale())));
-        }
-
-        if(body.get("dropletInjections").size() == 0) {
-            return Optional.of(new ErrorResponse("error", messageSource.getMessage("simulation-error.no-injections", new String[]{}, LocaleContextHolder.getLocale())));
-        }
-
-        return Optional.empty();
     }
 
     private static class FluidDTO {
@@ -318,7 +270,5 @@ public class MainApiController {
             this.name = name;
             this.volume = volume;
         }
-    }
+        }
 }
-
-

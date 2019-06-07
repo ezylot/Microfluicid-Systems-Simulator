@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
+    "moduleResolution": "node",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "outFile": "build/resources/main/static/scripts/bundle.js",
-    "sourceMap": true
+    "sourceMap": false
   },
   "include": [
     "src/main/resources/static/**/*.ts"

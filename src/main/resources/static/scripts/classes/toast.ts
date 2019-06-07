@@ -1,4 +1,3 @@
-///<reference path="../../../../../../node_modules/@types/bootstrap/index.d.ts"/>
 class Toast {
     protected title: string;
     protected mutedTitle: string;
@@ -10,13 +9,13 @@ class Toast {
      * @param mutedTitle Text that is shown on the right side in the header bar. Very usefull for e.g. timestamps
      * @param textContent Text that is shown in the main window
      */
-    constructor(title: string, mutedTitle: string, textContent: string) {
+    public constructor(title: string, mutedTitle: string, textContent: string) {
         this.title = title;
         this.mutedTitle = mutedTitle;
         this.textContent = textContent;
     }
 
-    show() {
+    public show(): void {
         let $toastContainer = $("#toast-container");
         let $exampleToast = $("#exampleToast");
         let $newToastElement = $exampleToast.clone();

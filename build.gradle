@@ -34,7 +34,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-security')
-    
+
     implementation(files('lib/at.jku.iic.droplet.electric.simulator.jar'))
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
@@ -54,19 +54,54 @@ compileTestKotlin {
 }
 
 tasks.processResources {
+    dependsOn("eslint")
     dependsOn("tsRun")
 }
 
-tasks.register("tsInstall") {
-    dependsOn("npm_install")
+assemble.finalizedBy("cleanTypescript")
+
+task tsRun {
+    inputs.files(fileTree("$projectDir/src/main/resources/static/").matching {
+        include "**/*.ts"
+    }.files)
+
+    outputs.files(
+        file("$buildDir/resources/main/static/scripts/bundle.js"),
+        file("$buildDir/resources/main/static/scripts/bundle.js.map")
+    )
+
+    dependsOn(npmInstall)
+
+    doLast {
+        logger.error('tsrun exec did run')
+        exec {
+            if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
+                commandLine "node_modules/.bin/tsc.cmd"
+            } else {
+                commandLine "node_modules/.bin/tsc"
+            }
+        }
+    }
 }
 
-task tsRun(type:Exec) {
-    dependsOn("tsInstall")
+task cleanTypescript() {
+    doLast {
+        logger.error('Deleting Typescript files from output directory')
+        fileTree("$buildDir/resources/main/static/scripts").matching {
+            include "**/*.ts"
+        }.forEach {
+            logger.error("deleting: " + it.name)
+            it.delete()
+        }
+    }
+}
+
+task eslint(type:Exec) {
+    dependsOn(npmInstall)
 
     if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
-        commandLine "node_modules/.bin/tsc.cmd"
+        commandLine("$projectDir/node_modules/.bin/eslint.cmd", "$projectDir/src/main/resources/static/**/*.ts")
     } else {
-        commandLine "node_modules/.bin/tsc"
+        commandLine("$projectDir/node_modules/.bin/eslint", "$projectDir/src/main/resources/static/**/*.ts")
     }
 }
