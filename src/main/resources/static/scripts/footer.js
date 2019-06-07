@@ -49,7 +49,6 @@ $(document).ready(() => {
     });
 
     $('.footer').on('click', '.fa-rev', event => {
-        $(event.target).removeClass('fab fa-rev').addClass('fas fa-pause');
         if (currentFrame >= maxFrame) {
             goTo(0);
         }
@@ -79,6 +78,8 @@ function goTo(val) {
 }
 
 function play() {
+    $('.fa-rev').removeClass('fab fa-rev').addClass('fas fa-pause');
+
     if(!!playerInterval) {
         window.clearInterval(playerInterval);
         playerInterval = null;
