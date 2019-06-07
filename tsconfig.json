@@ -3,7 +3,7 @@
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "outFile": "build/resources/main/static/bundle.js",
+    "outFile": "build/resources/main/static/scripts/bundle.js",
     "sourceMap": true
   },
   "include": [
