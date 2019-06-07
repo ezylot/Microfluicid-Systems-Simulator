@@ -3,7 +3,7 @@ let fluids = [];
 let pumps = [];
 let droplets = [];
 let dropletInjections = [];
-let states = [];
+let simulator = null;
 
 
 let phaseProperties = { };
@@ -15,7 +15,7 @@ $(document).ready(() => {
     $('[data-toggle="tooltip"]').tooltip();
 
     // TODO: Add fields to fluid table
-    // TODO: possibility to define "complete" channels in fluid simumlation
+    // TODO: possibility to define "complete" channels in fluid simmulation
     // TODO: Color at droplet properties
     // TODO: disable property input fields until selection is made
     // TODO: switch zoom direction
@@ -32,7 +32,11 @@ function resetValues() {
     pumps = [];
     droplets = [];
     dropletInjections = [];
-    states = [];
+
+    if(!!simulator) {
+        simulator.destroy();
+        simulator = null;
+    }
 
     defaultValues = {
         width: 16,
