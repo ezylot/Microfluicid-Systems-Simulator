@@ -297,6 +297,10 @@ let nextPumpId = 0;
             oldSelectedElem.set('strokeWidth', objectProperties.width);
             canvas.renderAll();
         }
+
+        if($input.attr('id') === 'pumpName' || $input.attr('id') === 'pumpValue') {
+            updatePump(objectProperties);
+        }
     });
 
     $createChannelElement.on('click', () => {
@@ -705,8 +709,12 @@ function createPump(newPump, pumps) {
     pumps.push(newPump);
 
     if(newPump.pumpType !== PumpTypes.drain) {
-        $('#newPumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.pumpName));
-        $('#pumpSelection').append($('<option>').attr('value', newPump.id).text(newPump.pumpName));
+        $('#newPumpSelection').append($('<option>')
+            .attr('value', newPump.id)
+            .text(newPump.pumpName));
+        $('#pumpSelection').append($('<option>')
+            .attr('value', newPump.id)
+            .text(newPump.pumpName));
     }
 }
 

@@ -15,8 +15,10 @@ $(document).ready(() => {
         let newInjection = {
             id: nextId++,
             dropletId: newDroplet.val(),
+            dropletName: newDroplet.find('option:selected').text(),
             injectionTime: newInjectionTime.val(),
-            injectionPumpId: newInjectionPump.val()
+            injectionPumpId: newInjectionPump.val(),
+            injectionPumpName: newInjectionPump.find('option:selected').text()
         };
 
         createNewInjection(newInjection, dropletInjections);
@@ -34,7 +36,6 @@ $(document).ready(() => {
             let $activeRow = $('.injection-properties .table-wrapper tr.active');
             let injectionToCopy = $activeRow.data('injection');
             let newInjection = Object.assign({}, injectionToCopy);
-            let $nameInput = $('#newInjectionFromCopyName');
 
             newInjection.id = nextId++;
 
@@ -72,17 +73,43 @@ $(document).ready(() => {
         let $select = $(event.target);
         let inputName = $select.attr('name');
 
-        activeInjection[inputName] = $select.val();
-
         if(inputName === 'injectionPumpId') {
-            $activeRow.find('.injectionPumpId').text(activeInjection.injectionPumpId);
+            activeInjection.injectionPumpId = $select.val();
+            activeInjection.injectionPumpName = $select.find('option:selected').text();
+            $activeRow.find('.injectionPumpName').text(activeInjection.injectionPumpName);
         }
 
         if(inputName === 'dropletId') {
-            $activeRow.find('.dropletId').text(activeInjection.dropletId);
+            activeInjection.dropletId = $select.val();
+            activeInjection.dropletName = $select.find('option:selected').text();
+            $activeRow.find('.dropletName').text(activeInjection.dropletName);
         }
     });
 });
+
+function updatePump(updatedPump) {
+    let $tableRows = $('.injection-properties table tbody tr');
+    $tableRows.each((index, row) => {
+        let $row = $(row);
+        let data = $row.data('injection');
+        if(data.injectionPumpId == updatedPump.id) {
+            for(let k in updatedPump) data[k]=updatedPump[k];
+            $row.find('.injectionPumpName').text(updatedPump.pumpName);
+        }
+    })
+}
+
+function updateDroplet(updatedDroplet) {
+    let $tableRows = $('.injection-properties table tbody tr');
+    $tableRows.each((index, row) => {
+        let $row = $(row);
+        let data = $row.data('injection');
+        if(data.dropletId === updatedDroplet.id) {
+            for(let k in updatedDroplet) data[k]=updatedDroplet[k];
+            $row.find('.dropletName').text(updatedDroplet.name);
+        }
+    })
+}
 
 function createNewInjection(newInjection, injections) {
     injections.push(newInjection);
@@ -90,9 +117,9 @@ function createNewInjection(newInjection, injections) {
     let $tableBody = $('.injection-properties table tbody');
     let $tableRow = $('<tr class="active"></tr>');
     $tableRow.append($('<td class="id"></td>').text(newInjection.id));
-    $tableRow.append($('<td class="dropletId"></td>').text(newInjection.dropletId));
+    $tableRow.append($('<td class="dropletName"></td>').text(newInjection.dropletName));
     $tableRow.append($('<td class="injectionTime"></td>').text(newInjection.injectionTime));
-    $tableRow.append($('<td class="injectionPumpId"></td>').text(newInjection.injectionPumpId));
+    $tableRow.append($('<td class="injectionPumpName"></td>').text(newInjection.injectionPumpName));
     $tableBody.append($tableRow);
     $tableRow.data('injection', newInjection);
 

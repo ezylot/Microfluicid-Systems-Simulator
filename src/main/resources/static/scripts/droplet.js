@@ -83,6 +83,8 @@ $(document).ready(() => {
         if(inputName === 'name') {
             $activeRow.find('.name').text(activeDroplet.name);
         }
+
+        updateDroplet(activeDroplet);
     });
 });
 
@@ -112,8 +114,13 @@ function createNewDroplet(newDroplet, droplets) {
     $('.droplet-properties .copy-button').removeClass('disabled');
     $('.droplet-properties .delete-button').removeClass('disabled');
 
-    $('#newDropletSelection').append($('<option>').attr('value', newDroplet.id).text(newDroplet.name));
-    $('#dropletSelection').append($('<option>').attr('value', newDroplet.id).text(newDroplet.name));
+    $('#newDropletSelection').append($('<option>')
+        .text(newDroplet.name))
+        .attr('value', newDroplet.id);
+
+    $('#dropletSelection').append($('<option>').attr('value', newDroplet.id)
+        .text(newDroplet.name))
+        .attr('value', newDroplet.id)
 }
 
 function formatVolume(volume) {

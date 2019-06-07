@@ -17,7 +17,6 @@ $(document).ready(() => {
     // TODO: Add fields to fluid table
     // TODO: possibility to define "complete" channels in fluid simumlation
     // TODO: Color at droplet properties
-    // TODO: injection table: use names instead of ids
     // TODO: disable property input fields until selection is made
     // TODO: switch zoom direction
     // TODO: fix pump selection/highlight color
