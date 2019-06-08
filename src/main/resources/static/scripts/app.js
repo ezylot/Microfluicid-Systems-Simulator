@@ -1,24 +1,43 @@
-requirejs.config({
-    map: {
-        "*": {
-            "fabric/fabric-impl": "fabric"
-        }
-    },
-    paths: {
-        "jquery": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min",
-        "popper": "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min",
-        "bootstrap": "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min",
-        "bootstrap-slider": "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/bootstrap-slider.min",
-        "fabric": "https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.7.0/fabric.min",
-    },
-    shim: {
-        "bootstrap": {
-            deps: ["jquery", "popper"]
-        }
-    }
+// TODO: Add fields to fluid table
+// TODO: possibility to define "complete" channels in fluid simmulation
+// TODO: Color at droplet properties
+// TODO: disable property input fields until selection is made
+// TODO: switch zoom direction
+// TODO: fix pump selection/highlight color
+// TODO: save/replace width/height/length not working (always default value)
+// TODO: replace one pump with another
+// TODO: Unassign droplet fluid on delete of pump
+// TODO: design for available elements
+// TODO: fast drawing destroys connections
+
+requirejs(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer, $) {
+    jQuery(() => {
+        // @ts-ignore
+        footer.Footer.getInstance().initFooter(canvasToSave);
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 });
 
-requirejs(["Footer"], function(footer) {
-    footer.initFooter();
-});
+let canvasToSave = null;
+let fluids = [];
+let pumps = [];
+let droplets = [];
+let dropletInjections = [];
 
+let phaseProperties = { };
+
+function resetValues() {
+    fluids = [];
+    pumps = [];
+    droplets = [];
+    dropletInjections = [];
+
+    setDefaultValues({
+        width: 16,
+        height: 16,
+        pressure: 0,
+        volume: 0,
+    })
+}
+
+resetValues();

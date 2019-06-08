@@ -1,5 +1,9 @@
 import {Toast} from "./classes/Toast";
 import {Simulator} from "./classes/Simulator";
+import * as $ from 'jquery';
+import 'bootstrap'
+import 'bootstrap-slider'
+import {Canvas} from "fabric/fabric-impl";
 
 export class Footer {
     private _simulator: Simulator;
@@ -47,47 +51,43 @@ export class Footer {
             }
         });
     }
-}
 
-export function initFooter(): void {
-    let footer = Footer.getInstance();
-    let simulator = footer.simulator;
+    public initFooter(canvas: Canvas): void {
+        // @ts-ignore
+        $('.footer #progressbar').slider();
+        $('.footer .start-simulate').on('click', (): void => {
+            this.resetSimulator();
+            this.getJsonFromServer().then((data): void => {
+                this._simulator = new Simulator(data, $('.footer'), canvas, {
+                    finishedPlayingCallback: (): void => {
+                        $('.fa-pause').removeClass('fas fa-pause').addClass('fab fa-rev');
+                        this._simulator.goTo(0);
+                    },
+                    playCallback: (): void => {
+                        $('.fa-rev').removeClass('fab fa-rev').addClass('fas fa-pause');
+                    },
+                    pauseCallback: (): void => {
+                        $('.fa-pause').removeClass('fas fa-pause').addClass('fab fa-rev');
+                    }
+                });
 
-    // @ts-ignore
-    $('.footer #progressbar').slider();
-    $('.footer .start-simulate').on('click', (): void => {
-        Footer.getInstance().resetSimulator();
-        Footer.getInstance().getJsonFromServer().then((data): void => {
-            // @ts-ignore
-            simulator = new Simulator(data, $('.footer'), canvasToSave, {
-                finishedPlayingCallback: (): void => {
-                    $('.fa-pause').removeClass('fas fa-pause').addClass('fab fa-rev');
-                    simulator.goTo(0);
-                },
-                playCallback: (): void => {
-                    $('.fa-rev').removeClass('fab fa-rev').addClass('fas fa-pause');
-                },
-                pauseCallback: (): void => {
-                    $('.fa-pause').removeClass('fas fa-pause').addClass('fab fa-rev');
-                }
+                this._simulator.goTo(0);
+                this._simulator.play();
             });
-
-            simulator.goTo(0);
-            simulator.play();
         });
-    });
 
-    $('.footer')
-        .on('click', '.fa-pause', (): void => {
-            simulator.pause();
-        })
-        .on('click', '.fa-rev', (): void => {
-            simulator.play();
-        })
-        .on('click', '.fa-caret-right', (): void => {
-            simulator.goTo(simulator.currentState + 1);
-        })
-        .on('click', '.fa-caret-left', (): void => {
-            simulator.goTo(simulator.currentState - 1);
-        });
+        $('.footer')
+            .on('click', '.fa-pause', (): void => {
+                this._simulator.pause();
+            })
+            .on('click', '.fa-rev', (): void => {
+                this._simulator.play();
+            })
+            .on('click', '.fa-caret-right', (): void => {
+                this._simulator.goTo(this._simulator.currentState + 1);
+            })
+            .on('click', '.fa-caret-left', (): void => {
+                this._simulator.goTo(this._simulator.currentState - 1);
+            });
+    }
 }

@@ -1,3 +1,5 @@
+let defaultValues = { };
+
 $(document).ready(() => {
     $('input#default-width').val(defaultValues.width).on('change', event => { defaultValues.width = parseInt(event.target.value); });
     $('input#default-height').val(defaultValues.height).on('change', event => { defaultValues.height = parseInt(event.target.value); });
