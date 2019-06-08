@@ -1,4 +1,4 @@
-import {PhysicalDropletStateDTO} from "./physicalDropletStateDTO";
+import {PhysicalDropletStateDTO} from "./PhysicalDropletStateDTO";
 
 export interface ReturnDTO {
     time: number;

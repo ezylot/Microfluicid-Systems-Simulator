@@ -9,7 +9,7 @@ let defaultValues = { };
 
 resetValues();
 
-$(document).ready(() => {
+jQuery(() => {
     $('[data-toggle="tooltip"]').tooltip();
 
     // TODO: Add fields to fluid table

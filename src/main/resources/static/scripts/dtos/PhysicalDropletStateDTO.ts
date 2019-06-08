@@ -1,5 +1,5 @@
-import {DropletPositionDTO} from "./dropletPositionDTO";
-import {PhysicalDropletInjectionTimeDTO} from "./physicalDropletInjectionTimeDTO";
+import {DropletPositionDTO} from "./DropletPositionDTO";
+import {PhysicalDropletInjectionTimeDTO} from "./PhysicalDropletInjectionTimeDTO";
 
 export interface PhysicalDropletStateDTO {
     name: string;

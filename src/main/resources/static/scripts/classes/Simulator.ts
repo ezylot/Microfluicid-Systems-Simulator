@@ -1,6 +1,6 @@
-import {ReturnDTO} from "../dtos/returnDTO";
+import {ReturnDTO} from "../dtos/ReturnDTO";
 import {fabric} from "fabric";
-import {SimulatedFluid} from "./simulated-fluid";
+import {SimulatedFluid} from "./SimulatedFluid";
 
 export class Simulator {
     private states: ReturnDTO[];
@@ -33,7 +33,7 @@ export class Simulator {
         this.$progressBar = $footer.find("#progressbar");
         this.$progressBar
             .attr('data-slider-value', 0)
-            .attr('data-slider-max', this.states.length);
+            .attr('data-slider-max', this.states.length -  1);
 
         // @ts-ignore
         this.$progressBar.slider('destroy')

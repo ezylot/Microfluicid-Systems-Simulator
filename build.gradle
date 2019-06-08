@@ -54,21 +54,18 @@ compileTestKotlin {
 }
 
 tasks.processResources {
-    dependsOn("eslint")
     dependsOn("tsRun")
+    dependsOn("eslint")
 }
 
-assemble.finalizedBy("cleanTypescript")
-
 task tsRun {
-    inputs.files(fileTree("$projectDir/src/main/resources/static/").matching {
-        include "**/*.ts"
-    }.files)
-
-    outputs.files(
-        file("$buildDir/resources/main/static/scripts/bundle.js"),
-        file("$buildDir/resources/main/static/scripts/bundle.js.map")
-    )
+    //inputs.files(fileTree("$projectDir/src/main/resources/static/").matching {
+    //    include "**/*.ts"
+    //}.files)
+    //outputs.files(
+    //    file("$buildDir/resources/main/static/scripts/bundle.js"),
+    //    file("$buildDir/resources/main/static/scripts/bundle.js.map")
+    //)
 
     dependsOn(npmInstall)
 

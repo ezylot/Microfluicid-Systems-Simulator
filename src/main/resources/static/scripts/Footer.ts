@@ -1,5 +1,5 @@
-import {Toast} from "./classes/toast";
-import {Simulator} from "./classes/simulator";
+import {Toast} from "./classes/Toast";
+import {Simulator} from "./classes/Simulator";
 
 export class Footer {
     private _simulator: Simulator;
@@ -15,8 +15,10 @@ export class Footer {
     }
 
     public resetSimulator(): void {
-        this._simulator.destroy();
-        this._simulator = null;
+        if(!!this._simulator) {
+            this._simulator.destroy();
+            this._simulator = null;
+        }
     }
 
     public get simulator(): Simulator {
@@ -47,8 +49,7 @@ export class Footer {
     }
 }
 
-jQuery((): void => {
-
+export function initFooter(): void {
     let footer = Footer.getInstance();
     let simulator = footer.simulator;
 
@@ -89,4 +90,4 @@ jQuery((): void => {
         .on('click', '.fa-caret-left', (): void => {
             simulator.goTo(simulator.currentState - 1);
         });
-});
+}

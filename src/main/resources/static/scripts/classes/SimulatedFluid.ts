@@ -1,14 +1,14 @@
-import {fabric} from "fabric";
+import {Canvas, Circle, Group, Line} from "fabric/fabric-impl";
 
 export class SimulatedFluid {
-    private startChannel: fabric.Line | any;
+    private startChannel: Line | any;
     private startPercentage: number;
 
-    private endChannel: fabric.Line | any;
+    private endChannel: Line | any;
     private endPercentage: number;
 
     private fluidColor: string;
-    private drawnGroup: fabric.Group;
+    private drawnGroup: Group;
 
     /**
      * Represents a simulated fluid that runs though the channels
@@ -17,7 +17,7 @@ export class SimulatedFluid {
      * @param endChannel Channel where the end of the fluid is
      * @param endPercentage Value where the fluid ends [0; 1]
      */
-    public constructor(startChannel: fabric.Line, startPercentage: number, endChannel: fabric.Line, endPercentage: number) {
+    public constructor(startChannel: Line, startPercentage: number, endChannel: Line, endPercentage: number) {
         this.startChannel = startChannel;
         this.startPercentage = startPercentage;
         this.endChannel = endChannel;
@@ -33,9 +33,9 @@ export class SimulatedFluid {
 
     /**
      * Draws this SimulatedFluid as a line on the canvas
-     * @param {fabric.Canvas} canvas The canvas on which the fluid should be drawn
+     * @param {Canvas} canvas The canvas on which the fluid should be drawn
      */
-    public draw(canvas: fabric.Canvas): void {
+    public draw(canvas: Canvas): void {
         if(this.startChannel === this.endChannel) {
             let start = { x: this.startChannel.x1, y: this.startChannel.y1 };
             let end = { x: this.startChannel.x2, y: this.startChannel.y2 };
@@ -51,7 +51,7 @@ export class SimulatedFluid {
                 canvas.remove(this.drawnGroup);
             }
 
-            let simulatedFluid = new fabric.Line(coords, {
+            let simulatedFluid = new Line(coords, {
                 stroke: this.fluidColor,
                 fill: this.fluidColor,
                 strokeWidth: this.startChannel.strokeWidth,
@@ -63,7 +63,7 @@ export class SimulatedFluid {
                 originY: 'center'
             });
 
-            let startCircle = new fabric.Circle({
+            let startCircle = new Circle({
                 left: coords[0],
                 top: coords[1],
                 radius: this.startChannel.strokeWidth / 2,
@@ -74,7 +74,7 @@ export class SimulatedFluid {
                 originY: 'center',
             });
 
-            let endCircle = new fabric.Circle({
+            let endCircle = new Circle({
                 left: coords[2],
                 top: coords[3],
                 radius: this.startChannel.strokeWidth / 2,
@@ -91,7 +91,7 @@ export class SimulatedFluid {
                 represents: 'simulatedDroplet'
             };
 
-            this.drawnGroup = new fabric.Group([ startCircle, simulatedFluid, endCircle ], groupOptions);
+            this.drawnGroup = new Group([ startCircle, simulatedFluid, endCircle ], groupOptions);
             canvas.add(this.drawnGroup);
         } else {
             if(this.drawnGroup != null) {
@@ -139,7 +139,7 @@ export class SimulatedFluid {
                 cornerCircle.top + this.endPercentage * vectorEnd.y
             ];
 
-            let simulatedFluidPart1 = new fabric.Line(coordsLine1, {
+            let simulatedFluidPart1 = new Line(coordsLine1, {
                 fill: this.fluidColor,
                 stroke: this.fluidColor,
                 strokeWidth: this.startChannel.strokeWidth,
@@ -151,7 +151,7 @@ export class SimulatedFluid {
                 originY: 'center',
             });
 
-            let simulatedFluidPart2 = new fabric.Line(coordsLine2, {
+            let simulatedFluidPart2 = new Line(coordsLine2, {
                 fill: this.fluidColor,
                 stroke: this.fluidColor,
                 strokeWidth: this.startChannel.strokeWidth,
@@ -163,7 +163,7 @@ export class SimulatedFluid {
                 originY: 'center',
             });
 
-            let startCircle = new fabric.Circle({
+            let startCircle = new Circle({
                 left: coordsLine1[0],
                 top: coordsLine1[1],
                 radius: this.startChannel.strokeWidth / 2,
@@ -174,7 +174,7 @@ export class SimulatedFluid {
                 originY: 'center',
             });
 
-            let endCircle = new fabric.Circle({
+            let endCircle = new Circle({
                 left: coordsLine2[2],
                 top: coordsLine2[3],
                 radius: this.startChannel.strokeWidth / 2,
@@ -185,7 +185,7 @@ export class SimulatedFluid {
                 originY: 'center',
             });
 
-            let simulatedFluidGroup = new fabric.Group([ startCircle, simulatedFluidPart1, simulatedFluidPart2, endCircle ], {
+            let simulatedFluidGroup = new Group([ startCircle, simulatedFluidPart1, simulatedFluidPart2, endCircle ], {
                 selectable: false,
                 evented: false
             });
@@ -197,14 +197,14 @@ export class SimulatedFluid {
         canvas.renderAll();
     }
 
-    public remove(canvas: fabric.Canvas): void {
+    public remove(canvas: Canvas): void {
         if(this.drawnGroup != null) {
             canvas.remove(this.drawnGroup);
             this.drawnGroup = null;
         }
     }
 
-    public changePosition(startChannel: fabric.Line, startPercentage: number, endChannel: fabric.Line, endPercentage: number): void {
+    public changePosition(startChannel: Line, startPercentage: number, endChannel: Line, endPercentage: number): void {
         this.startChannel = startChannel;
         this.startPercentage = startPercentage;
         this.endChannel = endChannel;
