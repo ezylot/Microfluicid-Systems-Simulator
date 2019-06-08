@@ -1,21 +1,22 @@
 import {ReturnDTO} from "../dtos/returnDTO";
 import {fabric} from "fabric";
+import {SimulatedFluid} from "./simulated-fluid";
 
 export class Simulator {
     private states: ReturnDTO[];
     private $footer: JQuery;
     private $progressBar: JQuery;
-    private currentState: number;
+    private _currentState: number;
     private playerInterval: number;
     private canvas: fabric.Canvas;
 
     private fluidsToSimulate: Record<string, SimulatedFluid>;
 
-    private playCallback: () => {};
-    private pauseCallback: () => {};
-    private finishedPlayingCallback: () => {};
+    private playCallback: () => void;
+    private pauseCallback: () => void;
+    private finishedPlayingCallback: () => void;
 
-    public constructor(states: ReturnDTO[], $footer:  JQuery, canvas: fabric.Canvas, options: {playCallback?: () => {}; pauseCallback?: () => {}; finishedPlayingCallback?: () => {}}) {
+    public constructor(states: ReturnDTO[], $footer:  JQuery, canvas: fabric.Canvas, options: {playCallback?: () => void; pauseCallback?: () => void; finishedPlayingCallback?: () => void}) {
         this.states = states;
         this.$footer = $footer;
         this.canvas = canvas;
@@ -42,6 +43,10 @@ export class Simulator {
             });
     }
 
+    public get currentState(): number {
+        return this._currentState;
+    }
+
     public play(): void {
         if(!this.isPaused()) {
             window.clearInterval(this.playerInterval);
@@ -50,9 +55,9 @@ export class Simulator {
 
         this.playerInterval = window.setInterval((): void => {
             this.redrawFunction();
-            this.goTo(this.currentState + 1);
+            this.goTo(this._currentState + 1);
 
-            if (this.currentState >= this.states.length) {
+            if (this._currentState >= this.states.length) {
                 this.pause();
                 this.finishedPlayingCallback();
             }
@@ -75,7 +80,7 @@ export class Simulator {
         this.$progressBar.attr('data-slider-value', position);
         // @ts-ignore
         this.$progressBar.slider('setValue', position);
-        this.currentState = position;
+        this._currentState = position;
 
         if(this.isPaused()) {
             this.redrawFunction();
@@ -93,7 +98,7 @@ export class Simulator {
     }
 
     private redrawFunction(): void {
-        this.states[this.currentState].dropletStates.forEach((value): void => {
+        this.states[this._currentState].dropletStates.forEach((value): void => {
             let injectionTime = value.dropletInjectionTime;
             //TODO: determine color from injection data
 
