@@ -1,4 +1,4 @@
-class Toast {
+export class Toast {
     protected title: string;
     protected mutedTitle: string;
     protected textContent: string;

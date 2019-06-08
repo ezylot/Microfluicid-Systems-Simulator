@@ -1,7 +1,7 @@
 import {ReturnDTO} from "../dtos/returnDTO";
 import {fabric} from "fabric";
 
-class Simulator {
+export class Simulator {
     private states: ReturnDTO[];
     private $footer: JQuery;
     private $progressBar: JQuery;

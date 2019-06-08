@@ -1,4 +1,6 @@
-class SimulatedFluid {
+import {fabric} from "fabric";
+
+export class SimulatedFluid {
     private startChannel: fabric.Line | any;
     private startPercentage: number;
 
