@@ -1,22 +1,13 @@
 // TODO: Add fields to fluid table
-// TODO: possibility to define "complete" channels in fluid simmulation
+// TODO: possibility to define "fully filled with fluid" channels in fluid simmulation
 // TODO: Color at droplet properties
 // TODO: disable property input fields until selection is made
-// TODO: switch zoom direction
 // TODO: fix pump selection/highlight color
 // TODO: save/replace width/height/length not working (always default value)
 // TODO: replace one pump with another
 // TODO: Unassign droplet fluid on delete of pump
 // TODO: design for available elements
 // TODO: fast drawing destroys connections
-
-requirejs(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer, $) {
-    jQuery(() => {
-        // @ts-ignore
-        footer.Footer.getInstance().initFooter(canvasToSave);
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-});
 
 let canvasToSave = null;
 let fluids = [];
@@ -25,6 +16,15 @@ let droplets = [];
 let dropletInjections = [];
 
 let phaseProperties = { };
+
+
+requirejs(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer, $) {
+    jQuery(() => {
+        // @ts-ignore
+        footer.Footer.getInstance().initFooter(canvasToSave);
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+});
 
 function resetValues() {
     fluids = [];

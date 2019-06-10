@@ -394,6 +394,7 @@ let nextPumpId = 0;
 
     canvas.on('mouse:wheel', function (opt) {
         let delta = opt.e.deltaY;
+        delta = delta * -1;
         let zoom = canvas.getZoom();
         zoom = zoom + delta / 1000;
         if (zoom > 10) zoom = 10;
