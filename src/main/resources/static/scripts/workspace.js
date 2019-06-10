@@ -712,10 +712,12 @@ function createPump(newPump, pumps) {
     if(newPump.pumpType !== PumpTypes.drain) {
         $('#newPumpSelection').append($('<option>')
             .attr('value', newPump.id)
-            .text(newPump.pumpName));
+            .text(newPump.pumpName)
+        );
         $('#pumpSelection').append($('<option>')
             .attr('value', newPump.id)
-            .text(newPump.pumpName));
+            .text(newPump.pumpName)
+        );
     }
 }
 

@@ -13,23 +13,29 @@ let canvasToSave = null;
 let fluids = [];
 let pumps = [];
 let droplets = [];
-let dropletInjections = [];
 
 require(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer, $) {
     jQuery(() => {
         // @ts-ignore
         footer.Footer.getInstance().initFooter(canvasToSave);
         $('[data-toggle="tooltip"]').tooltip();
+
+        $('.modal').on('hidden.bs.modal', function () {
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        });
+
     });
 });
 
 require([
     'language-switcher',
-    'phases'
+    'phases',
+    'dropletInjections'
 ]);
 
 
-require(['defaultvalues'], (def) => {
+require(['defaultvalue-manager'], (def) => {
     function resetValues() {
         fluids = [];
         pumps = [];
@@ -43,4 +49,3 @@ require(['defaultvalues'], (def) => {
     // TODO: remove after converting
     window.resetValues = resetValues;
 });
-

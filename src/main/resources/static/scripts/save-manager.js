@@ -74,7 +74,7 @@ $(document).ready(() => {
                 });
 
                 object.dropletInjections.forEach(value => {
-                    createNewInjection(value, dropletInjections);
+                    createNewInjection(value);
 
                 });
             };

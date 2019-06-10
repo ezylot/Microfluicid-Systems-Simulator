@@ -115,12 +115,14 @@ function createNewDroplet(newDroplet, droplets) {
     $('.droplet-properties .delete-button').removeClass('disabled');
 
     $('#newDropletSelection').append($('<option>')
-        .text(newDroplet.name))
-        .attr('value', newDroplet.id);
+        .text(newDroplet.name)
+        .attr('value', newDroplet.id)
+    );
 
     $('#dropletSelection').append($('<option>').attr('value', newDroplet.id)
-        .text(newDroplet.name))
+        .text(newDroplet.name)
         .attr('value', newDroplet.id)
+    );
 }
 
 function formatVolume(volume) {
