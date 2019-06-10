@@ -189,15 +189,15 @@ public class SimulatorServiceImpl implements SimulatorService {
             ));
         }
 
-        FluidDTO contPhaseFluid = fluidDTOMap.get(body.get("phaseProperties").get("contPhaseFluid").asInt());
-        FluidDTO disptPhaseFluid = fluidDTOMap.get(body.get("phaseProperties").get("disptPhaseFluid").asInt());
+        FluidDTO contPhaseFluid = fluidDTOMap.get(body.get("phaseProperties").get("_contPhaseFluid").asInt());
+        FluidDTO disptPhaseFluid = fluidDTOMap.get(body.get("phaseProperties").get("_disptPhaseFluid").asInt());
 
         FluidProperties fluidCombination = new FluidProperties(
             contPhaseFluid.mu,
             disptPhaseFluid.mu,
             contPhaseFluid.density,
-            body.get("phaseProperties").get("interfactialTension").asDouble(),
-            body.get("phaseProperties").get("slip").asDouble()
+            body.get("phaseProperties").get("_interfacialTension").asDouble(),
+            body.get("phaseProperties").get("_slip").asDouble()
         );
 
         PhysicalBiochip chip = new PhysicalBiochip(

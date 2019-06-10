@@ -15,9 +15,6 @@ let pumps = [];
 let droplets = [];
 let dropletInjections = [];
 
-let phaseProperties = { };
-
-
 require(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer, $) {
     jQuery(() => {
         // @ts-ignore
@@ -28,7 +25,7 @@ require(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer,
 
 require([
     'language-switcher',
-    'save-manager'
+    'phases'
 ]);
 
 
