@@ -18,13 +18,15 @@ let dropletInjections = [];
 let phaseProperties = { };
 
 
-requirejs(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer, $) {
+require(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer, $) {
     jQuery(() => {
         // @ts-ignore
         footer.Footer.getInstance().initFooter(canvasToSave);
         $('[data-toggle="tooltip"]').tooltip();
     });
 });
+
+require(['language-switcher']);
 
 function resetValues() {
     fluids = [];
