@@ -34,7 +34,7 @@ function resetValues() {
     droplets = [];
     dropletInjections = [];
 
-    setDefaultValues({
+    window.setDefaultValues({
         width: 16,
         height: 16,
         pressure: 0,
@@ -42,4 +42,7 @@ function resetValues() {
     })
 }
 
-resetValues();
+require(['defaultvalues'], (defaultValues) => {
+    resetValues();
+});
+

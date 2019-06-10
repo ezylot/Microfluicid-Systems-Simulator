@@ -18,7 +18,7 @@ $(document).ready(() => {
                 resetValues();
                 $(window).trigger('resize');
 
-                setDefaultValues(object.defaultValues);
+                window.setDefaultValues(object.defaultValues);
 
                 object.fluids.forEach(value => {
                     createNewFluid(value, fluids);
