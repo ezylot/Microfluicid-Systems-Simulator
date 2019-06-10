@@ -1,3 +1,30 @@
+/*
+interface SaveStructure {
+    fluids: object[];
+    pumps: object[];
+    droplets: object[];
+    dropletInjections: object[];
+    phaseProperties: object;
+    defaultValues: object;
+    canvas: {
+        lines: {
+            channelType: string;
+            x1: number;
+            x2: number;
+            y1: number;
+            y2: number;
+            properties: object;
+        }[];
+        pumps: {
+            properties: object;
+            oldRepresents: string;
+            pumpType: string;
+        }[];
+    };
+}
+*/
+
+
 $(document).ready(() => {
     $('.fa-save').click(function (event) {
         let file =  new Blob([

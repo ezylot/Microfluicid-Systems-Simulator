@@ -26,23 +26,24 @@ require(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer,
     });
 });
 
-require(['language-switcher']);
+require([
+    'language-switcher',
+    'save-manager'
+]);
 
-function resetValues() {
-    fluids = [];
-    pumps = [];
-    droplets = [];
-    dropletInjections = [];
 
-    window.setDefaultValues({
-        width: 16,
-        height: 16,
-        pressure: 0,
-        volume: 0,
-    })
-}
+require(['defaultvalues'], (def) => {
+    function resetValues() {
+        fluids = [];
+        pumps = [];
+        droplets = [];
+        dropletInjections = [];
 
-require(['defaultvalues'], (defaultValues) => {
+        def.setDefaultValues(def.defaultDefaultValues);
+    }
     resetValues();
+
+    // TODO: remove after converting
+    window.resetValues = resetValues;
 });
 
