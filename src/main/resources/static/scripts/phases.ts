@@ -26,9 +26,3 @@ jQuery((): void => {
 export {
     phaseProperties
 }
-
-// TODO: remove with ts rewrite
-// @ts-ignore
-window.phaseProperties = phaseProperties;
-// @ts-ignore
-window.setPhaseProperties = setPhaseProperties;

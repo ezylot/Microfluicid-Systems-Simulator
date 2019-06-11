@@ -24,10 +24,12 @@ pumpColorSelected[PumpTypes.volume] = '#50e3e3';
 pumpColorSelected[PumpTypes.drain] = '#915269';
 
 let nextPumpId = 0;
+let pumps = [];
+
 
 (function () {
     const canvas = new fabric.Canvas('c', {selection: false});
-    canvasToSave = canvas;
+    window.canvasToSave = canvas;
 
     let canvasContainer = $('.workspace');
     let backgroundGroup = null;

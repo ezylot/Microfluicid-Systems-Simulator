@@ -50,12 +50,6 @@ export function createNewDroplet(newDroplet: Droplet): void {
         .text(newDroplet.name)
         .attr('value', newDroplet.id)
     );
-
-
-
-    // TODO: remove after TS rework
-    // @ts-ignore
-    window.droplets = droplets;
 }
 
 
@@ -110,11 +104,6 @@ jQuery((): void => {
                 value.dropletId = null;
             }
         });
-
-
-        // TODO: remove after TS rework
-        // @ts-ignore
-        window.droplets = droplets;
     });
 
     $('#copyDropletModalForm').on('submit', (event: SubmitEvent): void => {
@@ -153,20 +142,9 @@ jQuery((): void => {
         }
 
         updateDroplet(activeDroplet);
-
-        // TODO: remove after TS rework
-        // @ts-ignore
-        window.droplets = droplets;
     });
 });
 
 export {
     droplets
 }
-
-
-//TODO: remove after TS rewrite
-// @ts-ignore
-window.droplets = droplets;
-// @ts-ignore
-window.createNewDroplet = createNewDroplet;

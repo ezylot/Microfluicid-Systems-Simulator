@@ -9,43 +9,24 @@
 // TODO: design for available elements
 // TODO: fast drawing destroys connections
 
-let canvasToSave = null;
-let pumps = [];
-
-require(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer, $) {
+require(['jquery', 'bootstrap', 'bootstrap-slider'], function ($) {
     jQuery(() => {
-        // @ts-ignore
-        footer.Footer.getInstance().initFooter(canvasToSave);
         $('[data-toggle="tooltip"]').tooltip();
 
         $('.modal').on('hidden.bs.modal', function () {
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
         });
-
     });
 });
 
 require([
+    'value-reset',
     'language-switcher',
     'fluids',
     'phases',
     'droplets',
-    'dropletInjections'
+    'dropletInjections',
+    'save-manager',
+    'Footer',
 ]);
-
-
-require(['defaultvalue'], (def) => {
-    function resetValues() {
-        fluids = [];
-        pumps = [];
-        droplets = [];
-        dropletInjections = [];
-
-        def.setDefaultValues(def.defaultDefaultValues);
-    }
-    resetValues();
-
-    // TODO: remove after converting
-    window.resetValues = resetValues;
-});

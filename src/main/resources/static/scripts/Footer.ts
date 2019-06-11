@@ -4,6 +4,7 @@ import * as $ from 'jquery';
 import 'bootstrap'
 import 'bootstrap-slider'
 import {Canvas} from "fabric/fabric-impl";
+import {getSaveAsJson} from "./save-manager";
 
 export class Footer {
     private _simulator: Simulator;
@@ -30,7 +31,6 @@ export class Footer {
     }
 
     public getJsonFromServer(): JQuery.jqXHR {
-        // @ts-ignore
         let json = getSaveAsJson();
 
         return jQuery.ajax({
@@ -91,3 +91,9 @@ export class Footer {
             });
     }
 }
+
+
+jQuery((): void => {
+    // @ts-ignore
+    Footer.getInstance().initFooter(window.canvasToSave);
+});

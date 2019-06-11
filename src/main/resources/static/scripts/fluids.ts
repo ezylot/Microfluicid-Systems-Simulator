@@ -34,11 +34,6 @@ export function createNewFluid(newFluid: Fluid): void {
 
     $('#contPhaseFluid').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
     $('#disptPhaseFluid').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
-
-    //TODO: remove after TS rework
-    // @ts-ignore
-    window.fluids = fluids;
-
 }
 
 function resetFluidSelection(): void {
@@ -140,10 +135,3 @@ jQuery((): void => {
 export {
     fluids
 }
-
-//TODO: remove after TS rework
-// @ts-ignore
-window.fluids = fluids;
-// @ts-ignore
-window.createNewFluid = createNewFluid;
-

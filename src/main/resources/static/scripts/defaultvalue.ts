@@ -4,35 +4,33 @@ import {DefaultValues} from "./classes/DefaultValues";
 
 
 const defaultDefaultValues: DefaultValues = new DefaultValues(16, 16, 0, 0);
-const defaultvalueManager: DefaultValues = defaultDefaultValues;
+const defaultValues: DefaultValues = defaultDefaultValues;
 
 jQuery((): void => {
-    $('input#default-width').val(defaultvalueManager.width).on('change', (event: ChangeEvent): void => { defaultvalueManager.width = parseInt(event.target.value); });
-    $('input#default-height').val(defaultvalueManager.height).on('change', (event: ChangeEvent): void => { defaultvalueManager.height = parseInt(event.target.value); });
-    $('input#default-pressure-pumpValue').val(defaultvalueManager.pressure).on('change', (event: ChangeEvent): void => { defaultvalueManager.pressure = parseInt(event.target.value); });
-    $('input#default-volume-pumpValue').val(defaultvalueManager.volume).on('change', (event: ChangeEvent): void => { defaultvalueManager.volume = parseInt(event.target.value); });
+    $('input#default-width').val(defaultValues.width).on('change', (event: ChangeEvent): void => { defaultValues.width = parseInt(event.target.value); });
+    $('input#default-height').val(defaultValues.height).on('change', (event: ChangeEvent): void => { defaultValues.height = parseInt(event.target.value); });
+    $('input#default-pressure-pumpValue').val(defaultValues.pressure).on('change', (event: ChangeEvent): void => { defaultValues.pressure = parseInt(event.target.value); });
+    $('input#default-volume-pumpValue').val(defaultValues.volume).on('change', (event: ChangeEvent): void => { defaultValues.volume = parseInt(event.target.value); });
 });
 
 
 export function setDefaultValues(newDefaultValues: DefaultValues): void {
-    defaultvalueManager.width = newDefaultValues._width;
-    defaultvalueManager.height = newDefaultValues._height;
-    defaultvalueManager.pressure = newDefaultValues._pressure;
-    defaultvalueManager.volume = newDefaultValues._volume;
+    defaultValues.width = newDefaultValues._width;
+    defaultValues.height = newDefaultValues._height;
+    defaultValues.pressure = newDefaultValues._pressure;
+    defaultValues.volume = newDefaultValues._volume;
 
-    $('input#default-width').val(defaultvalueManager.width);
-    $('input#default-height').val(defaultvalueManager.height);
-    $('input#default-pressure-pumpValue').val(defaultvalueManager.pressure);
-    $('input#default-volume-pumpValue').val(defaultvalueManager.volume);
+    $('input#default-width').val(defaultValues.width);
+    $('input#default-height').val(defaultValues.height);
+    $('input#default-pressure-pumpValue').val(defaultValues.pressure);
+    $('input#default-volume-pumpValue').val(defaultValues.volume);
 }
 
 export {
     defaultDefaultValues,
-    defaultvalueManager
+    defaultValues
 };
 
 //TODO: remove after converting
 // @ts-ignore
-window.defaultValues = defaultvalueManager;
-// @ts-ignore
-window.setDefaultValues = setDefaultValues;
+window.defaultValues = defaultValues;

@@ -49,11 +49,11 @@ export class Simulator {
 
     public play(): void {
         if(!this.isPaused()) {
-            window.clearInterval(this.playerInterval);
+            clearInterval(this.playerInterval);
             this.playerInterval = null;
         }
 
-        this.playerInterval = window.setInterval((): void => {
+        this.playerInterval = setInterval((): void => {
             this.redrawFunction();
             this.goTo(this._currentState + 1);
 
@@ -66,7 +66,7 @@ export class Simulator {
     }
 
     public pause(): void {
-        window.clearInterval(this.playerInterval);
+        clearInterval(this.playerInterval);
         this.playerInterval = null;
         this.pauseCallback();
     }
