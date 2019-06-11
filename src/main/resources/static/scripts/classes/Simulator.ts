@@ -1,6 +1,8 @@
 import {ReturnDTO} from "../dtos/ReturnDTO";
 import {fabric} from "fabric";
 import {SimulatedFluid} from "./SimulatedFluid";
+import {ChannelLine} from "../fabricElements/ChannelLine";
+import {Canvas} from "fabric/fabric-impl";
 
 export class Simulator {
     private states: ReturnDTO[];
@@ -8,15 +10,15 @@ export class Simulator {
     private $progressBar: JQuery;
     private _currentState: number;
     private playerInterval: number;
-    private canvas: fabric.Canvas;
+    private readonly canvas: Canvas;
 
-    private fluidsToSimulate: Record<string, SimulatedFluid>;
+    private readonly fluidsToSimulate: Record<string, SimulatedFluid>;
 
-    private playCallback: () => void;
-    private pauseCallback: () => void;
-    private finishedPlayingCallback: () => void;
+    private readonly playCallback: () => void;
+    private readonly pauseCallback: () => void;
+    private readonly finishedPlayingCallback: () => void;
 
-    public constructor(states: ReturnDTO[], $footer:  JQuery, canvas: fabric.Canvas, options: {playCallback?: () => void; pauseCallback?: () => void; finishedPlayingCallback?: () => void}) {
+    public constructor(states: ReturnDTO[], $footer:  JQuery, canvas: Canvas, options: {playCallback?: () => void; pauseCallback?: () => void; finishedPlayingCallback?: () => void}) {
         this.states = states;
         this.$footer = $footer;
         this.canvas = canvas;
@@ -143,13 +145,13 @@ export class Simulator {
         }
     }
 
-    private getLineFromCoords(coords: { x1: number; x2: number; y1: number; y2: number }): fabric.Line {
+    private getLineFromCoords(coords: { x1: number; x2: number; y1: number; y2: number }): ChannelLine {
         return this.canvas.getObjects('line')
-            .filter((value: any): boolean => value.represents === 'line')
-            .filter((value: fabric.Line): boolean => value.x1 === coords.x1)
-            .filter((value: fabric.Line): boolean => value.x2 === coords.x2)
-            .filter((value: fabric.Line): boolean => value.y1 === coords.y1)
-            .filter((value: fabric.Line): boolean => value.y2 === coords.y2)[0] as fabric.Line;
+            .filter((value: ChannelLine): boolean => value.represents === 'line')
+            .filter((value: ChannelLine): boolean => value.x1 === coords.x1)
+            .filter((value: ChannelLine): boolean => value.x2 === coords.x2)
+            .filter((value: ChannelLine): boolean => value.y1 === coords.y1)
+            .filter((value: ChannelLine): boolean => value.y2 === coords.y2)[0] as ChannelLine;
     }
 }
 

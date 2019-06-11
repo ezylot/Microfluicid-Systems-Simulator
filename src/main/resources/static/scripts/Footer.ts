@@ -5,6 +5,7 @@ import 'bootstrap'
 import 'bootstrap-slider'
 import {Canvas} from "fabric/fabric-impl";
 import {getSaveAsJson} from "./save-manager";
+import {canvasToSave} from "./workspace";
 
 export class Footer {
     private _simulator: Simulator;
@@ -94,6 +95,5 @@ export class Footer {
 
 
 jQuery((): void => {
-    // @ts-ignore
-    Footer.getInstance().initFooter(window.canvasToSave);
+    Footer.getInstance().initFooter(canvasToSave);
 });

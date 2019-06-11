@@ -13,21 +13,21 @@ import {Pump} from "./classes/Pump";
 import {Droplet} from "./classes/Droplet";
 import {DropletInjection} from "./classes/DropletInjection";
 import {resetValues} from "./value-reset";
+import {
+    canvasToSave,
+    ChannelTypes,
+    createPump,
+    createPumpElement,
+    makeChannel,
+    mergeElements,
+    pumps, PumpTypes
+} from "./workspace";
 
 
 export function getSaveAsJson(): string {
-
-    // TODO: remove after rework
-    // @ts-ignore
-    let canvasToSave: Canvas = window.canvasToSave;
-    // TODO: remove after rework
-    // @ts-ignore
-    let pumpsInternal: Pump[] = pumps;
-
-
     let saveStructure: SaveStructure = {
         fluids: fluids,
-        pumps: pumpsInternal,
+        pumps: pumps,
         droplets: droplets,
         dropletInjections: dropletInjections,
         phaseProperties: phaseProperties,
@@ -38,8 +38,8 @@ export function getSaveAsJson(): string {
                     return new Channel(
                         line.channelType,
                         line.x1,
-                        line.x2,
                         line.y1,
+                        line.x2,
                         line.y2,
                         line.properties,
                     );
@@ -62,10 +62,6 @@ jQuery((): void => {
     $('.fa-folder-open').on('click', (): void => {
         document.getElementById('fileupload').addEventListener('change', (evt: any): void => {
 
-            // TODO: remove after rework
-            // @ts-ignore
-            let canvasToSave: Canvas = window.canvasToSave;
-
             let file = evt.target.files[0];
             let reader = new FileReader();
             reader.onload = (): void => {
@@ -84,13 +80,9 @@ jQuery((): void => {
                 });
 
                 object.canvas.lines.forEach((channel: Channel): void => {
-                    // TODO: remove after converting
-                    // @ts-ignore
-                    makeChannel(canvasToSave, [channel.x1, channel.y1, channel.x2, channel.y2], ChannelTypes[channel.channelType], channel.properties);
+                    makeChannel(new Channel(channel.channelType, channel.x1, channel.y1, channel.x2, channel.y2, channel.properties));
                 });
 
-                // TODO: remove after converting
-                // @ts-ignore
                 mergeElements(canvasToSave);
 
                 object.pumps.forEach((pump: Pump): void => {
@@ -98,10 +90,7 @@ jQuery((): void => {
                         .filter((circleGroup: Group | any): boolean => circleGroup.represents === 'endCircle')
                         .filter((circleGroup: Group | any): boolean => circleGroup.top === pump.top && circleGroup.left === pump.left)
                         .forEach((circleGroup: Group | any): void => {
-                            // TODO: remove after converting
-                            // @ts-ignore
-                            createPump(pump, pumps);
-                            // @ts-ignore
+                            createPump(pump);
                             createPumpElement(circleGroup, PumpTypes[pump.type], pump);
                         });
                 });

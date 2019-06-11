@@ -2,12 +2,13 @@ import * as $ from "jquery";
 import 'bootstrap';
 import SubmitEvent = JQuery.SubmitEvent;
 import {DropletInjection} from "./classes/DropletInjection";
+import {Pump} from "./classes/Pump";
+import {Droplet} from "./classes/Droplet";
 
 let dropletInjections: DropletInjection[] = [];
 let nextId = 0;
 
-// TODO: change type when defined for pump
-export function updatePump(updatedPump: any): void {
+export function updatePump(updatedPump: Pump): void {
     let $tableRows = $('.injection-properties table tbody tr');
     $tableRows.each((index, row): void => {
         let $row = $(row);
@@ -15,14 +16,13 @@ export function updatePump(updatedPump: any): void {
 
         if(dropletInjection.injectionPumpId == updatedPump.id) {
             dropletInjection.injectionPumpId = updatedPump.id;
-            dropletInjection.injectionPumpName = updatedPump.pumpValue;
+            dropletInjection.injectionPumpName = updatedPump.pumpName;
             $row.find('.injectionPumpName').text(updatedPump.pumpName);
         }
     });
 }
 
-// TODO: change type when defined for droplet
-export function updateDroplet(updatedDroplet: any): void {
+export function updateDroplet(updatedDroplet: Droplet): void {
     let $tableRows = $('.injection-properties table tbody tr');
     $tableRows.each((index, row): void => {
         let $row = $(row);
@@ -171,6 +171,3 @@ export {
     dropletInjections
 }
 
-// TODO: remove after TS rework
-// @ts-ignore
-window.updatePump = updatePump;

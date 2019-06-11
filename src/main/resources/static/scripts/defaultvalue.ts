@@ -30,7 +30,3 @@ export {
     defaultDefaultValues,
     defaultValues
 };
-
-//TODO: remove after converting
-// @ts-ignore
-window.defaultValues = defaultValues;

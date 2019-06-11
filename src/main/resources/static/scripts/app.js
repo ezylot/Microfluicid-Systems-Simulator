@@ -21,6 +21,7 @@ require(['jquery', 'bootstrap', 'bootstrap-slider'], function ($) {
 });
 
 require([
+    'workspace',
     'value-reset',
     'language-switcher',
     'fluids',
