@@ -7,7 +7,7 @@ let dropletInjections: DropletInjection[] = [];
 let nextId = 0;
 
 // TODO: change type when defined for pump
-function updatePump(updatedPump: any): void {
+export function updatePump(updatedPump: any): void {
     let $tableRows = $('.injection-properties table tbody tr');
     $tableRows.each((index, row): void => {
         let $row = $(row);
@@ -18,11 +18,16 @@ function updatePump(updatedPump: any): void {
             dropletInjection.injectionPumpName = updatedPump.pumpValue;
             $row.find('.injectionPumpName').text(updatedPump.pumpName);
         }
-    })
+    });
+
+
+    // TODO: remove after TS rework
+    // @ts-ignore
+    window.dropletInjections = dropletInjections;
 }
 
 // TODO: change type when defined for droplet
-function updateDroplet(updatedDroplet: any): void {
+export function updateDroplet(updatedDroplet: any): void {
     let $tableRows = $('.injection-properties table tbody tr');
     $tableRows.each((index, row): void => {
         let $row = $(row);
@@ -33,19 +38,20 @@ function updateDroplet(updatedDroplet: any): void {
             dropletInjection.dropletName = updatedDroplet.name;
             $row.find('.dropletName').text(updatedDroplet.name);
         }
-    })
+    });
+
+
+    // TODO: remove after TS rework
+    // @ts-ignore
+    window.dropletInjections = dropletInjections;
 }
 
-function createNewInjection(newInjection: DropletInjection): void {
+export function createNewInjection(newInjection: DropletInjection): void {
     if(newInjection.id >= nextId) {
         nextId = newInjection.id + 1;
     }
 
     dropletInjections.push(newInjection);
-
-    // TODO: remove after TS rework
-    // @ts-ignore
-    window.dropletInjections = dropletInjections;
 
     let $tableBody = $('.injection-properties table tbody');
     let $tableRow = $('<tr class="active"></tr>');
@@ -68,7 +74,12 @@ function createNewInjection(newInjection: DropletInjection): void {
         $injectionProperties.find('input[name="injectionTime"]').val(newInjection.injectionTime);
     });
 
-    $tableRow.click();
+    $tableRow.trigger('click');
+
+
+    // TODO: remove after TS rework
+    // @ts-ignore
+    window.dropletInjections = dropletInjections;
 }
 
 function resetInjectionSelection(): void {
@@ -97,11 +108,11 @@ jQuery((): void => {
 
             let newInjection = new DropletInjection(
                 nextId++,
-                parseInt(newDroplet.val() as string),
-                parseInt(newInjectionPump.val() as string),
+                Number(newDroplet.val()),
+                Number(newInjectionPump.val()),
                 newDroplet.find('option:selected').text(),
                 newInjectionPump.find('option:selected').text(),
-                parseFloat(newInjectionTime.val() as string)
+                Number(newInjectionTime.val())
             );
 
             createNewInjection(newInjection);
@@ -132,6 +143,11 @@ jQuery((): void => {
         dropletInjections.splice(dropletInjections.indexOf(injectionToDelete), 1);
         resetInjectionSelection();
         $activeRow.remove();
+
+
+        // TODO: remove after TS rework
+        // @ts-ignore
+        window.dropletInjections = dropletInjections;
     });
 
     $('.injection-properties input').on('input', (event): void => {
@@ -180,9 +196,5 @@ export {
 window.dropletInjections = dropletInjections;
 // @ts-ignore
 window.createNewInjection = createNewInjection;
-// @ts-ignore
-window.resetInjectionSelection = resetInjectionSelection;
-// @ts-ignore
-window.updateDroplet = updateDroplet;
 // @ts-ignore
 window.updatePump = updatePump;

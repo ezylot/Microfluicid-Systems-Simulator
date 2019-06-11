@@ -12,7 +12,6 @@
 let canvasToSave = null;
 let fluids = [];
 let pumps = [];
-let droplets = [];
 
 require(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer, $) {
     jQuery(() => {
@@ -31,6 +30,7 @@ require(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer,
 require([
     'language-switcher',
     'phases',
+    'droplet-manager',
     'dropletInjections'
 ]);
 

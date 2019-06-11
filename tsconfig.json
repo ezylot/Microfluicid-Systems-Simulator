@@ -1,14 +1,13 @@
 {
   "compilerOptions": {
     "module": "amd",
-    "target": "es5",
+    "target": "es2015",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "outFile": "build/resources/main/static/scripts/bundle.js",
-    "sourceMap": false,
-    "lib": ["es2015", "es2017", "dom"]
+    "sourceMap": false
   },
   "include": [
     "src/main/resources/static/**/*.ts"
