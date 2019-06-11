@@ -97,7 +97,7 @@ jQuery((): void => {
 
     $('.droplet-properties .delete-button').on('click', (): void => {
         let $activeRow = $('.droplet-properties .table-wrapper tr.active');
-        let dropletToDelete = $activeRow.data('droplet');
+        let dropletToDelete: Droplet = $activeRow.data('droplet');
         droplets.splice(droplets.indexOf(dropletToDelete), 1);
         resetDropletSelection();
         $activeRow.remove();
@@ -121,12 +121,12 @@ jQuery((): void => {
         event.preventDefault();
 
         let $activeRow = $('.droplet-properties .table-wrapper tr.active');
-        let dropletToCopy = $activeRow.data('droplet');
+        let dropletToCopy: Droplet = $activeRow.data('droplet');
         let newDroplet = Object.assign({}, dropletToCopy);
         let $nameInput = $('#newDropletFromCopyName');
 
         newDroplet.id = nextId++;
-        newDroplet.name = $nameInput.val();
+        newDroplet.name = $nameInput.val().toString();
 
         createNewDroplet(newDroplet);
 
@@ -138,17 +138,17 @@ jQuery((): void => {
         let $activeRow = $('.droplet-properties table tbody .active');
         if($activeRow.length === 0) return;
 
-        let activeDroplet = $activeRow.data('droplet');
+        let activeDroplet: Droplet = $activeRow.data('droplet');
         let $inputField = $(event.target);
         let inputName = $inputField.attr('name');
 
-        activeDroplet[inputName] = $inputField.val();
-
         if(inputName === 'volume') {
+            activeDroplet.volume = Number($inputField.val());
             $activeRow.find('.volume').text(formatVolume(activeDroplet.volume));
         }
 
         if(inputName === 'name') {
+            activeDroplet.name = $inputField.val().toString();
             $activeRow.find('.name').text(activeDroplet.name);
         }
 

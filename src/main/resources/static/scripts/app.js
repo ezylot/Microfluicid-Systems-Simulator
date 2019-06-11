@@ -10,7 +10,6 @@
 // TODO: fast drawing destroys connections
 
 let canvasToSave = null;
-let fluids = [];
 let pumps = [];
 
 require(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer, $) {
@@ -29,13 +28,14 @@ require(['Footer', 'jquery', 'bootstrap', 'bootstrap-slider'], function (footer,
 
 require([
     'language-switcher',
+    'fluids',
     'phases',
-    'droplet-manager',
+    'droplets',
     'dropletInjections'
 ]);
 
 
-require(['defaultvalue-manager'], (def) => {
+require(['defaultvalue'], (def) => {
     function resetValues() {
         fluids = [];
         pumps = [];
