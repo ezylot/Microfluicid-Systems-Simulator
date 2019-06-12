@@ -11,4 +11,13 @@ export class Droplet {
         this.volume = volume;
         this.color = color;
     }
+
+    public static cloneTyped(droplet: Droplet): Droplet {
+        return new Droplet(
+            droplet.id,
+            droplet.name,
+            droplet.volume,
+            droplet.color
+        )
+    }
 }

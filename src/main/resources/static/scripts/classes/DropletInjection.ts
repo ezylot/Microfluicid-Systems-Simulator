@@ -14,4 +14,15 @@ export class DropletInjection {
         this.injectionPumpName = injectionPumpName;
         this.injectionTime = injectionTime;
     }
+
+    public static cloneTyped(injection: DropletInjection): DropletInjection {
+        return new DropletInjection(
+            injection.id,
+            injection.dropletId,
+            injection.injectionPumpId,
+            injection.dropletName,
+            injection.injectionPumpName,
+            injection.injectionTime
+        );
+    }
 }

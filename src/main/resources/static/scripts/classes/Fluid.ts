@@ -10,4 +10,13 @@ export class Fluid {
         this.mu = mu;
         this.densityC = densityC;
     }
+
+    public static cloneTyped(fluid: Fluid): Fluid {
+        return new Fluid(
+            fluid.id,
+            fluid.name,
+            fluid.mu,
+            fluid.densityC
+        )
+    }
 }

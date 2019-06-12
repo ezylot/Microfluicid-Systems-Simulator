@@ -204,8 +204,8 @@ public class SimulatorServiceImpl implements SimulatorService {
             edges,
             new ArrayList<>(pumps.values()),
             fluidCombination,
-            0.0, // TODO: check if we set it here or per droplet
-            0.0 // TODO: check if we set it here or per droplet
+            0.0,// Volumes are set on a per-droplet-basis
+            0.0 // Volumes are set on a per-droplet-basis
         );
 
         Map<Integer, DropletDTO> dropletDTOMap = new HashMap<>();
@@ -223,9 +223,12 @@ public class SimulatorServiceImpl implements SimulatorService {
             double injectionTime = injection.get("injectionTime").asDouble();
             int dropletId = injection.get("dropletId").asInt();
             DropletDTO dropletDTO = dropletDTOMap.get(dropletId);
-
+            PhysicalPump physicalPump = pumps.get(injectionPumpId);
+            if(physicalPump == null) {
+                throw new IllegalArgumentException(messageSource.getMessage("simulation-error.injection-no-pump", new String[]{ injection.get("id").asText() }, LocaleContextHolder.getLocale()));
+            }
             PhysicalPayloadInjectionTime i = new PhysicalPayloadInjectionTime(
-                pumps.get(injectionPumpId),
+                physicalPump,
                 injectionTime,
                 dropletDTO.volume
             );

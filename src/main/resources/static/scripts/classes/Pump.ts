@@ -17,4 +17,15 @@ export class Pump {
         this.pumpName = pumpName;
         this.type = type;
     }
+
+    public static cloneTyped(pump: Pump): Pump {
+        return new Pump(
+            pump.top,
+            pump.left,
+            pump.id,
+            pump.pumpValue,
+            pump.pumpName,
+            pump.type
+        )
+    }
 }

@@ -142,12 +142,12 @@ jQuery((): void => {
         let $activeRow = $('.injection-properties table tbody .active');
         if($activeRow.length === 0) return;
 
-        let activeInjection = $activeRow.data('injection');
+        let activeInjection: DropletInjection = $activeRow.data('injection');
         let $inputField = $(event.target);
         let inputName = $inputField.attr('name');
 
-        activeInjection[inputName] = $inputField.val();
         if(inputName === 'injectionTime') {
+            activeInjection.injectionTime = Number($inputField);
             $activeRow.find('.injectionTime').text(activeInjection.injectionTime);
         }
     });

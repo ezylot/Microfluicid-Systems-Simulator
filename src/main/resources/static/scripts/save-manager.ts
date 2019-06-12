@@ -76,12 +76,12 @@ jQuery((): void => {
 
                 setDefaultValues(object.defaultValues);
 
-                object.fluids.forEach((value: Fluid): void => {
-                    createNewFluid(value);
+                object.fluids.forEach((fluid: Fluid): void => {
+                    createNewFluid(Fluid.cloneTyped(fluid));
                 });
 
                 object.canvas.lines.forEach((channel: Channel): void => {
-                    makeChannel(new Channel(channel.channelType, channel.x1, channel.y1, channel.x2, channel.y2, channel.properties));
+                    makeChannel(Channel.cloneTyped(channel));
                 });
 
                 mergeElements(canvasToSave);
@@ -91,19 +91,20 @@ jQuery((): void => {
                         .filter((circleGroup): boolean => circleGroup instanceof ChannelEndCircle)
                         .filter((circleGroup: ChannelEndCircle): boolean => circleGroup.top === pump.top && circleGroup.left === pump.left)
                         .forEach((circleGroup: ChannelEndCircle): void => {
-                            createPump(pump);
-                            createPumpElement(circleGroup, PumpTypes[pump.type], pump);
+                            let typedPump = Pump.cloneTyped(pump);
+                            createPump(typedPump);
+                            createPumpElement(circleGroup, PumpTypes[typedPump.type], typedPump);
                         });
                 });
 
                 setPhaseProperties(object.phaseProperties);
 
-                object.droplets.forEach((value: Droplet): void => {
-                    createNewDroplet(value);
+                object.droplets.forEach((droplet: Droplet): void => {
+                    createNewDroplet(Droplet.cloneTyped(droplet));
                 });
 
-                object.dropletInjections.forEach((value: DropletInjection): void => {
-                    createNewInjection(value);
+                object.dropletInjections.forEach((injection: DropletInjection): void => {
+                    createNewInjection(DropletInjection.cloneTyped(injection));
                 });
             };
             reader.readAsText(file);

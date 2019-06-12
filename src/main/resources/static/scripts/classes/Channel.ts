@@ -19,4 +19,15 @@ export class Channel {
         this.y2 = y2;
         this.properties = properties;
     }
+
+    public static cloneTyped(channel: Channel): Channel  {
+        return new Channel(
+            channel.channelType,
+            channel.x1,
+            channel.y1,
+            channel.x2,
+            channel.y2,
+            channel.properties
+        );
+    }
 }

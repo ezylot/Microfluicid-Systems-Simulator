@@ -200,6 +200,26 @@ function deleteLine(canvas: Canvas, line: ChannelLine): void {
     canvas.remove(line);
 }
 
+function deletePump(element: ChannelEndCircle): void {
+    let indexToDelete = pumps.findIndex((value: Pump): boolean => value.id === element.properties.id);
+    pumps.splice(indexToDelete, 1);
+
+    $(`#newPumpSelection option[value=${element.properties.id}]`).remove();
+    $(`#pumpSelection option[value=${element.properties.id}]`).remove();
+
+    element.represents = element.oldRepresents;
+    element.properties = null;
+    (element.getObjects()[0] as Circle).set({
+        radius: calculateRadius(),
+        fill: '#fff',
+        stroke: '#666',
+    });
+
+    if(element.getObjects().length >= 2) {
+        element.remove(element.getObjects()[1]);
+    }
+}
+
 export function createPumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTypes, pump: Pump): void {
     let pumpCircle = pumpGroup.getObjects()[0] as Circle;
 
@@ -431,12 +451,13 @@ jQuery((): void => {
                 });
 
                 if (opt.target && opt.target.represents === 'endCircle') {
+                    let endCircle: ChannelEndCircle = opt.target as ChannelEndCircle;
                     currentDrawingLine = makeChannel(new Channel(
                         currentDrawingChannelType,
-                        opt.target.left,
-                        opt.target.top,
-                        opt.target.left,
-                        opt.target.top,
+                        endCircle.left,
+                        endCircle.top,
+                        endCircle.left,
+                        endCircle.top,
                         {})
                     );
                 } else {
@@ -465,12 +486,20 @@ jQuery((): void => {
                 //endregion
             }
         } else if (currentDrawingPumpType !== null) {
-            if (currentDrawingState === DrawingStates.ready && opt.target && opt.target.represents === 'endCircle') {
+            if (currentDrawingState === DrawingStates.ready && opt.target && (opt.target.represents === 'endCircle' || opt.target.represents === 'pump') ) {
+                let pumpGroup: ChannelEndCircle = opt.target as ChannelEndCircle;
+
+                if(pumpGroup.represents === 'pump') {
+                    if(oldSelectedElem === pumpGroup) {
+                        $('.element-properties .property-form').hide();
+                        $('.element-properties .empty-hint').show();
+                    }
+                    deletePump(pumpGroup);
+                }
+
                 $('body').removeClass('drawing');
                 canvasToSave.hoverCursor = 'move';
                 canvasToSave.defaultCursor = 'default';
-
-                let pumpGroup = opt.target;
 
                 let pump = new Pump(pumpGroup.top, pumpGroup.left, nextPumpId++, null, null, currentDrawingPumpType);
 
@@ -482,8 +511,6 @@ jQuery((): void => {
                 currentDrawingPumpType = null;
 
                 canvasToSave.renderAll();
-            } else  if(currentDrawingState === DrawingStates.ready && opt.target && opt.target.represents === 'endCircle'){
-                // TODO: change pump type
             }
         } else if (opt.target != null && opt.target.represents === 'line') {
             //region Select channel element and display information
@@ -713,20 +740,7 @@ jQuery((): void => {
             if(oldSelectedElem.represents === 'line') {
                 deleteLine(canvasToSave, oldSelectedElem);
             } else if(oldSelectedElem.represents === 'pump') {
-
-                pumps.splice(pumps.indexOf(oldSelectedElem.properties), 1);
-
-                oldSelectedElem.represents = oldSelectedElem.oldRepresents;
-                oldSelectedElem.properties = null;
-                oldSelectedElem._objects[0].set({
-                    radius: calculateRadius(),
-                    fill: '#fff',
-                    stroke: '#666',
-                });
-
-                if(oldSelectedElem._objects.length >= 2) {
-                    oldSelectedElem.remove(oldSelectedElem._objects[1]);
-                }
+                deletePump(oldSelectedElem);
             }
             oldSelectedElem = null;
             canvasToSave.renderAll();

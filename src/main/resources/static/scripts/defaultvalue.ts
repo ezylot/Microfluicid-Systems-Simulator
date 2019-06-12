@@ -3,7 +3,7 @@ import ChangeEvent = JQuery.ChangeEvent;
 import {DefaultValues} from "./classes/DefaultValues";
 
 
-const defaultDefaultValues: DefaultValues = new DefaultValues(16, 16, 0, 0);
+const defaultDefaultValues: DefaultValues = new DefaultValues(16, 16, 3000, 0);
 const defaultValues: DefaultValues = defaultDefaultValues;
 
 jQuery((): void => {
