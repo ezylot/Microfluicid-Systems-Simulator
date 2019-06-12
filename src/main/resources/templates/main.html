@@ -255,6 +255,11 @@
                                    th:text="#{dropletProperties.form.name}"></label>
                             <input id="name" name="name" type="text" />
                         </div>
+                        <div class="droplet-property-line">
+                            <label for="dropletColor" class="col-md-4"
+                                   th:text="#{dropletProperties.form.color}"></label>
+                            <input id="dropletColor" name="dropletColor" type="text" />
+                        </div>
                         <div class="d-flex">
                             <div class="mr-2 ml-auto" data-toggle="tooltip" data-placement="top"
                                  th:title="#{dropletProperties.newButton.tooltip}">
@@ -402,6 +407,9 @@
                         <input required autofocus id="newDropletVolume"
                                dir="rtl" type="number"
                                th:placeholder="#{dropletProperties.newModal.newVolume.placeholder}"/>
+
+                        <label for="newDropletColor" class="col-md-4" th:text="#{dropletProperties.newModal.newColor}"></label>
+                        <input id="newDropletColor" name="newDropletColor" type="text" />
 
                         <button class="mt-4" type="submit" th:text="#{dropletProperties.newModal.submit}"></button>
                     </form>

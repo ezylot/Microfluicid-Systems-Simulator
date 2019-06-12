@@ -7,6 +7,10 @@ let fluids: Fluid[] = [];
 let nextId = 0;
 
 export function createNewFluid(newFluid: Fluid): void {
+    if(newFluid.id >= nextId) {
+        nextId = newFluid.id + 1;
+    }
+
     fluids.push(newFluid);
 
     let $tableBody = $('.fluid-properties table tbody');

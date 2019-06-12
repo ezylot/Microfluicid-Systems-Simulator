@@ -4,6 +4,7 @@
   "dependencies": {
     "typescript": "^3.5.1",
     "spectrum-colorpicker": "^1.8.0",
+    "@types/spectrum": "^1.5.31",
     "@types/jquery": "^3.3.29",
     "@types/bootstrap": "^4.3.0",
     "@types/fabric": "^2.6.14",

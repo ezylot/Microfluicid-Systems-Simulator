@@ -326,6 +326,14 @@ h5 {
     display: flex;
 }
 
+.sp-replacer {
+    display: flex;
+}
+
+.sp-replacer .sp-preview {
+    flex: 1;
+}
+
 .droplet-properties .table-wrapper {
     width: 100%;
     display: inline-block;

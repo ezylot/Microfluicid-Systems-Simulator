@@ -16,14 +16,15 @@ export class SimulatedFluid {
      * @param startPercentage Value where the fluid starts [0; 1]
      * @param endChannel Channel where the end of the fluid is
      * @param endPercentage Value where the fluid ends [0; 1]
+     * @param fluidColor Color in which the fluid droplets are rendered over the channels
      */
-    public constructor(startChannel: Line, startPercentage: number, endChannel: Line, endPercentage: number) {
+    public constructor(startChannel: Line, startPercentage: number, endChannel: Line, endPercentage: number, fluidColor: string) {
         this.startChannel = startChannel;
         this.startPercentage = startPercentage;
         this.endChannel = endChannel;
         this.endPercentage = endPercentage;
 
-        this.fluidColor = '#51d6d2';
+        this.fluidColor = fluidColor;
         this.drawnGroup = null;
     }
 

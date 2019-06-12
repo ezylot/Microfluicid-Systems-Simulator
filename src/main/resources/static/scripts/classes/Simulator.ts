@@ -3,6 +3,10 @@ import {fabric} from "fabric";
 import {SimulatedFluid} from "./SimulatedFluid";
 import {ChannelLine} from "../fabricElements/ChannelLine";
 import {Canvas} from "fabric/fabric-impl";
+import {dropletInjections} from "../dropletInjections";
+import {DropletInjection} from "./DropletInjection";
+import {droplets} from "../droplets";
+import {Droplet} from "./Droplet";
 
 export class Simulator {
     private states: ReturnDTO[];
@@ -101,12 +105,17 @@ export class Simulator {
 
     private redrawFunction(): void {
         this.states[this._currentState].dropletStates.forEach((value): void => {
-            let injectionTime = value.dropletInjectionTime;
-            //TODO: determine color from injection data
+            let dropletInjection = dropletInjections.find((injection: DropletInjection): boolean => {
+                return injection.injectionPumpName == value.dropletInjectionTime.pumpName && injection.injectionTime == value.dropletInjectionTime.timePoint;
+            });
+
+            let dropletToInject = droplets.find((droplet: Droplet): boolean => {
+                return droplet.id === dropletInjection.dropletId
+            });
 
             let dropletName = value.name;
             if (!this.fluidsToSimulate[dropletName]) {
-                this.fluidsToSimulate[dropletName] = new SimulatedFluid(null, 0, null, 0);
+                this.fluidsToSimulate[dropletName] = new SimulatedFluid(null, 0, null, 0, dropletToInject.color);
             }
 
             if (value.dropletPositions.length === 1) {

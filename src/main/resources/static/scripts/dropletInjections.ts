@@ -153,13 +153,13 @@ jQuery((): void => {
         let inputName = $select.attr('name');
 
         if(inputName === 'injectionPumpId') {
-            activeInjection.injectionPumpId = $select.val();
+            activeInjection.injectionPumpId = Number($select.val());
             activeInjection.injectionPumpName = $select.find('option:selected').text();
             $activeRow.find('.injectionPumpName').text(activeInjection.injectionPumpName);
         }
 
         if(inputName === 'dropletId') {
-            activeInjection.dropletId = $select.val();
+            activeInjection.dropletId = Number($select.val());
             activeInjection.dropletName = $select.find('option:selected').text();
             $activeRow.find('.dropletName').text(activeInjection.dropletName);
         }
