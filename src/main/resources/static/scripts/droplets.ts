@@ -4,6 +4,7 @@ import SubmitEvent = JQuery.SubmitEvent;
 import ClickEvent = JQuery.ClickEvent;
 import {dropletInjections, updateDroplet} from "./dropletInjections";
 import {DropletInjection} from "./classes/DropletInjection";
+import "spectrum";
 
 let nextId = 0;
 let droplets: Droplet[] = [];
