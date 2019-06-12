@@ -271,7 +271,11 @@ export function createPumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTyp
     }
 }
 
-export function createPump(newPump: Pump): void{
+export function createPump(newPump: Pump): void {
+    if(newPump.id >= nextPumpId) {
+        nextPumpId = newPump.id + 1;
+    }
+
     pumps.push(newPump);
 
     if(newPump.type !== PumpTypes.drain) {
@@ -290,17 +294,18 @@ function resetOldSelection(oldSelectedElem: any): void {
     if(oldSelectedElem === null) return;
 
     if(oldSelectedElem.represents === 'line') {
-        oldSelectedElem.set({
-            'fill': lineColor[oldSelectedElem.channelType],
-            'stroke': lineColor[oldSelectedElem.channelType]
-        });
+        let channel: ChannelLine = (oldSelectedElem as ChannelLine);
+        channel.fill = lineColor[channel.channelType];
+        channel.stroke = lineColor[channel.channelType];
     } else if(oldSelectedElem.represents === 'pump') {
-        oldSelectedElem.set({
-            'fill': pumpColor[oldSelectedElem.pumpType],
+        let endCircle: ChannelEndCircle = (oldSelectedElem as ChannelEndCircle);
+        endCircle.getObjects()[0].set({
+            'fill': pumpColor[endCircle.pumpType],
         });
     } else {
         console.error('Wrong type to reset')
     }
+    canvasToSave.renderAll();
 }
 
 jQuery((): void => {
@@ -519,7 +524,7 @@ jQuery((): void => {
             //region Select pump element and display information
             resetOldSelection(oldSelectedElem);
 
-            opt.target._objects[0].set({
+            opt.target.getObjects()[0].set({
                 'fill': pumpColorSelected[opt.target.pumpType],
             });
             canvasToSave.renderAll();
