@@ -6,7 +6,6 @@ import {createNewInjection, dropletInjections} from "./dropletInjections";
 import {phaseProperties, setPhaseProperties} from "./phases";
 import {defaultValues, setDefaultValues} from "./defaultvalue";
 import {SaveStructure} from "./classes/SaveStructure";
-import {Canvas, Group, Line} from "fabric/fabric-impl";
 import {Fluid} from "./classes/Fluid";
 import {Channel} from "./classes/Channel";
 import {Pump} from "./classes/Pump";
@@ -15,13 +14,16 @@ import {DropletInjection} from "./classes/DropletInjection";
 import {resetValues} from "./value-reset";
 import {
     canvasToSave,
-    ChannelTypes,
     createPump,
     createPumpElement,
     makeChannel,
     mergeElements,
-    pumps, PumpTypes
+    pumps,
+    PumpTypes
 } from "./workspace";
+import {ChannelEndCircle} from "./fabricElements/ChannelEndCircle";
+import {ChannelLine} from "./fabricElements/ChannelLine";
+import ChangeEvent = JQuery.ChangeEvent;
 
 
 export function getSaveAsJson(): string {
@@ -34,7 +36,8 @@ export function getSaveAsJson(): string {
         defaultValues: defaultValues,
         canvas: {
             lines: canvasToSave.getObjects("line")
-                .map((line: Line | any): Channel => {
+                .filter((value): boolean => value instanceof ChannelLine)
+                .map((line: ChannelLine): Channel => {
                     return new Channel(
                         line.channelType,
                         line.x1,
@@ -60,7 +63,7 @@ jQuery((): void => {
     });
 
     $('.fa-folder-open').on('click', (): void => {
-        document.getElementById('fileupload').addEventListener('change', (evt: any): void => {
+        $('#fileupload').on('change', (evt: ChangeEvent): void => {
 
             let file = evt.target.files[0];
             let reader = new FileReader();
@@ -87,9 +90,9 @@ jQuery((): void => {
 
                 object.pumps.forEach((pump: Pump): void => {
                     canvasToSave.getObjects("group")
-                        .filter((circleGroup: Group | any): boolean => circleGroup.represents === 'endCircle')
-                        .filter((circleGroup: Group | any): boolean => circleGroup.top === pump.top && circleGroup.left === pump.left)
-                        .forEach((circleGroup: Group | any): void => {
+                        .filter((circleGroup): boolean => circleGroup instanceof ChannelEndCircle)
+                        .filter((circleGroup: ChannelEndCircle): boolean => circleGroup.top === pump.top && circleGroup.left === pump.left)
+                        .forEach((circleGroup: ChannelEndCircle): void => {
                             createPump(pump);
                             createPumpElement(circleGroup, PumpTypes[pump.type], pump);
                         });
@@ -106,7 +109,7 @@ jQuery((): void => {
                 });
             };
             reader.readAsText(file);
-        }, false);
+        });
         document.getElementById('fileupload').click();
     });
 });

@@ -54,6 +54,9 @@ let nextPumpId = 0;
 let pumps: Pump[] = [];
 const canvasToSave = new Canvas('c', {selection: false});
 
+let lastPosX = 0;
+let lastPosY = 0;
+
 
 function getLengthFormatted(line: Line): string {
     return Math.sqrt(Math.pow(line.x1 - line.x2, 2) + Math.pow(line.y1 - line.y2, 2)).toFixed(2);
@@ -412,8 +415,8 @@ jQuery((): void => {
     canvasToSave.on('mouse:down', (opt: any): void => {
         if (opt.e.altKey === true) {
             isDragging = true;
-            (canvasToSave as any).lastPosX = opt.e.clientX;
-            (canvasToSave as any).lastPosY = opt.e.clientY;
+            lastPosX = opt.e.clientX;
+            lastPosY = opt.e.clientY;
         } else if (currentDrawingChannelType !== null) {
             if (currentDrawingState === DrawingStates.ready) {
                 //region start drawing line
@@ -627,12 +630,12 @@ jQuery((): void => {
 
     canvasToSave.on('mouse:move', (opt: any): void  => {
         if (isDragging) {
-            canvasToSave.viewportTransform[4] += opt.e.clientX - (canvasToSave as any).lastPosX;
-            canvasToSave.viewportTransform[5] += opt.e.clientY - (canvasToSave as any).lastPosY;
+            canvasToSave.viewportTransform[4] += opt.e.clientX - lastPosX;
+            canvasToSave.viewportTransform[5] += opt.e.clientY - lastPosY;
             canvasToSave.requestRenderAll();
 
-            (canvasToSave as any).lastPosX = opt.e.clientX;
-            (canvasToSave as any).lastPosY = opt.e.clientY;
+            lastPosX = opt.e.clientX;
+            lastPosY = opt.e.clientY;
         }
 
         if (currentDrawingState === DrawingStates.started) {
@@ -725,7 +728,7 @@ jQuery((): void => {
         }
 
         if (e.keyCode === 32) {
-            canvasToSave.viewportTransform[4] = canvasToSave.viewportTransform[5] = (canvasToSave as any).lastPosX = (canvasToSave as any).lastPosY = 0;
+            canvasToSave.viewportTransform[4] = canvasToSave.viewportTransform[5] = lastPosX = lastPosY = 0;
             canvasToSave.setZoom(1);
             redrawBackground();
         }

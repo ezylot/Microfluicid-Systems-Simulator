@@ -27,10 +27,6 @@ export class Footer {
         }
     }
 
-    public get simulator(): Simulator {
-        return this._simulator;
-    }
-
     public getJsonFromServer(): JQuery.jqXHR {
         let json = getSaveAsJson();
 
