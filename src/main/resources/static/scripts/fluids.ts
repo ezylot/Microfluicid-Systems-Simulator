@@ -1,6 +1,7 @@
 import * as $ from "jquery";
 import SubmitEvent = JQuery.SubmitEvent;
 import {Fluid} from "./classes/Fluid";
+import {phaseProperties} from "./phases";
 
 
 let fluids: Fluid[] = [];
@@ -38,6 +39,26 @@ export function createNewFluid(newFluid: Fluid): void {
 
     $('#contPhaseFluid').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
     $('#disptPhaseFluid').append($('<option>').attr('value', newFluid.id).text(newFluid.name));
+}
+
+export function deleteFluid(fluidToDelete: Fluid): void {
+    let $activeRow = $('.fluid-properties .table-wrapper tbody tr').filter((index, element): boolean => {
+        return ($(element).data('fluid') as Fluid).id === fluidToDelete.id;
+    });
+
+    fluids.splice(fluids.indexOf(fluidToDelete), 1);
+    $activeRow.remove();
+
+    $('#contPhaseFluid option[value=\"' + fluidToDelete.id + '\"]').remove();
+    $('#disptPhaseFluid option[value=\"' + fluidToDelete.id + '\"]').remove();
+
+    if(phaseProperties.contPhaseFluid === fluidToDelete.id) {
+        phaseProperties.contPhaseFluid = null;
+    }
+
+    if(phaseProperties.disptPhaseFluid === fluidToDelete.id) {
+        phaseProperties.disptPhaseFluid = null;
+    }
 }
 
 function resetFluidSelection(): void {
@@ -89,14 +110,8 @@ jQuery((): void => {
     $('.fluid-properties .delete-button').on('click', (): void => {
         let $activeRow = $('.fluid-properties .table-wrapper tr.active');
         let fluidToDelete: Fluid = $activeRow.data('fluid');
-        fluids.splice(fluids.indexOf(fluidToDelete), 1);
         resetFluidSelection();
-        $activeRow.remove();
-
-        $('#contPhaseFluid option[value=\"' + fluidToDelete.id + '\"]').remove();
-        $('#disptPhaseFluid option[value=\"' + fluidToDelete.id + '\"]').remove();
-
-        // TODO: remove fluids from phase properties
+        deleteFluid(fluidToDelete);
     });
 
     $('#copyFluidModalForm').on('submit', (event): void => {

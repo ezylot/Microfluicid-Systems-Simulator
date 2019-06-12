@@ -21,8 +21,8 @@ require(['jquery', 'bootstrap', 'bootstrap-slider'], function ($) {
 });
 
 require([
-    'workspace',
     'value-reset',
+    'workspace',
     'language-switcher',
     'fluids',
     'phases',
@@ -30,4 +30,6 @@ require([
     'dropletInjections',
     'save-manager',
     'Footer',
-]);
+], function (valueReset) {
+    valueReset.resetValues();
+});

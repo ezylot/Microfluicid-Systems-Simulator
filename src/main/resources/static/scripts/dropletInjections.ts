@@ -67,6 +67,15 @@ export function createNewInjection(newInjection: DropletInjection): void {
     $tableRow.trigger('click');
 }
 
+export function deleteDropletInjection(injection: DropletInjection) {
+    let $activeRow = $('.injection-properties .table-wrapper tbody tr').filter((index, element): boolean => {
+        return ($(element).data('injection') as DropletInjection).id === injection.id;
+    });
+
+    dropletInjections.splice(dropletInjections.indexOf(injection), 1);
+    $activeRow.remove();
+}
+
 function resetInjectionSelection(): void {
     let $injectionProperties = $('.injection-properties');
     $injectionProperties.find('.table-wrapper').find('.active').removeClass('active');
@@ -125,9 +134,8 @@ jQuery((): void => {
     $('.injection-properties .delete-button').on('click', (): void => {
         let $activeRow = $('.injection-properties .table-wrapper tr.active');
         let injectionToDelete: DropletInjection = $activeRow.data('injection');
-        dropletInjections.splice(dropletInjections.indexOf(injectionToDelete), 1);
         resetInjectionSelection();
-        $activeRow.remove();
+        deleteDropletInjection(injectionToDelete);
     });
 
     $('.injection-properties input').on('input', (event): void => {

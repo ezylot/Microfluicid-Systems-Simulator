@@ -6,6 +6,9 @@ import {dropletInjections, updateDroplet} from "./dropletInjections";
 import {DropletInjection} from "./classes/DropletInjection";
 import "spectrum"
 import {ModalEventHandler} from "bootstrap";
+import {Fluid} from "./classes/Fluid";
+import {phaseProperties} from "./phases";
+import {fluids} from "./fluids";
 
 let nextId = 0;
 let droplets: Droplet[] = [];
@@ -63,6 +66,23 @@ export function createNewDroplet(newDroplet: Droplet): void {
     );
 }
 
+export function deleteDroplet(dropletToDelete: Droplet): void {
+    let $activeRow = $('.droplet-properties .table-wrapper tbody tr').filter((index, element): boolean => {
+        return ($(element).data('droplet') as Droplet).id === dropletToDelete.id;
+    });
+
+    droplets.splice(droplets.indexOf(dropletToDelete), 1);
+    $activeRow.remove();
+
+    $('#newDropletSelection option[value=\"' + dropletToDelete.id + '\"]').remove();
+    $('#dropletSelection option[value=\"' + dropletToDelete.id + '\"]').remove();
+
+    dropletInjections.forEach((value: DropletInjection): void => {
+        if(value.dropletId === dropletToDelete.id) {
+            value.dropletId = null;
+        }
+    });
+}
 
 function resetDropletSelection(): void {
     let $dropletProperties = $('.droplet-properties');
@@ -108,18 +128,8 @@ jQuery((): void => {
     $('.droplet-properties .delete-button').on('click', (): void => {
         let $activeRow = $('.droplet-properties .table-wrapper tr.active');
         let dropletToDelete: Droplet = $activeRow.data('droplet');
-        droplets.splice(droplets.indexOf(dropletToDelete), 1);
         resetDropletSelection();
-        $activeRow.remove();
-
-        $('#newDropletSelection option[value=\"' + dropletToDelete.id + '\"]').remove();
-        $('#dropletSelection option[value=\"' + dropletToDelete.id + '\"]').remove();
-
-        dropletInjections.forEach((value: DropletInjection): void => {
-            if(value.dropletId === dropletToDelete.id) {
-                value.dropletId = null;
-            }
-        });
+        deleteDroplet(dropletToDelete);
     });
 
     $('#copyDropletModalForm').on('submit', (event: SubmitEvent): void => {

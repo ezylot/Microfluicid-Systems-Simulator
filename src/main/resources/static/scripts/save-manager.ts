@@ -70,8 +70,6 @@ jQuery((): void => {
             reader.onload = (): void => {
                 let object: SaveStructure = JSON.parse(reader.result.toString());
 
-                canvasToSave.clear();
-
                 resetValues();
 
                 $(window).trigger('resize');
