@@ -2,6 +2,7 @@ import * as $ from "jquery";
 import SubmitEvent = JQuery.SubmitEvent;
 import {Fluid} from "./classes/Fluid";
 import {phaseProperties} from "./phases";
+import {formatNumber} from "./number-formatter";
 
 
 let fluids: Fluid[] = [];
@@ -18,6 +19,8 @@ export function createNewFluid(newFluid: Fluid): void {
     let $tableRow = $('<tr class="active"></tr>');
     $tableRow.append($('<td></td>').text(newFluid.id));
     $tableRow.append($('<td></td>').text(newFluid.name));
+    $tableRow.append($('<td></td>').text(formatNumber(newFluid.mu)));
+    $tableRow.append($('<td></td>').text(formatNumber(newFluid.densityC)));
     $tableBody.append($tableRow);
     $tableRow.data('fluid', newFluid);
 

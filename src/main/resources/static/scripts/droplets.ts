@@ -9,16 +9,11 @@ import {ModalEventHandler} from "bootstrap";
 import {Fluid} from "./classes/Fluid";
 import {phaseProperties} from "./phases";
 import {fluids} from "./fluids";
+import {formatNumber} from "./number-formatter";
 
 let nextId = 0;
 let droplets: Droplet[] = [];
 
-function formatVolume(volume: number): string {
-    if(volume < 0.0001 || volume > 10E6) {
-        return volume.toPrecision(4);
-    }
-    return volume.toFixed(Math.max(1, volume.toString().length - 2));
-}
 
 export function createNewDroplet(newDroplet: Droplet): void {
     if(newDroplet.id >= nextId) {
@@ -31,7 +26,7 @@ export function createNewDroplet(newDroplet: Droplet): void {
     let $tableRow = $('<tr class="active"></tr>');
     $tableRow.append($('<td class="id"></td>').text(newDroplet.id));
     $tableRow.append($('<td class="name"></td>').text(newDroplet.name));
-    $tableRow.append($('<td class="volume"></td>').text(formatVolume(newDroplet.volume)));
+    $tableRow.append($('<td class="volume"></td>').text(formatNumber(newDroplet.volume)));
     $tableBody.append($tableRow);
     $tableRow.data('droplet', newDroplet);
 
@@ -159,7 +154,7 @@ jQuery((): void => {
 
         if(inputName === 'volume') {
             activeDroplet.volume = Number($inputField.val());
-            $activeRow.find('.volume').text(formatVolume(activeDroplet.volume));
+            $activeRow.find('.volume').text(formatNumber(activeDroplet.volume));
         }
 
         if(inputName === 'name') {
