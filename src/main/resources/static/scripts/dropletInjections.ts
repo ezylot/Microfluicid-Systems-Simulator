@@ -59,9 +59,9 @@ export function createNewInjection(newInjection: DropletInjection): void {
         let $injectionProperties = $('.injection-properties');
         $injectionProperties.find('.copy-button').removeClass('disabled');
         $injectionProperties.find('.delete-button').removeClass('disabled');
-        $injectionProperties.find('select[name="injectionPumpId"]').val(newInjection.injectionPumpId);
-        $injectionProperties.find('select[name="dropletId"]').val(newInjection.dropletId);
-        $injectionProperties.find('input[name="injectionTime"]').val(newInjection.injectionTime);
+        $injectionProperties.find('select[name="injectionPumpId"]').removeAttr('disabled').val(newInjection.injectionPumpId);
+        $injectionProperties.find('select[name="dropletId"]').removeAttr('disabled').val(newInjection.dropletId);
+        $injectionProperties.find('input[name="injectionTime"]').removeAttr('disabled').val(newInjection.injectionTime);
     });
 
     $tableRow.trigger('click');
@@ -83,12 +83,14 @@ function resetInjectionSelection(): void {
     $injectionProperties.find('.copy-button').addClass('disabled');
     $injectionProperties.find('.delete-button').addClass('disabled');
 
-    $injectionProperties.find('select[name="injectionPumpId"]').val('');
-    $injectionProperties.find('select[name="dropletId"]').val('');
-    $injectionProperties.find('input[name="injectionTime"]').val('');
+    $injectionProperties.find('select[name="injectionPumpId"]').attr('disabled', 'disabled').val('');
+    $injectionProperties.find('select[name="dropletId"]').attr('disabled', 'disabled').val('');
+    $injectionProperties.find('input[name="injectionTime"]').attr('disabled', 'disabled').val('');
 }
 
 jQuery((): void => {
+    resetInjectionSelection();
+
     $('#newDropletInjectionModal')
         .on('shown.bs.modal', (): void => {
             $(this).find('[autofocus]').trigger('focus');
@@ -147,7 +149,7 @@ jQuery((): void => {
         let inputName = $inputField.attr('name');
 
         if(inputName === 'injectionTime') {
-            activeInjection.injectionTime = Number($inputField);
+            activeInjection.injectionTime = Number($inputField.val());
             $activeRow.find('.injectionTime').text(activeInjection.injectionTime);
         }
     });

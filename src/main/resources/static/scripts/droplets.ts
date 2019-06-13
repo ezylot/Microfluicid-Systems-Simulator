@@ -1,15 +1,12 @@
 import * as $ from "jquery";
 import {Droplet} from "./classes/Droplet";
-import SubmitEvent = JQuery.SubmitEvent;
-import ClickEvent = JQuery.ClickEvent;
 import {dropletInjections, updateDroplet} from "./dropletInjections";
 import {DropletInjection} from "./classes/DropletInjection";
 import "spectrum"
 import {ModalEventHandler} from "bootstrap";
-import {Fluid} from "./classes/Fluid";
-import {phaseProperties} from "./phases";
-import {fluids} from "./fluids";
 import {formatNumber} from "./number-formatter";
+import SubmitEvent = JQuery.SubmitEvent;
+import ClickEvent = JQuery.ClickEvent;
 
 let nextId = 0;
 let droplets: Droplet[] = [];
@@ -37,10 +34,9 @@ export function createNewDroplet(newDroplet: Droplet): void {
         let $dropletProperties = $('.droplet-properties');
         $dropletProperties.find('.copy-button').removeClass('disabled');
         $dropletProperties.find('.delete-button').removeClass('disabled');
-        $dropletProperties.find('input[name="name"]').val(newDroplet.name);
-        $dropletProperties.find('input[name="volume"]').val(newDroplet.volume);
-        $dropletProperties.find('input[name="volume"]').val(newDroplet.volume);
-        $dropletProperties.find('#dropletColor').spectrum({
+        $dropletProperties.find('input[name="name"]').removeAttr('disabled').val(newDroplet.name);
+        $dropletProperties.find('input[name="volume"]').removeAttr('disabled').val(newDroplet.volume);
+        $dropletProperties.find('#dropletColor').removeAttr('disabled').spectrum({
             color: newDroplet.color,
             change: (color): void => { newDroplet.color = color.toString("hex"); }
         });
@@ -86,12 +82,13 @@ function resetDropletSelection(): void {
     $dropletProperties.find('.copy-button').addClass('disabled');
     $dropletProperties.find('.delete-button').addClass('disabled');
 
-    $dropletProperties.find('input[name="name"]').val('');
-    $dropletProperties.find('input[name="volume"]').val('');
-    $dropletProperties.find('#dropletColor').spectrum({ color: '#ffffff' });
+    $dropletProperties.find('input[name="name"]').attr('disabled', 'disabled').val('');
+    $dropletProperties.find('input[name="volume"]').attr('disabled', 'disabled').val('');
+    $dropletProperties.find('#dropletColor').attr('disabled', 'disabled').spectrum({ color: '#ffffff' });
 }
 
 jQuery((): void => {
+    resetDropletSelection();
     $('#newDropletModal')
         .on('shown.bs.modal', (event: ModalEventHandler<HTMLElement>): void => {
             $(event.target).find('#newDropletColor').spectrum({ color: '#ffffff' });

@@ -7,6 +7,7 @@ import {dropletInjections} from "../dropletInjections";
 import {DropletInjection} from "./DropletInjection";
 import {droplets} from "../droplets";
 import {Droplet} from "./Droplet";
+import {canvasToSave} from "../workspace";
 
 export class Simulator {
     private states: ReturnDTO[];
@@ -115,7 +116,7 @@ export class Simulator {
 
             let dropletName = value.name;
             if (!this.fluidsToSimulate[dropletName]) {
-                this.fluidsToSimulate[dropletName] = new SimulatedFluid(null, 0, null, 0, dropletToInject.color);
+                this.fluidsToSimulate[dropletName] = new SimulatedFluid(null, 0, true, null, 0, true, dropletToInject.color);
             }
 
             if (value.dropletPositions.length === 1) {
@@ -125,8 +126,10 @@ export class Simulator {
                 this.fluidsToSimulate[dropletName].changePosition(
                     channel,
                     dropletPosition.headPosition,
+                    value.dropletPositions[0].defaultFlowDirection,
                     channel,
                     dropletPosition.tailPosition,
+                    value.dropletPositions[0].defaultFlowDirection,
                 );
             } else if (value.dropletPositions.length === 2) {
                 let channel1 = this.getLineFromCoords(value.dropletPositions[0].edge);
@@ -135,8 +138,10 @@ export class Simulator {
                 this.fluidsToSimulate[dropletName].changePosition(
                     channel1,
                     value.dropletPositions[0].tailPosition,
+                    value.dropletPositions[0].defaultFlowDirection,
                     channel2,
                     value.dropletPositions[1].headPosition,
+                    value.dropletPositions[1].defaultFlowDirection,
                 );
             } else if (value.dropletPositions.length === 0) {
                 this.fluidsToSimulate[dropletName].remove(this.canvas);
@@ -152,6 +157,7 @@ export class Simulator {
         for (let key in this.fluidsToSimulate) {
             this.fluidsToSimulate[key].draw(this.canvas);
         }
+        this.canvas.renderAll();
     }
 
     private getLineFromCoords(coords: { x1: number; x2: number; y1: number; y2: number }): ChannelLine {

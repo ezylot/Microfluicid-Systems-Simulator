@@ -114,8 +114,8 @@ public class SimulatorServiceImpl implements SimulatorService {
 
             channelNameEndPointMap.put("c" + idCounter.toString(), new LineCoords(
                 line.get("x1").asDouble(),
-                line.get("x2").asDouble(),
                 line.get("y1").asDouble(),
+                line.get("x2").asDouble(),
                 line.get("y2").asDouble()
             ));
 

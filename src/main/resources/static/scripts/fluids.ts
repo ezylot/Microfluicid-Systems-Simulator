@@ -17,10 +17,10 @@ export function createNewFluid(newFluid: Fluid): void {
 
     let $tableBody = $('.fluid-properties table tbody');
     let $tableRow = $('<tr class="active"></tr>');
-    $tableRow.append($('<td></td>').text(newFluid.id));
-    $tableRow.append($('<td></td>').text(newFluid.name));
-    $tableRow.append($('<td></td>').text(formatNumber(newFluid.mu)));
-    $tableRow.append($('<td></td>').text(formatNumber(newFluid.densityC)));
+    $tableRow.append($('<td class="id"></td>').text(newFluid.id));
+    $tableRow.append($('<td class="name"></td>').text(newFluid.name));
+    $tableRow.append($('<td class="mu"></td>').text(formatNumber(newFluid.mu)));
+    $tableRow.append($('<td class="densityC"></td>').text(formatNumber(newFluid.densityC)));
     $tableBody.append($tableRow);
     $tableRow.data('fluid', newFluid);
 
@@ -144,12 +144,15 @@ jQuery((): void => {
 
         if(inputName === "densityC") {
             activeFluid.densityC = Number($inputField.val());
+            $activeRow.find('.densityC').text(activeFluid.densityC);
         }
         if(inputName === "mu") {
             activeFluid.mu = Number($inputField.val());
+            $activeRow.find('.mu').text(activeFluid.mu);
         }
         if(inputName === "name") {
             activeFluid.name = $inputField.val().toString();
+            $activeRow.find('.name').text(activeFluid.name);
         }
     });
 });

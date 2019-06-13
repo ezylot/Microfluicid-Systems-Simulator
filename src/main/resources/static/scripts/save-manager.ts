@@ -62,54 +62,55 @@ jQuery((): void => {
         event.target.download = 'microfluidic-' + Date.now() + '.save';
     });
 
-    $('.fa-folder-open').on('click', (): void => {
-        $('#fileupload').on('change', (evt: ChangeEvent): void => {
+    $('#fileupload').on('change', (evt: ChangeEvent): void => {
+        let file = evt.target.files[0];
+        let reader = new FileReader();
+        reader.onload = (): void => {
+            let object: SaveStructure = JSON.parse(reader.result.toString());
 
-            let file = evt.target.files[0];
-            let reader = new FileReader();
-            reader.onload = (): void => {
-                let object: SaveStructure = JSON.parse(reader.result.toString());
+            resetValues();
 
-                resetValues();
+            $(window).trigger('resize');
 
-                $(window).trigger('resize');
+            setDefaultValues(object.defaultValues);
 
-                setDefaultValues(object.defaultValues);
+            object.fluids.forEach((fluid: Fluid): void => {
+                createNewFluid(Fluid.cloneTyped(fluid));
+            });
 
-                object.fluids.forEach((fluid: Fluid): void => {
-                    createNewFluid(Fluid.cloneTyped(fluid));
-                });
+            object.canvas.lines.forEach((channel: Channel): void => {
+                makeChannel(Channel.cloneTyped(channel));
+            });
 
-                object.canvas.lines.forEach((channel: Channel): void => {
-                    makeChannel(Channel.cloneTyped(channel));
-                });
+            mergeElements(canvasToSave);
 
-                mergeElements(canvasToSave);
+            object.pumps.forEach((pump: Pump): void => {
+                canvasToSave.getObjects("group")
+                    .filter((circleGroup): boolean => circleGroup instanceof ChannelEndCircle)
+                    .filter((circleGroup: ChannelEndCircle): boolean => circleGroup.top === pump.top && circleGroup.left === pump.left)
+                    .forEach((circleGroup: ChannelEndCircle): void => {
+                        let typedPump = Pump.cloneTyped(pump);
+                        createPump(typedPump);
+                        createPumpElement(circleGroup, PumpTypes[typedPump.type], typedPump);
+                    });
+            });
 
-                object.pumps.forEach((pump: Pump): void => {
-                    canvasToSave.getObjects("group")
-                        .filter((circleGroup): boolean => circleGroup instanceof ChannelEndCircle)
-                        .filter((circleGroup: ChannelEndCircle): boolean => circleGroup.top === pump.top && circleGroup.left === pump.left)
-                        .forEach((circleGroup: ChannelEndCircle): void => {
-                            let typedPump = Pump.cloneTyped(pump);
-                            createPump(typedPump);
-                            createPumpElement(circleGroup, PumpTypes[typedPump.type], typedPump);
-                        });
-                });
+            setPhaseProperties(object.phaseProperties);
 
-                setPhaseProperties(object.phaseProperties);
+            object.droplets.forEach((droplet: Droplet): void => {
+                createNewDroplet(Droplet.cloneTyped(droplet));
+            });
 
-                object.droplets.forEach((droplet: Droplet): void => {
-                    createNewDroplet(Droplet.cloneTyped(droplet));
-                });
-
-                object.dropletInjections.forEach((injection: DropletInjection): void => {
-                    createNewInjection(DropletInjection.cloneTyped(injection));
-                });
-            };
-            reader.readAsText(file);
-        });
-        document.getElementById('fileupload').click();
+            object.dropletInjections.forEach((injection: DropletInjection): void => {
+                createNewInjection(DropletInjection.cloneTyped(injection));
+            });
+        };
+        reader.readAsText(file);
     });
+
+    $('.fa-folder-open').on('click', (): void => {
+        $('#fileupload').trigger('click');
+    });
+
 });
 

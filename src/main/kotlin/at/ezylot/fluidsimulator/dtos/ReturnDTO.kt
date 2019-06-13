@@ -20,7 +20,7 @@ class ReturnDTO(state: PhysicalSystemState) {
 
     class DropletPositionDTO internal constructor(dropletPosition: DropletPosition) {
         val edgeName: String = dropletPosition.edge.name
-        val isDefaultFlowDirection: Boolean = dropletPosition.defaultFlowDirection
+        val defaultFlowDirection: Boolean = dropletPosition.defaultFlowDirection
         val dropletVolume: Double = dropletPosition.dropletVolume
 
         var edge: LineCoords? = null

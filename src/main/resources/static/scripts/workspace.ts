@@ -200,9 +200,13 @@ function deleteLine(canvas: Canvas, line: ChannelLine): void {
     canvas.remove(line);
 }
 
-function deletePump(element: ChannelEndCircle): void {
-    let indexToDelete = pumps.findIndex((value: Pump): boolean => value.id === element.properties.id);
+export function deletePumpObject(pump: Pump): void {
+    let indexToDelete = pumps.findIndex((value: Pump): boolean => value.id === pump.id);
     pumps.splice(indexToDelete, 1);
+}
+
+function deletePump(element: ChannelEndCircle): void {
+    deletePumpObject(element.properties);
 
     $(`#newPumpSelection option[value=${element.properties.id}]`).remove();
     $(`#pumpSelection option[value=${element.properties.id}]`).remove();
@@ -219,6 +223,7 @@ function deletePump(element: ChannelEndCircle): void {
         element.remove(element.getObjects()[1]);
     }
 }
+
 
 export function createPumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTypes, pump: Pump): void {
     let pumpCircle = pumpGroup.getObjects()[0] as Circle;
@@ -777,6 +782,12 @@ jQuery((): void => {
                 $('.element-properties').find('.line-properties').find('#length').val(getLengthFormatted(value.line));
             }
         });
+
+        if(circle.represents === "pump") {
+            circle.properties.left = left;
+            circle.properties.top = top;
+        }
+
         canvasToSave.renderAll();
         canvasToSave.getObjects().forEach((value): void => {
             value.setCoords();

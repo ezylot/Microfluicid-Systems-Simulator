@@ -2,18 +2,20 @@ import {deleteFluid, fluids} from "./fluids";
 import {deleteDroplet, droplets} from "./droplets";
 import {deleteDropletInjection, dropletInjections} from "./dropletInjections";
 import {defaultDefaultValues, setDefaultValues} from "./defaultvalue";
-import {canvasToSave, pumps} from "./workspace";
+import {canvasToSave, deletePumpObject, pumps} from "./workspace";
 import {setPhaseProperties} from "./phases";
 import {PhaseProperties} from "./classes/PhaseProperties";
+import {Footer} from "./Footer";
 
 export function resetValues(): void {
     canvasToSave.clear();
-    pumps.length = 0;
+    Footer.getInstance().resetSimulator();
 
-    fluids.forEach((value): void => deleteFluid(value));
+    pumps.splice(0).forEach((value): void => deletePumpObject(value));
+    fluids.splice(0).forEach((value): void => deleteFluid(value));
     setPhaseProperties(new PhaseProperties(null, null, null, null));
-    droplets.forEach((value): void => deleteDroplet(value));
-    dropletInjections.forEach((value): void => deleteDropletInjection(value));
+    droplets.splice(0).forEach((value): void => deleteDroplet(value));
+    dropletInjections.splice(0).forEach((value): void => deleteDropletInjection(value));
 
     setDefaultValues(defaultDefaultValues);
 }
