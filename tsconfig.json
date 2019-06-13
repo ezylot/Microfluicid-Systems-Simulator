@@ -4,8 +4,11 @@
     "target": "es2015",
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "noImplicitReturns": true,
     "removeComments": true,
     "preserveConstEnums": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": false,
     "outFile": "build/resources/main/static/scripts/bundle.js",
     "sourceMap": false
   },

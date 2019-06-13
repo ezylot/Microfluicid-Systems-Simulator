@@ -22,9 +22,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     }
 
     override fun configure(http: HttpSecurity) {
-        http.authorizeRequests().antMatchers("/", "/simulate", "/simulateOld").hasRole("USER")
-            .and().httpBasic()
+        http.authorizeRequests().antMatchers("/", "/simulate", "/simulateOld").permitAll()
             .and().csrf().disable()
-
     }
 }

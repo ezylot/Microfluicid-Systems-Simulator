@@ -8,7 +8,8 @@ import {getSaveAsJson} from "./save-manager";
 import {canvasToSave} from "./workspace";
 
 export class Footer {
-    private _simulator: Simulator;
+    private simulator: Simulator;
+    private ajaxRequest: JQuery.jqXHR;
 
     private static instance: Footer;
     private constructor() { }
@@ -21,9 +22,8 @@ export class Footer {
     }
 
     public resetSimulator(): void {
-        if(!!this._simulator) {
-            this._simulator.destroy();
-            this._simulator = null;
+        if(!!this.simulator) {
+            this.simulator.destroy();
         }
     }
 
@@ -54,11 +54,16 @@ export class Footer {
         $('.footer #progressbar').slider();
         $('.footer .start-simulate').on('click', (): void => {
             this.resetSimulator();
-            this.getJsonFromServer().then((data): void => {
-                this._simulator = new Simulator(data, $('.footer'), canvas, {
+            if(!!this.ajaxRequest) {
+                this.ajaxRequest.abort();
+            }
+
+            this.ajaxRequest = this.getJsonFromServer();
+            this.ajaxRequest.then((data): void => {
+                this.simulator = new Simulator(data, $('.footer'), canvas, {
                     finishedPlayingCallback: (): void => {
                         $('.fa-pause').removeClass('fas fa-pause').addClass('fab fa-rev');
-                        this._simulator.goTo(0);
+                        this.simulator.goTo(0);
                     },
                     playCallback: (): void => {
                         $('.fa-rev').removeClass('fab fa-rev').addClass('fas fa-pause');
@@ -68,23 +73,23 @@ export class Footer {
                     }
                 });
 
-                this._simulator.goTo(0);
-                this._simulator.play();
+                this.simulator.goTo(0);
+                this.simulator.play();
             });
         });
 
         $('.footer')
             .on('click', '.fa-pause', (): void => {
-                this._simulator.pause();
+                this.simulator.pause();
             })
             .on('click', '.fa-rev', (): void => {
-                this._simulator.play();
+                this.simulator.play();
             })
             .on('click', '.fa-caret-right', (): void => {
-                this._simulator.goTo(this._simulator.currentState + 1);
+                this.simulator.goTo(this.simulator.currentState + 1);
             })
             .on('click', '.fa-caret-left', (): void => {
-                this._simulator.goTo(this._simulator.currentState - 1);
+                this.simulator.goTo(this.simulator.currentState - 1);
             });
     }
 }

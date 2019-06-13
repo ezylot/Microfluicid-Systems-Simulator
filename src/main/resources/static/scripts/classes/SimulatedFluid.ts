@@ -57,6 +57,8 @@ export class SimulatedFluid {
 
             let coords: number[] = [];
 
+            console.assert(this.startChannelDefaultDirection === this.endChannelDefaultDirection);
+
             if(this.startChannelDefaultDirection) {
                 coords = [
                     start.x + this.startPercentage * vector.x,

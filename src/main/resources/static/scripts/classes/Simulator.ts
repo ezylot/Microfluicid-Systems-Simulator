@@ -1,5 +1,4 @@
 import {ReturnDTO} from "../dtos/ReturnDTO";
-import {fabric} from "fabric";
 import {SimulatedFluid} from "./SimulatedFluid";
 import {ChannelLine} from "../fabricElements/ChannelLine";
 import {Canvas} from "fabric/fabric-impl";
@@ -7,7 +6,6 @@ import {dropletInjections} from "../dropletInjections";
 import {DropletInjection} from "./DropletInjection";
 import {droplets} from "../droplets";
 import {Droplet} from "./Droplet";
-import {canvasToSave} from "../workspace";
 
 export class Simulator {
     private states: ReturnDTO[];
