@@ -53,52 +53,27 @@ compileTestKotlin {
     }
 }
 
+node {
+    version = '10.16.0'
+    download = true
+}
+
 tasks.processResources {
     dependsOn("tsRun")
     dependsOn("eslint")
 }
 
-task tsRun {
-    //inputs.files(fileTree("$projectDir/src/main/resources/static/").matching {
-    //    include "**/*.ts"
-    //}.files)
-    //outputs.files(
-    //    file("$buildDir/resources/main/static/scripts/bundle.js"),
-    //    file("$buildDir/resources/main/static/scripts/bundle.js.map")
-    //)
-
+task tsRun(type: NodeTask) {
     dependsOn(npmInstall)
-
-    doLast {
-        logger.error('tsrun exec did run')
-        exec {
-            if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
-                commandLine "node_modules/.bin/tsc.cmd"
-            } else {
-                commandLine "node_modules/.bin/tsc"
-            }
-        }
-    }
+    args = []
+    script = file("$projectDir/node_modules/typescript/bin/tsc")
 }
 
-task cleanTypescript() {
-    doLast {
-        logger.error('Deleting Typescript files from output directory')
-        fileTree("$buildDir/resources/main/static/scripts").matching {
-            include "**/*.ts"
-        }.forEach {
-            logger.error("deleting: " + it.name)
-            it.delete()
-        }
-    }
-}
 
-task eslint(type:Exec) {
+task eslint(type: NodeTask) {
     dependsOn(npmInstall)
-
-    if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")) {
-        commandLine("$projectDir/node_modules/.bin/eslint.cmd", "$projectDir/src/main/resources/static/**/*.ts")
-    } else {
-        commandLine("$projectDir/node_modules/.bin/eslint", "$projectDir/src/main/resources/static/**/*.ts")
-    }
+    args = ["$projectDir/src/main/resources/static/**/*.ts"]
+    script = file("$projectDir/node_modules/eslint/bin/eslint.js")
 }
+
+clean.delete << file('node_modules')
