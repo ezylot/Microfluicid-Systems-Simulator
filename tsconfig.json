@@ -10,7 +10,7 @@
     "noUnusedLocals": true,
     "strictNullChecks": false,
     "outFile": "build/resources/main/static/scripts/bundle.js",
-    "sourceMap": false
+    "sourceMap": true
   },
   "include": [
     "src/main/resources/static/**/*.ts"

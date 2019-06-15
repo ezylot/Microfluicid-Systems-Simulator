@@ -24,7 +24,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
 
-    <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
+    <link rel="stylesheet" th:href="@{/styles/main.css}">
 </head>
 <body>
     <div id="exampleToast" role="alert" aria-live="assertive" aria-atomic="true" class="d-none toast" data-delay="4000">
@@ -110,25 +110,25 @@
                     <b th:text="#{availableElements.defaultValues.channel}"></b>
                     <div class="unit-input">
                         <label for="default-width" class="col-md-4" th:text="#{elementProperties.line.width}"></label>
-                        <input id="default-width" name="default-width" type="number" dir="rtl" value="0" />
+                        <input id="default-width" name="default-width" type="number"  value="0" />
                         <small class="unit" th:text="#{elementProperties.line.width.unit}"></small>
                     </div>
                     <div class="unit-input">
                         <label for="default-height" class="col-md-4" th:text="#{elementProperties.line.height}"></label>
-                        <input id="default-height" name="default-height" type="number" dir="rtl" value="0" />
+                        <input id="default-height" name="default-height" type="number"  value="0" />
                         <small class="unit" th:text="#{elementProperties.line.height.unit}"></small>
                     </div>
 
                     <b th:text="#{availableElements.defaultValues.pump}"></b>
                     <div class="unit-input">
                         <label for="default-pressure-pumpValue" class="col-md-4" th:text="#{elementProperties.pump.pressure.value}"></label>
-                        <input id="default-pressure-pumpValue" name="default-pressure-pumpValue" type="number" dir="rtl" value="0" />
-                        <span class="unit" th:text="#{elementProperties.pump.pressure.unit}"></span>
+                        <input id="default-pressure-pumpValue" name="default-pressure-pumpValue" type="number"  value="0" />
+                        <small class="unit" th:text="#{elementProperties.pump.pressure.unit}"></small>
                     </div>
                     <div class="unit-input">
                         <label for="default-volume-pumpValue" class="col-md-4" th:text="#{elementProperties.pump.volume.value}"></label>
-                        <input id="default-volume-pumpValue" name="default-volume-pumpValue" type="number" dir="rtl" value="0" />
-                        <span class="unit" th:text="#{elementProperties.pump.volume.unit}"></span>
+                        <input id="default-volume-pumpValue" name="default-volume-pumpValue" type="number"  value="0" />
+                        <small class="unit" th:text="#{elementProperties.pump.volume.unit}"></small>
                     </div>
                 </div>
             </div>
@@ -159,12 +159,16 @@
                     <div class="property-list mt-auto">
                         <div class="fluid-property-line">
                             <label for="muInput" th:utext="#{fluidProperties.form.mu}"></label>
-                            <input id="muInput" name="mu" type="number" dir="rtl"/>
+                            <div class="unit-input">
+                                <input id="muInput" name="mu" type="number" />
+                                <small class="unit" th:utext="#{fluidProperties.form.mu.unit}"></small>
+                            </div>
                         </div>
+
                         <div class="fluid-property-line">
                             <label for="densityCInput" th:text="#{fluidProperties.form.densityC}"></label>
                             <div class="unit-input">
-                                <input id="densityCInput" name="densityC" type="number" dir="rtl"/>
+                                <input id="densityCInput" name="densityC" type="number" />
                                 <small class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></small>
                             </div>
                         </div>
@@ -212,14 +216,14 @@
                     <div class="phase-property-line">
                         <label for="interfacialTensionInput" th:text="#{phaseProperties.form.interfacialTension}"></label>
                         <div class="unit-input">
-                            <input id="interfacialTensionInput" name="interfacialTension" type="number" dir="rtl"/>
+                            <input id="interfacialTensionInput" name="interfacialTension" type="number" />
                             <small class="unit" th:text="#{phaseProperties.form.interfacialTension.unit}"></small>
                         </div>
                     </div>
 
                     <div class="phase-property-line">
                         <label for="slipInput" th:text="#{phaseProperties.form.slip}"></label>
-                        <input id="slipInput" name="slip" type="number" dir="rtl" th:placeholder="#{phaseProperties.form.slip.placeholder}" />
+                        <input id="slipInput" name="slip" type="number"  th:placeholder="#{phaseProperties.form.slip.placeholder}" />
                     </div>
                 </div>
             </div>
@@ -248,7 +252,7 @@
                     <div class="property-list mt-auto">
                         <div class="droplet-property-line">
                             <label for="volume" th:text="#{dropletProperties.form.volume}"></label>
-                            <input id="volume" name="volume" type="number" dir="rtl"/>
+                            <input id="volume" name="volume" step="any" type="number" />
                         </div>
                         <div class="droplet-property-line">
                             <label for="name" th:text="#{dropletProperties.form.name}"></label>
@@ -306,7 +310,7 @@
                         </div>
                         <div class="injection-property-line">
                             <label for="injectionTime" th:text="#{injectionProperties.form.injectTime}"></label>
-                            <input id="injectionTime" name="injectionTime" type="number" dir="rtl" step="0.001" />
+                            <input id="injectionTime" name="injectionTime" type="number"  step="0.001" />
                         </div>
                         <div class="injection-property-line">
                             <label for="pumpSelection" th:text="#{injectionProperties.form.pumpSelection}"></label>
@@ -340,17 +344,17 @@
             <div class="property-form line-properties" style="display: none;">
                 <div class="element-property-line unit-input">
                     <label for="length" th:text="#{elementProperties.line.length}"></label>
-                    <input disabled id="length" name="length" type="number" dir="rtl"/>
+                    <input disabled id="length" name="length" type="number" />
                     <small class="unit" th:text="#{elementProperties.line.length.unit}"></small>
                 </div>
                 <div class="element-property-line unit-input">
                     <label for="width" th:text="#{elementProperties.line.width}"></label>
-                    <input id="width" name="width" type="number" dir="rtl"/>
+                    <input id="width" name="width" type="number" />
                     <small class="unit" th:text="#{elementProperties.line.width.unit}"></small>
                 </div>
                 <div class="element-property-line unit-input">
                     <label for="height" th:text="#{elementProperties.line.height}"></label>
-                    <input id="height" name="height" type="number" dir="rtl"/>
+                    <input id="height" name="height" type="number" />
                     <small class="unit" th:text="#{elementProperties.line.height.unit}"></small>
                 </div>
             </div>
@@ -364,10 +368,10 @@
                     <label for="pumpValue" id="pressure-value-label" th:text="#{elementProperties.pump.pressure.value}"></label>
                     <label for="pumpValue" id="volume-value-label" th:text="#{elementProperties.pump.volume.value}"></label>
 
-                    <input id="pumpValue" name="value" type="number" dir="rtl"/>
+                    <input id="pumpValue" name="value" type="number" />
 
-                    <span class="unit" id="pressure-value-unit" th:text="#{elementProperties.pump.pressure.unit}"></span>
-                    <span class="unit" id="volume-value-unit" th:text="#{elementProperties.pump.volume.unit}"></span>
+                    <small class="unit" id="pressure-value-unit" th:text="#{elementProperties.pump.pressure.unit}"></small>
+                    <small class="unit" id="volume-value-unit" th:text="#{elementProperties.pump.volume.unit}"></small>
                 </div>
             </div>
         </div>
@@ -403,7 +407,7 @@
 
                         <label for="newDropletVolume" th:text="#{dropletProperties.newModal.newVolume}"></label>
                         <input required autofocus id="newDropletVolume"
-                               dir="rtl" type="number"
+                                type="number"
                                th:placeholder="#{dropletProperties.newModal.newVolume.placeholder}"/>
 
                         <label for="newDropletColor" class="col-md-4" th:text="#{dropletProperties.newModal.newColor}"></label>
@@ -456,7 +460,7 @@
 
                         <label for="newDropletInjectionTime" th:text="#{injectionProperties.newModal.injectionTime.label}"></label>
                         <input required autofocus id="newDropletInjectionTime"
-                               dir="rtl" type="number" step="0.001"
+                                type="number" step="0.001"
                                th:placeholder="#{injectionProperties.newModal.injectionTime.placeholder}"/>
 
                         <label for="newPumpSelection"
@@ -487,12 +491,15 @@
                         <input required autofocus id="newFluidName" type="text" th:placeholder="#{fluidProperties.newModal.name.placeholder}"/>
 
                         <label for="newMuInput" th:utext="#{fluidProperties.form.mu}"></label>
-                        <input id="newMuInput" name="newMu" type="number" step="0.000001" dir="rtl" th:placeholder="#{fluidProperties.form.mu.placeholder}" />
+                        <div class="unit-input">
+                            <input id="newMuInput" name="newMu" type="number" step="0.000001"  th:placeholder="#{fluidProperties.form.mu.placeholder}" />
+                            <small class="unit" th:utext="#{fluidProperties.form.mu.unit}"></small>
+                        </div>
 
                         <label for="newDensityCInput" th:text="#{fluidProperties.form.densityC}"></label>
                         <div class="unit-input">
-                            <input id="newDensityCInput" name="newDensityC" type="number" step="0.000001" dir="rtl"  th:placeholder="#{fluidProperties.form.densityC.placeholder}" />
-                            <span class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></span>
+                            <input id="newDensityCInput" name="newDensityC" type="number" step="0.000001"   th:placeholder="#{fluidProperties.form.densityC.placeholder}" />
+                            <small class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></small>
                         </div>
 
                         <button type="submit" th:text="#{fluidProperties.newModal.submit}"></button>
