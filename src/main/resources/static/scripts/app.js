@@ -7,7 +7,6 @@
 // TODO: Right mouse button stops drawing
 // TODO: Mark the currently selected element in the element palette
 // TODO: Change mouse pointer depending on selected element in the element palette
-// TODO: Injection time needs one more comma 0 (0.0001 step)
 // TODO: Pump renaming test (sometimes something breaks)
 // TODO: Select next entry when deleting (? do not know if really better this way)
 // TODO: names should be unique
