@@ -50,7 +50,7 @@ export class Footer {
     }
 
     public initFooter(canvas: Canvas): void {
-        // @ts-ignore
+        // Init the slider so it is not displayed as an input box
         $('.footer #progressbar').slider();
         $('.footer .start-simulate').on('click', (): void => {
             this.resetSimulator();

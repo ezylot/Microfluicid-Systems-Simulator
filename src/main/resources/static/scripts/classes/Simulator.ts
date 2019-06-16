@@ -7,6 +7,8 @@ import {DropletInjection} from "./DropletInjection";
 import {droplets} from "../droplets";
 import {Droplet} from "./Droplet";
 
+import "bootstrap-slider"
+
 export class Simulator {
     private states: ReturnDTO[];
     private $footer: JQuery;
@@ -40,11 +42,10 @@ export class Simulator {
             .attr('data-slider-value', 0)
             .attr('data-slider-max', this.states.length -  1);
 
-        // @ts-ignore
         this.$progressBar.slider('destroy')
             .slider()
-            .on('slide', (slideEvt: { value: number }): void => {
-                this.goTo(slideEvt.value);
+            .on('slide', (slideEvt: SliderEvent): void => {
+                this.goTo(slideEvt.value as number);
             });
     }
 
@@ -83,7 +84,6 @@ export class Simulator {
     public goTo(position: number): void {
         this.$footer.find('.progressbar-current').text(position);
         this.$progressBar.attr('data-slider-value', position);
-        // @ts-ignore
         this.$progressBar.slider('setValue', position);
         this._currentState = position;
 
@@ -100,6 +100,10 @@ export class Simulator {
         for (let key in this.fluidsToSimulate) {
             this.fluidsToSimulate[key].remove(this.canvas);
         }
+
+        this.$progressBar
+            .attr('data-slider-value', 0)
+            .attr('data-slider-max', this.states.length -  1);
     }
 
     private redrawFunction(): void {

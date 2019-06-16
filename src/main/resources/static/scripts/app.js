@@ -15,11 +15,10 @@
 // TODO: names should be unique
 // TODO: PUMP+Injection time should be unique
 // TODO: Open dialog when downloading to let user select download location/name
-// TODO: Reset progress bar when resetting simulator
 // TODO: Change icons of Play/Pause/Next/Previous Buttons
 // TODO: Save buttons is blue after saving a file
 
-require(['jquery', 'bootstrap', 'bootstrap-slider'], function ($) {
+require(['jquery', 'bootstrap'], function ($) {
     jQuery(() => {
         $('[data-toggle="tooltip"]').tooltip();
 
