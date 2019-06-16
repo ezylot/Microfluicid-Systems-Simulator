@@ -58,22 +58,51 @@ node {
     download = true
 }
 
-tasks.processResources {
-    dependsOn("tsRun")
-    dependsOn("eslint")
+task cleanTypescript(type: Delete) {
+    delete fileTree("$buildDir/resources/main/static/scripts") {
+        include '**/*.ts'
+    }
+}
+
+task cleanScss(type: Delete) {
+    delete fileTree("$buildDir/resources/main/static/styles") {
+        include '**/*.scss'
+        include '**/*.sass'
+    }
 }
 
 task tsRun(type: NodeTask) {
+    inputs.dir("$projectDir/src/main/resources/static/scripts/")
+    outputs.dir("$buildDir/resources/main/static/scripts")
     dependsOn(npmInstall)
     args = []
     script = file("$projectDir/node_modules/typescript/bin/tsc")
 }
 
-
 task eslint(type: NodeTask) {
     dependsOn(npmInstall)
-    args = ["$projectDir/src/main/resources/static/**/*.ts"]
+    args = [ "$projectDir/src/main/resources/static/scripts/**/*.ts" ]
     script = file("$projectDir/node_modules/eslint/bin/eslint.js")
 }
 
+task scssCompile(type: NodeTask) {
+    inputs.dir("$projectDir/src/main/resources/static/styles/")
+    outputs.dir("$buildDir/resources/main/static/styles")
+    dependsOn(npmInstall)
+    args = [
+        "--recursive",
+        "--output", "$buildDir/resources/main/static/styles",
+        "--output-style", "compressed",
+        "--source-map", "false",
+        "$projectDir/src/main/resources/static/styles/"
+    ]
+    script = file("$projectDir/node_modules/node-sass/bin/node-sass")
+}
+
 clean.delete << file('node_modules')
+
+
+tasks.processResources {
+    dependsOn(eslint, tsRun, scssCompile)
+    finalizedBy(cleanScss, cleanTypescript)
+}

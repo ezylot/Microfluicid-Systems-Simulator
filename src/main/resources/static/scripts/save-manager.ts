@@ -112,5 +112,8 @@ jQuery((): void => {
         $('#fileupload').trigger('click');
     });
 
+    $('.fa-file-alt').on('click', (): void => {
+        location.reload();
+    });
 });
 

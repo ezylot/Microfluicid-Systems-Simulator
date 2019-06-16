@@ -1,8 +1,21 @@
 // TODO: possibility to define "fully filled with fluid" channels in fluid simmulation
 // TODO: design for available elements
 // TODO: fast drawing destroys connections
+// TODO: replace pump reference in injection when replacing pump
+// TODO: Lock Corners while simulator is started
+// TODO: Look over translations/clean up
+// TODO: Right mouse button stops drawing
+// TODO: Mark the currently selected element in the element palette
+// TODO: Change mouse pointer depending on selected element in the element palette
+// TODO: Pump renaming test (sometimes something breaks)
+// TODO: Select next entry when deleting (? do not know if really better this way)
+// TODO: names should be unique
+// TODO: PUMP+Injection time should be unique
+// TODO: Open dialog when downloading to let user select download location/name
+// TODO: Change icons of Play/Pause/Next/Previous Buttons
+// TODO: Save buttons is blue after saving a file
 
-require(['jquery', 'bootstrap', 'bootstrap-slider'], function ($) {
+require(['jquery', 'bootstrap'], function ($) {
     jQuery(() => {
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -24,7 +37,7 @@ require([
     'droplets',
     'dropletInjections',
     'save-manager',
-    'Footer',
+    'Footer'
 ], function (valueReset, fluids, phases, Fluid, PhaseProperties) {
     valueReset.resetValues();
 
