@@ -108,26 +108,27 @@
                 </button>
 
                 <div class="default-values collapse" data-parent=".collapsible-right">
-                    <b th:text="#{availableElements.defaultValues.channel}"></b>
+
+                    <h6 class="mt-2" th:text="#{availableElements.defaultValues.channel}"></h6>
+                    <label for="default-width" th:text="#{elementProperties.line.width}"></label>
                     <div class="unit-input">
-                        <label for="default-width" class="col-md-4" th:text="#{elementProperties.line.width}"></label>
                         <input id="default-width" name="default-width" type="number"  value="0" />
                         <small class="unit" th:text="#{elementProperties.line.width.unit}"></small>
                     </div>
+                    <label for="default-height" th:text="#{elementProperties.line.height}"></label>
                     <div class="unit-input">
-                        <label for="default-height" class="col-md-4" th:text="#{elementProperties.line.height}"></label>
                         <input id="default-height" name="default-height" type="number"  value="0" />
                         <small class="unit" th:text="#{elementProperties.line.height.unit}"></small>
                     </div>
 
-                    <b th:text="#{availableElements.defaultValues.pump}"></b>
+                    <h6 class="mt-4" th:text="#{availableElements.defaultValues.pump}"></h6>
+                    <label for="default-pressure-pumpValue" th:text="#{elementProperties.pump.pressure.value}"></label>
                     <div class="unit-input">
-                        <label for="default-pressure-pumpValue" class="col-md-4" th:text="#{elementProperties.pump.pressure.value}"></label>
                         <input id="default-pressure-pumpValue" name="default-pressure-pumpValue" type="number"  value="0" />
                         <small class="unit" th:text="#{elementProperties.pump.pressure.unit}"></small>
                     </div>
+                    <label for="default-volume-pumpValue" th:text="#{elementProperties.pump.volume.value}"></label>
                     <div class="unit-input">
-                        <label for="default-volume-pumpValue" class="col-md-4" th:text="#{elementProperties.pump.volume.value}"></label>
                         <input id="default-volume-pumpValue" name="default-volume-pumpValue" type="number"  value="0" />
                         <small class="unit" th:text="#{elementProperties.pump.volume.unit}"></small>
                     </div>
