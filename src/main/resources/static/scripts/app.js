@@ -1,7 +1,6 @@
 // TODO: possibility to define "fully filled with fluid" channels in fluid simmulation
 // TODO: design for available elements
 // TODO: fast drawing destroys connections
-// TODO: New Button
 // TODO: replace pump reference in injection when replacing pump
 // TODO: Lock Corners while simulator is started
 // TODO: Look over translations/clean up
