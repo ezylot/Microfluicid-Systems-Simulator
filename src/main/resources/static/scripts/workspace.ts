@@ -225,7 +225,11 @@ function deletePump(element: ChannelEndCircle): void {
 }
 
 
-export function createPumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTypes, pump: Pump): void {
+export function createOrUpdatePumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTypes, pump: Pump): void {
+    if(pumpGroup.represents === "pump") {
+        pumpGroup.remove(pumpGroup.getObjects()[1]);
+    }
+
     let pumpCircle = pumpGroup.getObjects()[0] as Circle;
 
     if(pumpType === PumpTypes.drain) {
@@ -244,9 +248,8 @@ export function createPumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTyp
             properties: pump,
         });
     } else if(pumpType === PumpTypes.pressure) {
-
         pump.pumpValue = pump.pumpValue || defaultValues.pressure;
-        pump.pumpName = pump.pumpName || 'P' + pump.id;
+        pump.pumpName = 'P' + pump.id;
         pump.type = PumpTypes.pressure;
         pumpCircle.set({
             radius: calculatePumpRadius(),
@@ -261,7 +264,7 @@ export function createPumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTyp
             properties: pump,
         });
 
-        pumpGroup.addWithUpdate(new Text('P', {
+        pumpGroup.addWithUpdate(new Text(pump.pumpName, {
             originX: 'center',
             originY: 'center',
             left: pumpGroup.left,
@@ -270,7 +273,7 @@ export function createPumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTyp
         }));
     } else {
         pump.pumpValue = pump.pumpValue || defaultValues.volume;
-        pump.pumpName = pump.pumpName || 'V' + pump.id;
+        pump.pumpName = 'V' + pump.id;
         pump.type = PumpTypes.volume;
 
         pumpCircle.set({
@@ -286,7 +289,7 @@ export function createPumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTyp
             properties: pump,
         });
 
-        pumpGroup.addWithUpdate(new Text('V', {
+        pumpGroup.addWithUpdate(new Text(pump.pumpName, {
             originX: 'center',
             originY: 'center',
             left: pumpGroup.left,
@@ -380,7 +383,7 @@ jQuery((): void => {
             let verticalGridLine = new BackgroundLine([i * grid, -gridOverlap * grid, i * grid, canvasContainer.height() / canvasToSave.getZoom() + gridOverlap * grid], {
                 stroke: '#eeeeee',
                 selectable: false,
-            }, 'backgroundline');
+            }, 'backgroundLine');
             gridLines.push(verticalGridLine);
         }
 
@@ -388,7 +391,7 @@ jQuery((): void => {
             let horizontalGridLine = new BackgroundLine([-gridOverlap * grid, i * grid, canvasContainer.width() / canvasToSave.getZoom() + gridOverlap * grid, i * grid], {
                 stroke: '#eeeeee',
                 selectable: false,
-            }, 'backgroundline');
+            }, 'backgroundLine');
             gridLines.push(horizontalGridLine);
         }
 
@@ -495,21 +498,33 @@ jQuery((): void => {
                 let pumpGroup: ChannelEndCircle = opt.target as ChannelEndCircle;
 
                 if(pumpGroup.represents === 'pump') {
+                    // Clicked circle is already a pump
                     if(oldSelectedElem === pumpGroup) {
                         $('.element-properties .property-form').hide();
                         $('.element-properties .empty-hint').show();
                     }
-                    deletePump(pumpGroup);
+
+                    pumpGroup.properties.type = currentDrawingPumpType;
+
+                    if(currentDrawingPumpType === PumpTypes.pressure) {
+                        pumpGroup.properties.pumpValue = defaultValues.pressure;
+                    } else {
+                        pumpGroup.properties.pumpValue = defaultValues.volume;
+                    }
+
+                    createOrUpdatePumpElement(pumpGroup, currentDrawingPumpType, pumpGroup.properties);
+                    updatePump(pumpGroup.properties);
+                } else {
+                    // Clicked circle is the end of a channel
+                    let pump = new Pump(pumpGroup.top, pumpGroup.left, nextPumpId++, null, null, currentDrawingPumpType);
+
+                    createOrUpdatePumpElement(pumpGroup, currentDrawingPumpType, pump);
+                    createPump(pump);
                 }
 
                 $('body').removeClass('drawing');
                 canvasToSave.hoverCursor = 'move';
                 canvasToSave.defaultCursor = 'default';
-
-                let pump = new Pump(pumpGroup.top, pumpGroup.left, nextPumpId++, null, null, currentDrawingPumpType);
-
-                createPumpElement(pumpGroup, currentDrawingPumpType, pump);
-                createPump(pump);
 
                 currentDrawingState = DrawingStates.none;
                 currentDrawingLine = null;
@@ -715,7 +730,7 @@ jQuery((): void => {
     $(document).on('keyup', (e: KeyUpEvent): void => {
         // 46 = DELETE key, 27 = ESCAPE KEY, 32 = SPACE
 
-        if (e.keyCode === 27 && currentDrawingState === DrawingStates.started) {
+        if (e.key === 'Escape' && currentDrawingState === DrawingStates.started) {
             $('body').removeClass('drawing');
             canvasToSave.hoverCursor = 'move';
             canvasToSave.defaultCursor = 'default';
@@ -731,7 +746,7 @@ jQuery((): void => {
         }
 
 
-        if (e.keyCode === 27 && currentDrawingPumpType !== null) {
+        if (e.key === 'Escape' && currentDrawingPumpType !== null) {
             $('body').removeClass('drawing');
             canvasToSave.hoverCursor = 'move';
             canvasToSave.defaultCursor = 'default';
@@ -739,7 +754,7 @@ jQuery((): void => {
             currentDrawingPumpType = null;
         }
 
-        if (e.keyCode === 46 && oldSelectedElem != null && e.target.tagName !== "INPUT") {
+        if (e.key === 'Delete' && oldSelectedElem != null && e.target.tagName !== "INPUT") {
             $('.element-properties .property-form').hide();
             $('.element-properties .empty-hint').show();
             if(oldSelectedElem.represents === 'line') {
@@ -751,7 +766,7 @@ jQuery((): void => {
             canvasToSave.renderAll();
         }
 
-        if (e.keyCode === 32) {
+        if (e.key === ' ') {
             canvasToSave.viewportTransform[4] = canvasToSave.viewportTransform[5] = lastPosX = lastPosY = 0;
             canvasToSave.setZoom(1);
             redrawBackground();

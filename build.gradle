@@ -93,7 +93,7 @@ task scssCompile(type: NodeTask) {
         "--recursive",
         "--output", "$buildDir/resources/main/static/styles",
         "--output-style", "compressed",
-        "--source-map", "false",
+        //"--source-map", "true",
         "$projectDir/src/main/resources/static/styles/"
     ]
     script = file("$projectDir/node_modules/node-sass/bin/node-sass")

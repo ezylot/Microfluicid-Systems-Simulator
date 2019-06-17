@@ -15,7 +15,7 @@ import {resetValues} from "./value-reset";
 import {
     canvasToSave,
     createPump,
-    createPumpElement,
+    createOrUpdatePumpElement,
     makeChannel,
     mergeElements,
     pumps,
@@ -91,7 +91,7 @@ jQuery((): void => {
                     .forEach((circleGroup: ChannelEndCircle): void => {
                         let typedPump = Pump.cloneTyped(pump);
                         createPump(typedPump);
-                        createPumpElement(circleGroup, PumpTypes[typedPump.type], typedPump);
+                        createOrUpdatePumpElement(circleGroup, PumpTypes[typedPump.type], typedPump);
                     });
             });
 
