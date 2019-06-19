@@ -133,10 +133,10 @@ export function makeChannel(channel: Channel): ChannelLine {
     canvasToSave.add(startCircle);
     canvasToSave.add(endCircle);
 
-    line.properties = $.extend({}, channel.properties, {
+    line.properties = $.extend({
         height: defaultValues.height,
         width: defaultValues.width,
-    });
+    }, channel.properties);
     line.startCircle = startCircle;
     line.endCircle = endCircle;
     return line;
@@ -612,15 +612,18 @@ jQuery((): void => {
     $('.element-properties .property-form').on('input', 'input', (event): void => {
         let $input = $(event.target);
         let objectProperties = $input.closest('.property-form').data('objectProperties');
-        objectProperties[$input.attr('id')] = $input.val();
 
-        if($input.is($('.element-properties .property-form.line-properties input[name=width]'))) {
-            console.assert(!!oldSelectedElem);
+        if($input.is($('.element-properties .property-form.line-properties input[name=height]'))) {
+            objectProperties.height = Number($input.val());
+        } else if($input.is($('.element-properties .property-form.line-properties input[name=width]'))) {
+            objectProperties.width = Number($input.val());
             oldSelectedElem.set('strokeWidth', objectProperties.width);
             canvasToSave.renderAll();
-        }
-
-        if($input.attr('id') === 'pumpName' || $input.attr('id') === 'pumpValue') {
+        } else if($input.attr('id') === 'pumpName') {
+            objectProperties.pumpName = ($input.val() as string);
+            updatePump(objectProperties);
+        } else if($input.attr('id') === 'pumpValue') {
+            objectProperties.pumpValue = Number($input.val());
             updatePump(objectProperties);
         }
     });
