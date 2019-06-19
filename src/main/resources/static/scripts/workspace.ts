@@ -8,6 +8,7 @@ import {ChannelEndCircle} from "./fabricElements/ChannelEndCircle";
 import {BackgroundLine} from "./fabricElements/BackgroundLine";
 import {updatePump} from "./dropletInjections";
 import KeyUpEvent = JQuery.KeyUpEvent;
+import ContextMenuEvent = JQuery.ContextMenuEvent;
 
 
 const grid = 10;
@@ -224,7 +225,6 @@ function deletePump(element: ChannelEndCircle): void {
     }
 }
 
-
 export function createOrUpdatePumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTypes, pump: Pump): void {
     if(pumpGroup.represents === "pump") {
         pumpGroup.remove(pumpGroup.getObjects()[1]);
@@ -318,7 +318,7 @@ export function createPump(newPump: Pump): void {
     }
 }
 
-function resetOldSelection(oldSelectedElem: any): void {
+function resetOldSelection(oldSelectedElem: ChannelLine | ChannelEndCircle): void {
     if(oldSelectedElem === null) return;
 
     if(oldSelectedElem.represents === 'line') {
@@ -339,7 +339,7 @@ function resetOldSelection(oldSelectedElem: any): void {
 jQuery((): void => {
     let canvasContainer = $('.workspace');
     let backgroundGroup: Group = null;
-    let oldSelectedElem: any = null;
+    let oldSelectedElem: ChannelLine | ChannelEndCircle = null;
     let isDragging = false;
 
     let currentDrawingState = DrawingStates.none;
@@ -733,7 +733,7 @@ jQuery((): void => {
     $(document).on('keyup', (e: KeyUpEvent): void => {
         // 46 = DELETE key, 27 = ESCAPE KEY, 32 = SPACE
 
-        if (e.key === 'Escape' && currentDrawingState === DrawingStates.started) {
+        if (e.key === 'Escape' && currentDrawingState !== DrawingStates.none) {
             $('body').removeClass('drawing');
             canvasToSave.hoverCursor = 'move';
             canvasToSave.defaultCursor = 'default';
@@ -743,11 +743,12 @@ jQuery((): void => {
                 value.lockMovementX = value.lockMovementY = false
             });
 
-            deleteLine(canvasToSave, currentDrawingLine);
+            if(currentDrawingLine != null) {
+                deleteLine(canvasToSave, currentDrawingLine);
+            }
             currentDrawingLine = null;
             currentDrawingChannelType = null;
         }
-
 
         if (e.key === 'Escape' && currentDrawingPumpType !== null) {
             $('body').removeClass('drawing');
@@ -761,9 +762,9 @@ jQuery((): void => {
             $('.element-properties .property-form').hide();
             $('.element-properties .empty-hint').show();
             if(oldSelectedElem.represents === 'line') {
-                deleteLine(canvasToSave, oldSelectedElem);
+                deleteLine(canvasToSave, oldSelectedElem as ChannelLine);
             } else if(oldSelectedElem.represents === 'pump') {
-                deletePump(oldSelectedElem);
+                deletePump(oldSelectedElem as ChannelEndCircle);
             }
             oldSelectedElem = null;
             canvasToSave.renderAll();
@@ -774,6 +775,32 @@ jQuery((): void => {
             canvasToSave.setZoom(1);
             redrawBackground();
         }
+    });
+
+    $(document).on("contextmenu", (event: ContextMenuEvent): boolean => {
+        $('body').removeClass('drawing');
+        canvasToSave.hoverCursor = 'move';
+        canvasToSave.defaultCursor = 'default';
+
+        if (currentDrawingState !== DrawingStates.none) {
+            currentDrawingState = DrawingStates.none;
+            canvasToSave.getObjects().forEach((value): void => {
+                value.lockMovementX = value.lockMovementY = false
+            });
+
+            if(currentDrawingLine != null) {
+                deleteLine(canvasToSave, currentDrawingLine);
+            }
+            currentDrawingLine = null;
+            currentDrawingChannelType = null;
+        }
+
+        if (currentDrawingPumpType !== null) {
+            currentDrawingPumpType = null;
+        }
+
+        event.preventDefault();
+        return false;
     });
 
     canvasToSave.on('object:moving', (e): void => {

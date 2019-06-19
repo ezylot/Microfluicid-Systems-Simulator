@@ -3,7 +3,6 @@
 // TODO: fast drawing destroys connections
 // TODO: Lock Corners while simulator is started
 // TODO: Look over translations/clean up
-// TODO: Right mouse button stops drawing
 // TODO: Mark the currently selected element in the element palette
 // TODO: Change mouse pointer depending on selected element in the element palette
 // TODO: Pump renaming test (sometimes something breaks)
