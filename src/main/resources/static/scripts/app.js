@@ -12,7 +12,6 @@
 // TODO: PUMP+Injection time should be unique
 // TODO: Open dialog when downloading to let user select download location/name
 // TODO: Change icons of Play/Pause/Next/Previous Buttons
-// TODO: Save buttons is blue after saving a file
 
 require(['jquery', 'bootstrap'], function ($) {
     jQuery(() => {
