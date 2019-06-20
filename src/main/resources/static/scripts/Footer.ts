@@ -62,14 +62,14 @@ export class Footer {
             this.ajaxRequest.then((data): void => {
                 this.simulator = new Simulator(data, $('.footer'), canvas, {
                     finishedPlayingCallback: (): void => {
-                        $('.fa-pause').removeClass('fas fa-pause').addClass('fab fa-rev');
+                        $('.fa-pause').removeClass('fas fa-pause').addClass('fab fa-play');
                         this.simulator.goTo(0);
                     },
                     playCallback: (): void => {
-                        $('.fa-rev').removeClass('fab fa-rev').addClass('fas fa-pause');
+                        $('.fa-play').removeClass('fab fa-play').addClass('fas fa-pause');
                     },
                     pauseCallback: (): void => {
-                        $('.fa-pause').removeClass('fas fa-pause').addClass('fab fa-rev');
+                        $('.fa-pause').removeClass('fas fa-pause').addClass('fab fa-play');
                     }
                 });
 
@@ -82,7 +82,7 @@ export class Footer {
             .on('click', '.fa-pause', (): void => {
                 this.simulator.pause();
             })
-            .on('click', '.fa-rev', (): void => {
+            .on('click', '.fa-play', (): void => {
                 this.simulator.play();
             })
             .on('click', '.fa-caret-right', (): void => {

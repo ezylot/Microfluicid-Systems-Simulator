@@ -10,7 +10,6 @@
 // TODO: droplet names should be unique
 // TODO: pump names should be unique
 // TODO: Open dialog when downloading to let user select download location/name
-// TODO: Change icons of Play/Pause/Next/Previous Buttons
 
 require(['jquery', 'bootstrap'], function ($) {
     jQuery(() => {
