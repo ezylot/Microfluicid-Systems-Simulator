@@ -203,16 +203,12 @@
 
                     <div class="phase-property-line">
                         <label for="contPhaseFluid" th:text="#{phaseProperties.form.contPhaseFluid}"></label>
-                        <select id="contPhaseFluid" name="contPhaseFluid">
-                            <option selected value=""></option>
-                        </select>
+                        <select id="contPhaseFluid" name="contPhaseFluid"></select>
                     </div>
 
                     <div class="phase-property-line">
                         <label for="disptPhaseFluid" th:text="#{phaseProperties.form.disptPhaseFluid}"></label>
-                        <select id="disptPhaseFluid" name="disptPhaseFluid">
-                            <option selected value=""></option>
-                        </select>
+                        <select id="disptPhaseFluid" name="disptPhaseFluid"></select>
                     </div>
 
                     <div class="phase-property-line">
@@ -306,19 +302,23 @@
                     <div class="property-list mt-auto">
                         <div class="injection-property-line">
                             <label for="dropletSelection" th:text="#{injectionProperties.form.dropletSelection}"></label>
-                            <select id="dropletSelection" name="dropletId">
-                                <option selected value=""></option>
-                            </select>
+                            <select id="dropletSelection" name="dropletId"></select>
                         </div>
                         <div class="injection-property-line">
-                            <label for="injectionTime" th:text="#{injectionProperties.form.injectTime}"></label>
-                            <input id="injectionTime" name="injectionTime" type="number" min="0"  step="0.0001" />
+                            <label for="injectionTime">
+                                <span th:text="#{injectionProperties.form.injectTime}"></span>
+                                <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" th:title="#{injectionProperties.injectionTime.hint}"></i>
+                            </label>
+
+                            <div class="unit-input">
+                                <input id="injectionTime" name="injectionTime" type="number" min="0" step="0.0001" />
+                                <small class="unit" th:text="#{injectionProperties.injectionTime.unit}"></small>
+                            </div>
+
                         </div>
                         <div class="injection-property-line">
                             <label for="pumpSelection" th:text="#{injectionProperties.form.pumpSelection}"></label>
-                            <select id="pumpSelection" name="injectionPumpId">
-                                <option selected value=""></option>
-                            </select>
+                            <select id="pumpSelection" name="injectionPumpId"></select>
                         </div>
 
                         <div class="d-flex">
@@ -344,18 +344,18 @@
             <h5 th:text="#{selectedElementProperties.header}" class="mb-3"></h5>
             <p class="empty-hint" th:text="#{selectedElementProperties.noneSelected}"></p>
             <div class="property-form line-properties" style="display: none;">
+                <label for="length" th:text="#{elementProperties.line.length}"></label>
                 <div class="element-property-line unit-input">
-                    <label for="length" th:text="#{elementProperties.line.length}"></label>
                     <input disabled id="length" name="length" type="number" min="0" />
                     <small class="unit" th:text="#{elementProperties.line.length.unit}"></small>
                 </div>
+                <label for="width" th:text="#{elementProperties.line.width}"></label>
                 <div class="element-property-line unit-input">
-                    <label for="width" th:text="#{elementProperties.line.width}"></label>
                     <input id="width" name="width" type="number" min="0" />
                     <small class="unit" th:text="#{elementProperties.line.width.unit}"></small>
                 </div>
+                <label for="height" th:text="#{elementProperties.line.height}"></label>
                 <div class="element-property-line unit-input">
-                    <label for="height" th:text="#{elementProperties.line.height}"></label>
                     <input id="height" name="height" type="number" min="0" />
                     <small class="unit" th:text="#{elementProperties.line.height.unit}"></small>
                 </div>
@@ -366,12 +366,10 @@
                     <label for="pumpName" th:text="#{elementProperties.pump.name}"></label>
                     <input id="pumpName" name="pumpName" type="text" />
                 </div>
+                <label for="pumpValue" id="pressure-value-label" th:text="#{elementProperties.pump.pressure.value}"></label>
+                <label for="pumpValue" id="volume-value-label" th:text="#{elementProperties.pump.volume.value}"></label>
                 <div class="element-property-line unit-input">
-                    <label for="pumpValue" id="pressure-value-label" th:text="#{elementProperties.pump.pressure.value}"></label>
-                    <label for="pumpValue" id="volume-value-label" th:text="#{elementProperties.pump.volume.value}"></label>
-
                     <input id="pumpValue" name="value" type="number" min="0" />
-
                     <small class="unit" id="pressure-value-unit" th:text="#{elementProperties.pump.pressure.unit}"></small>
                     <small class="unit" id="volume-value-unit" th:text="#{elementProperties.pump.volume.unit}"></small>
                 </div>
@@ -456,20 +454,22 @@
                 <div class="modal-body">
                     <form id="newDropletInjectionForm">
                         <label for="newDropletSelection" th:text="#{injectionProperties.newModal.droplet.label}"></label>
-                        <select id="newDropletSelection">
-                            <option selected value=""></option>
-                        </select>
+                        <select id="newDropletSelection" ></select>
 
-                        <label for="newDropletInjectionTime" th:text="#{injectionProperties.newModal.injectionTime.label}"></label>
-                        <input required autofocus id="newDropletInjectionTime"
-                                type="number" min="0" step="0.0001"
-                               th:placeholder="#{injectionProperties.newModal.injectionTime.placeholder}"/>
+                        <label for="newDropletInjectionTime">
+                            <span th:text="#{injectionProperties.newModal.injectionTime.label}"></span>
+                            <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" th:title="#{injectionProperties.injectionTime.hint}"></i>
+                        </label>
+                        <div class="unit-input">
+                            <input required autofocus id="newDropletInjectionTime"
+                                   type="number" min="0" step="0.0001"
+                                   th:placeholder="#{injectionProperties.newModal.injectionTime.placeholder}"/>
+                            <small class="unit" th:text="#{injectionProperties.injectionTime.unit}"></small>
+                        </div>
 
                         <label for="newPumpSelection"
                                th:text="#{injectionProperties.newModal.pumpSelection.label}"></label>
-                        <select id="newPumpSelection">
-                            <option selected value=""></option>
-                        </select>
+                        <select id="newPumpSelection"></select>
 
                         <button class="mt-4" type="submit" th:text="#{injectionProperties.newModal.submit}"></button>
                     </form>

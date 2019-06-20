@@ -1,12 +1,12 @@
-import {Canvas, Circle, Text, Line, Group} from "fabric/fabric-impl";
-import {Pump} from "./classes/Pump";
-import * as $ from "jquery";
-import {defaultValues} from "./defaultvalue";
-import {Channel} from "./classes/Channel";
-import {ChannelLine} from "./fabricElements/ChannelLine";
-import {ChannelEndCircle} from "./fabricElements/ChannelEndCircle";
-import {BackgroundLine} from "./fabricElements/BackgroundLine";
-import {updatePump} from "./dropletInjections";
+import {Canvas, Circle, Text, Line, Group} from 'fabric/fabric-impl';
+import {Pump} from './classes/Pump';
+import * as $ from 'jquery';
+import {defaultValues} from './defaultvalue';
+import {Channel} from './classes/Channel';
+import {ChannelLine} from './fabricElements/ChannelLine';
+import {ChannelEndCircle} from './fabricElements/ChannelEndCircle';
+import {BackgroundLine} from './fabricElements/BackgroundLine';
+import {updatePump} from './dropletInjections';
 import KeyUpEvent = JQuery.KeyUpEvent;
 import ContextMenuEvent = JQuery.ContextMenuEvent;
 
@@ -176,30 +176,11 @@ export function mergeElements(canvas: Canvas): void {
         }
     });
 
-    if(canvas.getObjects("circle").length === 1) {
-        canvas.remove(canvas.getObjects("circle")[0]);
+    if(canvas.getObjects('circle').length === 1) {
+        canvas.remove(canvas.getObjects('circle')[0]);
     }
 }
 
-function deleteLine(canvas: Canvas, line: ChannelLine): void {
-    if(line.startCircle.lines.length === 1) {
-        canvas.remove(line.startCircle);
-    } else {
-        line.startCircle.lines = line.startCircle.lines.filter((value): boolean => {
-            return value.line !== line;
-        });
-    }
-
-    if(line.endCircle.lines.length === 1) {
-        canvas.remove(line.endCircle);
-    } else {
-        line.endCircle.lines = line.endCircle.lines.filter((value): boolean => {
-            return value.line !== line;
-        });
-    }
-
-    canvas.remove(line);
-}
 
 export function deletePumpObject(pump: Pump): void {
     let indexToDelete = pumps.findIndex((value: Pump): boolean => value.id === pump.id);
@@ -226,7 +207,7 @@ function deletePump(element: ChannelEndCircle): void {
 }
 
 export function createOrUpdatePumpElement(pumpGroup: ChannelEndCircle, pumpType: PumpTypes, pump: Pump): void {
-    if(pumpGroup.represents === "pump") {
+    if(pumpGroup.represents === 'pump') {
         pumpGroup.remove(pumpGroup.getObjects()[1]);
     }
 
@@ -298,6 +279,34 @@ export function createOrUpdatePumpElement(pumpGroup: ChannelEndCircle, pumpType:
         }));
     }
 }
+
+
+function deleteLine(canvas: Canvas, line: ChannelLine): void {
+    if(line.startCircle.lines.length === 1) {
+        if(line.startCircle.represents === 'pump') {
+            deletePump(line.startCircle);
+        }
+        canvas.remove(line.startCircle);
+    } else {
+        line.startCircle.lines = line.startCircle.lines.filter((value): boolean => {
+            return value.line !== line;
+        });
+    }
+
+    if(line.endCircle.lines.length === 1) {
+        if(line.endCircle.represents === 'pump') {
+            deletePump(line.endCircle);
+        }
+        canvas.remove(line.endCircle);
+    } else {
+        line.endCircle.lines = line.endCircle.lines.filter((value): boolean => {
+            return value.line !== line;
+        });
+    }
+
+    canvas.remove(line);
+}
+
 
 export function createPump(newPump: Pump): void {
     if(newPump.id >= nextPumpId) {
@@ -629,6 +638,8 @@ jQuery((): void => {
     });
 
     $createChannelElement.on('click', (): void => {
+        $('.currently-selected').removeClass('currently-selected');
+        $createChannelElement.addClass('currently-selected');
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = ChannelTypes.normal;
         currentDrawingPumpType = null;
@@ -639,6 +650,8 @@ jQuery((): void => {
 
 
     $createCloggableChannelElement.on('click', (): void  => {
+        $('.currently-selected').removeClass('currently-selected');
+        $createCloggableChannelElement.addClass('currently-selected');
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = ChannelTypes.cloggable;
         currentDrawingPumpType = null;
@@ -648,6 +661,8 @@ jQuery((): void => {
     });
 
     $createBypassChannelElement.on('click', (): void  => {
+        $('.currently-selected').removeClass('currently-selected');
+        $createBypassChannelElement.addClass('currently-selected');
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = ChannelTypes.bypass;
         currentDrawingPumpType = null;
@@ -657,6 +672,8 @@ jQuery((): void => {
     });
 
     $createPressurePumpElement.on('click', (): void  => {
+        $('.currently-selected').removeClass('currently-selected');
+        $createPressurePumpElement.addClass('currently-selected');
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = null;
         currentDrawingPumpType = PumpTypes.pressure;
@@ -666,6 +683,8 @@ jQuery((): void => {
     });
 
     $createVolumePumpElement.on('click', (): void  => {
+        $('.currently-selected').removeClass('currently-selected');
+        $createVolumePumpElement.addClass('currently-selected');
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = null;
         currentDrawingPumpType = PumpTypes.volume;
@@ -675,6 +694,8 @@ jQuery((): void => {
     });
 
     $createDrainPumpElement.on('click', (): void  => {
+        $('.currently-selected').removeClass('currently-selected');
+        $createDrainPumpElement.addClass('currently-selected');
         currentDrawingState = DrawingStates.ready;
         currentDrawingChannelType = null;
         currentDrawingPumpType = PumpTypes.drain;
@@ -734,6 +755,7 @@ jQuery((): void => {
         // 46 = DELETE key, 27 = ESCAPE KEY, 32 = SPACE
 
         if (e.key === 'Escape' && currentDrawingState !== DrawingStates.none) {
+            $('.currently-selected').removeClass('currently-selected');
             $('body').removeClass('drawing');
             canvasToSave.hoverCursor = 'move';
             canvasToSave.defaultCursor = 'default';
@@ -751,6 +773,7 @@ jQuery((): void => {
         }
 
         if (e.key === 'Escape' && currentDrawingPumpType !== null) {
+            $('.currently-selected').removeClass('currently-selected');
             $('body').removeClass('drawing');
             canvasToSave.hoverCursor = 'move';
             canvasToSave.defaultCursor = 'default';
@@ -758,7 +781,7 @@ jQuery((): void => {
             currentDrawingPumpType = null;
         }
 
-        if (e.key === 'Delete' && oldSelectedElem != null && e.target.tagName !== "INPUT") {
+        if (e.key === 'Delete' && oldSelectedElem != null && e.target.tagName !== 'INPUT') {
             $('.element-properties .property-form').hide();
             $('.element-properties .empty-hint').show();
             if(oldSelectedElem.represents === 'line') {
@@ -777,10 +800,11 @@ jQuery((): void => {
         }
     });
 
-    $(document).on("contextmenu", (event: ContextMenuEvent): boolean => {
+    $(document).on('contextmenu', 'canvas', (event: ContextMenuEvent): boolean => {
         $('body').removeClass('drawing');
         canvasToSave.hoverCursor = 'move';
         canvasToSave.defaultCursor = 'default';
+        $('.currently-selected').removeClass('currently-selected');
 
         if (currentDrawingState !== DrawingStates.none) {
             currentDrawingState = DrawingStates.none;
@@ -828,7 +852,7 @@ jQuery((): void => {
             }
         });
 
-        if(circle.represents === "pump") {
+        if(circle.represents === 'pump') {
             circle.properties.left = left;
             circle.properties.top = top;
         }

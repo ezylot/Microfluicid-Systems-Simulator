@@ -109,7 +109,7 @@ export class Simulator {
     private redrawFunction(): void {
         this.states[this._currentState].dropletStates.forEach((value): void => {
             let dropletInjection = dropletInjections.find((injection: DropletInjection): boolean => {
-                return injection.injectionPumpName == value.dropletInjectionTime.pumpName && injection.injectionTime == value.dropletInjectionTime.timePoint;
+                return injection.injectionPumpName == value.dropletInjectionTime.pumpName && injection.injectionTime == value.dropletInjectionTime.timePoint * 1000;
             });
 
             let dropletToInject = droplets.find((droplet: Droplet): boolean => {

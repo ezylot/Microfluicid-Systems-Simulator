@@ -220,7 +220,10 @@ public class SimulatorServiceImpl implements SimulatorService {
         List<PhysicalDropletInjectionTime> injections = new ArrayList<>();
         for (final JsonNode injection : body.get("dropletInjections")) {
             int injectionPumpId = injection.get("injectionPumpId").asInt();
-            double injectionTime = injection.get("injectionTime").asDouble();
+
+            // We receive the injection time in milliseconds, but we need seconds for the simulator
+            double injectionTime = injection.get("injectionTime").asDouble() / 1000;
+
             int dropletId = injection.get("dropletId").asInt();
             DropletDTO dropletDTO = dropletDTOMap.get(dropletId);
             PhysicalPump physicalPump = pumps.get(injectionPumpId);

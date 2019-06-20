@@ -205,7 +205,15 @@ h5 {
 
 .element-palette {
     flex-direction: column;
-    padding: 10px;
+    padding: 10px 3px;
+
+    > div {
+        padding-left: 7px;
+    }
+
+    .currently-selected {
+        background: #EFEFEF;
+    }
 }
 
 /*region Fluid Properties */
