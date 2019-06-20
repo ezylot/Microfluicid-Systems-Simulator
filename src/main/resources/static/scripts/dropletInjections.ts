@@ -67,7 +67,7 @@ export function createNewInjection(newInjection: DropletInjection): void {
     $tableRow.trigger('click');
 }
 
-export function deleteDropletInjection(injection: DropletInjection) {
+export function deleteDropletInjection(injection: DropletInjection): void {
     let $activeRow = $('.injection-properties .table-wrapper tbody tr').filter((index, element): boolean => {
         return ($(element).data('injection') as DropletInjection).id === injection.id;
     });

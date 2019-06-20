@@ -227,6 +227,17 @@ public class SimulatorServiceImpl implements SimulatorService {
             if(physicalPump == null) {
                 throw new IllegalArgumentException(messageSource.getMessage("simulation-error.injection-no-pump", new String[]{ injection.get("id").asText() }, LocaleContextHolder.getLocale()));
             }
+
+            boolean alradyExisting = injections.stream()
+                .anyMatch(
+                    physicalDropletInjectionTime -> physicalDropletInjectionTime.pump.equals(physicalPump)
+                    && physicalDropletInjectionTime.timePoint == injectionTime
+                );
+
+            if(alradyExisting) {
+                throw new IllegalArgumentException(messageSource.getMessage("simulation-error.injection-unique", new String[]{ injection.get("id").asText() }, LocaleContextHolder.getLocale()));
+            }
+
             PhysicalPayloadInjectionTime i = new PhysicalPayloadInjectionTime(
                 physicalPump,
                 injectionTime,

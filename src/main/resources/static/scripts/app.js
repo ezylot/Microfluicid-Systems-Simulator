@@ -8,7 +8,6 @@
 // TODO: Pump renaming test (sometimes something breaks)
 // TODO: Select next entry when deleting (? do not know if really better this way)
 // TODO: names should be unique
-// TODO: PUMP+Injection time should be unique
 // TODO: Open dialog when downloading to let user select download location/name
 // TODO: Change icons of Play/Pause/Next/Previous Buttons
 
