@@ -17,7 +17,7 @@ export class Simulator {
     private playerInterval: number;
     private readonly canvas: Canvas;
 
-    private readonly fluidsToSimulate: Record<string, SimulatedFluid>;
+    private readonly fluidsToSimulate: Map<string, SimulatedFluid> = new Map<string, SimulatedFluid>();
 
     private readonly playCallback: () => void;
     private readonly pauseCallback: () => void;
@@ -28,7 +28,7 @@ export class Simulator {
         this.$footer = $footer;
         this.canvas = canvas;
 
-        this.fluidsToSimulate = {};
+        this.fluidsToSimulate.clear();
 
         if(options){
             this.playCallback = options.playCallback || null;
@@ -98,7 +98,7 @@ export class Simulator {
         }
 
         for (let key in this.fluidsToSimulate) {
-            this.fluidsToSimulate[key].remove(this.canvas);
+            this.fluidsToSimulate.get(key).remove(this.canvas);
         }
 
         this.$progressBar
@@ -107,6 +107,8 @@ export class Simulator {
     }
 
     private redrawFunction(): void {
+        let unusedNames: string[] = Array.from(this.fluidsToSimulate.keys());
+
         this.states[this._currentState].dropletStates.forEach((value): void => {
             let dropletInjection = dropletInjections.find((injection: DropletInjection): boolean => {
                 return injection.injectionPumpName == value.dropletInjectionTime.pumpName && injection.injectionTime == value.dropletInjectionTime.timePoint * 1000;
@@ -117,15 +119,16 @@ export class Simulator {
             });
 
             let dropletName = value.name;
-            if (!this.fluidsToSimulate[dropletName]) {
-                this.fluidsToSimulate[dropletName] = new SimulatedFluid(null, 0, true, null, 0, true, dropletToInject.color);
+            unusedNames.splice(unusedNames.findIndex((name: string): boolean => name === dropletName), 1);
+            if (!this.fluidsToSimulate.get(dropletName)) {
+                this.fluidsToSimulate.set(dropletName, new SimulatedFluid(null, 0, true, null, 0, true, dropletToInject.color));
             }
 
             if (value.dropletPositions.length === 1) {
                 let dropletPosition = value.dropletPositions[0];
                 let channel = this.getLineFromCoords(dropletPosition.edge);
 
-                this.fluidsToSimulate[dropletName].changePosition(
+                this.fluidsToSimulate.get(dropletName).changePosition(
                     channel,
                     dropletPosition.headPosition,
                     value.dropletPositions[0].defaultFlowDirection,
@@ -137,7 +140,7 @@ export class Simulator {
                 let channel1 = this.getLineFromCoords(value.dropletPositions[0].edge);
                 let channel2 = this.getLineFromCoords(value.dropletPositions[1].edge);
 
-                this.fluidsToSimulate[dropletName].changePosition(
+                this.fluidsToSimulate.get(dropletName).changePosition(
                     channel1,
                     value.dropletPositions[0].tailPosition,
                     value.dropletPositions[0].defaultFlowDirection,
@@ -146,19 +149,24 @@ export class Simulator {
                     value.dropletPositions[1].defaultFlowDirection,
                 );
             } else if (value.dropletPositions.length === 0) {
-                this.fluidsToSimulate[dropletName].remove(this.canvas);
-                delete this.fluidsToSimulate[dropletName];
+                this.fluidsToSimulate.get(dropletName).remove(this.canvas);
+                this.fluidsToSimulate.delete(dropletName);
             } else {
                 // TODO: implement multi channel spanning droplets
                 debugger;
-                this.fluidsToSimulate[dropletName].remove(this.canvas);
-                delete this.fluidsToSimulate[dropletName];
+                this.fluidsToSimulate.get(dropletName).remove(this.canvas);
+                this.fluidsToSimulate.delete(dropletName);
             }
         });
 
-        for (let key in this.fluidsToSimulate) {
-            this.fluidsToSimulate[key].draw(this.canvas);
-        }
+        this.fluidsToSimulate.forEach((value: SimulatedFluid): void => {
+            value.draw(this.canvas);
+        });
+
+        unusedNames.forEach((value: string): void => {
+            this.fluidsToSimulate.get(value).remove(this.canvas);
+        });
+
         this.canvas.renderAll();
     }
 
