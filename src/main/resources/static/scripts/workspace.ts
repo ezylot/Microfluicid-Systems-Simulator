@@ -57,7 +57,7 @@ const canvasToSave = new Canvas('c', {selection: false});
 
 let lastPosX = 0;
 let lastPosY = 0;
-
+let drawingLengthTexts: Text[] = [];
 
 function getLengthFormatted(line: Line): string {
     return Math.sqrt(Math.pow(line.x1 - line.x2, 2) + Math.pow(line.y1 - line.y2, 2)).toFixed(2);
@@ -326,6 +326,29 @@ export function createPump(newPump: Pump): void {
         );
     }
 }
+
+function removeLengthsOnLines(): number {
+    canvasToSave.remove(...drawingLengthTexts);
+    return drawingLengthTexts.splice(0, drawingLengthTexts.length).length;
+}
+
+function showLengthsOnLine(circle: ChannelEndCircle): void {
+    removeLengthsOnLines();
+
+    circle.lines.forEach((value): void => {
+        drawingLengthTexts.push(new Text(getLengthFormatted(value.line), {
+            left: value.line.x1 + (value.line.x2- value.line.x1) / 2,
+            top: value.line.y1 + (value.line.y2- value.line.y1) / 2,
+            fontSize: 16,
+            originX: 'center',
+            originY: 'center',
+            fontWeight: 'bold',
+        }));
+    });
+
+    canvasToSave.add(...drawingLengthTexts);
+}
+
 
 function resetOldSelection(oldSelectedElem: ChannelLine | ChannelEndCircle): void {
     if(oldSelectedElem === null) return;
@@ -725,6 +748,7 @@ jQuery((): void => {
             canvasToSave.renderAll();
             currentDrawingLine.setCoords();
             currentDrawingLine.endCircle.setCoords();
+            showLengthsOnLine(currentDrawingLine.endCircle);
         }
     });
 
@@ -736,6 +760,8 @@ jQuery((): void => {
                 value.setCoords();
             });
         }
+
+        setTimeout(removeLengthsOnLines, 1500);
     });
 
     canvasToSave.on('mouse:wheel', (opt: any): void => {
@@ -752,8 +778,6 @@ jQuery((): void => {
     });
 
     $(document).on('keyup', (e: KeyUpEvent): void => {
-        // 46 = DELETE key, 27 = ESCAPE KEY, 32 = SPACE
-
         if (e.key === 'Escape' && currentDrawingState !== DrawingStates.none) {
             $('.currently-selected').removeClass('currently-selected');
             $('body').removeClass('drawing');
@@ -770,6 +794,7 @@ jQuery((): void => {
             }
             currentDrawingLine = null;
             currentDrawingChannelType = null;
+            removeLengthsOnLines();
         }
 
         if (e.key === 'Escape' && currentDrawingPumpType !== null) {
@@ -817,6 +842,7 @@ jQuery((): void => {
             }
             currentDrawingLine = null;
             currentDrawingChannelType = null;
+            removeLengthsOnLines();
         }
 
         if (currentDrawingPumpType !== null) {
@@ -851,6 +877,8 @@ jQuery((): void => {
                 $('.element-properties').find('.line-properties').find('#length').val(getLengthFormatted(value.line));
             }
         });
+
+        showLengthsOnLine(circle);
 
         if(circle.represents === 'pump') {
             circle.properties.left = left;
