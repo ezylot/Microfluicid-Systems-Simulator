@@ -1,15 +1,18 @@
-// TODO: possibility to define "fully filled with fluid" channels in fluid simmulation
-// TODO: design for available elements
-// TODO: fast drawing destroys connections
-// TODO: Lock Corners while simulator is started
-// TODO: Look over translations/clean up
-// TODO: Change mouse pointer depending on selected element in the element palette
-// TODO: Pump renaming test (sometimes something breaks)
-// TODO: Select next entry when deleting (? do not know if really better this way)
-// TODO: fluid names should be unique
-// TODO: droplet names should be unique
-// TODO: pump names should be unique
-// TODO: Open dialog when downloading to let user select download location/name
+/*
+ TODO: possibility to define "fully filled with fluid" channels in fluid simmulation
+ TODO: design for available elements
+ TODO: fast drawing destroys connections
+ TODO: Lock Corners while simulator is started
+ TODO: Look over translations/clean up
+ TODO: Change mouse pointer depending on selected element in the element palette
+ TODO: Pump renaming test (sometimes something breaks)
+ TODO: Select next entry when deleting (? do not know if really better this way)
+ TODO: fluid names should be unique
+ TODO: droplet names should be unique
+ TODO: pump names should be unique
+ TODO: Open dialog when downloading to let user select download location/name
+ TODO: look at zooming in firefox
+*/
 
 require(['jquery', 'bootstrap'], function ($) {
     jQuery(() => {

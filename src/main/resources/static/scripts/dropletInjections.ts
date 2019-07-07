@@ -20,6 +20,9 @@ export function updatePump(updatedPump: Pump): void {
             $row.find('.injectionPumpName').text(updatedPump.pumpName);
         }
     });
+
+    $(`#newPumpSelection option[value=${updatedPump.id}]`).text(updatedPump.pumpName);
+    $(`#pumpSelection option[value=${updatedPump.id}]`).text(updatedPump.pumpName);
 }
 
 export function updateDroplet(updatedDroplet: Droplet): void {

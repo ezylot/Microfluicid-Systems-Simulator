@@ -76,7 +76,17 @@ export class SimulatedFluid {
             }
 
             if(this.drawnGroup != null) {
-                canvas.remove(this.drawnGroup);
+                if(this.drawnGroup.size() === 3) {
+                    let newCoordsX = (coords[0] + coords[2]) / 2;
+                    let newCoordsY = (coords[1] + coords[3]) / 2;
+                    let oldTransformMatrix = this.drawnGroup.calcTransformMatrix();
+
+                    oldTransformMatrix[4] = newCoordsX;
+                    oldTransformMatrix[5] = newCoordsY;
+                    return;
+                } else {
+                    canvas.remove(this.drawnGroup);
+                }
             }
 
             let simulatedFluid = new Line(coords, {
