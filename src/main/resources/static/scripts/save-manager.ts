@@ -106,6 +106,7 @@ jQuery((): void => {
             });
         };
         reader.readAsText(file);
+        $('#fileupload').val(null);
     });
 
     $('.fa-folder-open').on('click', (): void => {
