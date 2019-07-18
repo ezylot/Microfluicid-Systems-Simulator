@@ -3,7 +3,6 @@
  TODO: design for available elements
  TODO: fast drawing destroys connections
  TODO: Lock Corners while simulator is started
- TODO: Look over translations/clean up
  TODO: Change mouse pointer depending on selected element in the element palette
  TODO: Select next entry when deleting (? do not know if really better this way)
  TODO: fluid names should be unique
@@ -18,7 +17,6 @@
  TODO: Multi select channels
  TODO: Info Texts for the available elements
  TODO: look at functionality of traps
- TODO: Show error messages longer
  TODO: Add grid size multiplier in default values
  TODO: About link "Created with JKU, etc"
 */

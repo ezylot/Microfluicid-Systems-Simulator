@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{simulator.htmlTitle}">Microfluidic Systems Simulator</title>
+    <title th:text="#{htmlTitle}">Microfluidic Systems Simulator</title>
 
     <link rel="apple-touch-icon" sizes="180x180" th:href="@{/favicon/apple-touch-icon.png}"
           href="../static/favicon/apple-touch-icon.png">
@@ -27,7 +27,7 @@
     <link rel="stylesheet" th:href="@{/styles/main.css}">
 </head>
 <body>
-    <div id="exampleToast" role="alert" aria-live="assertive" aria-atomic="true" class="d-none toast" data-delay="4000">
+    <div id="exampleToast" role="alert" aria-live="assertive" aria-atomic="true" class="d-none toast" data-delay="6000">
         <div class="toast-header">
             <strong class="primary-text mr-auto"></strong>
             <small class="muted-text"></small>
@@ -162,7 +162,7 @@
                         <div class="fluid-property-line">
                             <label for="muInput" th:utext="#{fluidProperties.form.mu}"></label>
                             <div class="unit-input">
-                                <input id="muInput" name="mu" type="number" min="0" />
+                                <input id="muInput" name="mu" type="number" min="0" th:placeholder="#{fluidProperties.form.mu.placeholder}" />
                                 <small class="unit" th:utext="#{fluidProperties.form.mu.unit}"></small>
                             </div>
                         </div>
@@ -170,7 +170,7 @@
                         <div class="fluid-property-line">
                             <label for="densityCInput" th:text="#{fluidProperties.form.densityC}"></label>
                             <div class="unit-input">
-                                <input id="densityCInput" name="densityC" type="number" min="0" />
+                                <input id="densityCInput" name="densityC" type="number" min="0" th:placeholder="#{fluidProperties.form.densityC.placeholder}"/>
                                 <small class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></small>
                             </div>
                         </div>
@@ -187,7 +187,7 @@
                                 <i class="fas fa-copy"></i>
                             </div>
                             <div class="icon-box disabled delete-button" data-toggle="tooltip"
-                                 data-placement="top" th:title="#{fluidProperties.delete.tooltip}">
+                                 data-placement="top" th:title="#{fluidProperties.deleteButton.tooltip}">
                                 <i class="fas fa-trash"></i>
                             </div>
                         </div>
@@ -202,26 +202,26 @@
                 <div data-parent=".collapsible-left" class="phase-properties collapse">
 
                     <div class="phase-property-line">
-                        <label for="contPhaseFluid" th:text="#{phaseProperties.form.contPhaseFluid}"></label>
+                        <label for="contPhaseFluid" th:text="#{phaseProperties.contPhaseFluid}"></label>
                         <select id="contPhaseFluid" name="contPhaseFluid"></select>
                     </div>
 
                     <div class="phase-property-line">
-                        <label for="disptPhaseFluid" th:text="#{phaseProperties.form.disptPhaseFluid}"></label>
+                        <label for="disptPhaseFluid" th:text="#{phaseProperties.disptPhaseFluid}"></label>
                         <select id="disptPhaseFluid" name="disptPhaseFluid"></select>
                     </div>
 
                     <div class="phase-property-line">
-                        <label for="interfacialTensionInput" th:text="#{phaseProperties.form.interfacialTension}"></label>
+                        <label for="interfacialTensionInput" th:text="#{phaseProperties.interfacialTension}"></label>
                         <div class="unit-input">
                             <input id="interfacialTensionInput" name="interfacialTension" type="number" min="0" />
-                            <small class="unit" th:text="#{phaseProperties.form.interfacialTension.unit}"></small>
+                            <small class="unit" th:text="#{phaseProperties.interfacialTension.unit}"></small>
                         </div>
                     </div>
 
                     <div class="phase-property-line">
-                        <label for="slipInput" th:text="#{phaseProperties.form.slip}"></label>
-                        <input id="slipInput" name="slip" type="number" min="0"  th:placeholder="#{phaseProperties.form.slip.placeholder}" />
+                        <label for="slipInput" th:text="#{phaseProperties.slip}"></label>
+                        <input id="slipInput" name="slip" type="number" min="0"  th:placeholder="#{phaseProperties.slip.placeholder}" />
                     </div>
                 </div>
             </div>
@@ -272,7 +272,7 @@
                                 <i class="fas fa-copy"></i>
                             </div>
                             <div class="icon-box disabled delete-button" data-toggle="tooltip"
-                                 data-placement="top" th:title="#{dropletProperties.delete.tooltip}">
+                                 data-placement="top" th:title="#{dropletProperties.deleteButton.tooltip}">
                                 <i class="fas fa-trash"></i>
                             </div>
                         </div>
@@ -312,7 +312,7 @@
 
                             <div class="unit-input">
                                 <input id="injectionTime" name="injectionTime" type="number" min="0" step="0.0001" />
-                                <small class="unit" th:text="#{injectionProperties.injectionTime.unit}"></small>
+                                <small class="unit" th:text="#{injectionProperties.form.injectionTime.unit}"></small>
                             </div>
 
                         </div>
@@ -332,7 +332,7 @@
                                 <i class="fas fa-copy"></i>
                             </div>
                             <div class="icon-box disabled delete-button" data-toggle="tooltip"
-                                 data-placement="top" th:title="#{injectionProperties.delete.tooltip}">
+                                 data-placement="top" th:title="#{injectionProperties.deleteButton.tooltip}">
                                 <i class="fas fa-trash"></i>
                             </div>
                         </div>
@@ -464,7 +464,7 @@
                             <input required autofocus id="newDropletInjectionTime"
                                    type="number" min="0" step="0.0001"
                                    th:placeholder="#{injectionProperties.newModal.injectionTime.placeholder}"/>
-                            <small class="unit" th:text="#{injectionProperties.injectionTime.unit}"></small>
+                            <small class="unit" th:text="#{injectionProperties.newModal.injectionTime.unit}"></small>
                         </div>
 
                         <label for="newPumpSelection"
@@ -492,16 +492,16 @@
                         <label for="newFluidName" th:text="#{fluidProperties.newModal.name.label}"></label>
                         <input required autofocus id="newFluidName" type="text" th:placeholder="#{fluidProperties.newModal.name.placeholder}"/>
 
-                        <label for="newMuInput" th:utext="#{fluidProperties.form.mu}"></label>
+                        <label for="newMuInput" th:utext="#{fluidProperties.newModal.mu}"></label>
                         <div class="unit-input">
-                            <input id="newMuInput" name="newMu" type="number" min="0" step="0.000001"  th:placeholder="#{fluidProperties.form.mu.placeholder}" />
-                            <small class="unit" th:utext="#{fluidProperties.form.mu.unit}"></small>
+                            <input id="newMuInput" name="newMu" type="number" min="0" step="0.000001"  th:placeholder="#{fluidProperties.newModal.mu.placeholder}" />
+                            <small class="unit" th:utext="#{fluidProperties.newModal.mu.unit}"></small>
                         </div>
 
-                        <label for="newDensityCInput" th:text="#{fluidProperties.form.densityC}"></label>
+                        <label for="newDensityCInput" th:text="#{fluidProperties.newModal.densityC}"></label>
                         <div class="unit-input">
-                            <input id="newDensityCInput" name="newDensityC" type="number" min="0" step="0.000001"   th:placeholder="#{fluidProperties.form.densityC.placeholder}" />
-                            <small class="unit" th:utext="#{fluidProperties.form.densityC.unit}"></small>
+                            <input id="newDensityCInput" name="newDensityC" type="number" min="0" step="0.000001"   th:placeholder="#{fluidProperties.newModal.densityC.placeholder}" />
+                            <small class="unit" th:utext="#{fluidProperties.newModal.densityC.unit}"></small>
                         </div>
 
                         <button type="submit" th:text="#{fluidProperties.newModal.submit}"></button>
