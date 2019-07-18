@@ -1,4 +1,3 @@
-import com.moowork.gradle.node.npm.NpmTask
 import com.moowork.gradle.node.task.NodeTask
 
 plugins {
@@ -6,11 +5,14 @@ plugins {
     java
     idea
 
-    id ("org.springframework.boot") version "2.1.3.RELEASE"
-    id ("com.moowork.node") version "1.3.1"
+    id("org.springframework.boot") version "2.1.3.RELEASE"
+    id("com.moowork.node") version "1.3.1"
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
-
+    id("com.avast.gradle.docker-compose") version "0.9.4"
 }
+
+tasks["test"].dependsOn(tasks["composeUp"])
+tasks["test"].finalizedBy(tasks["composeDown"])
 
 group = "at.ezylot"
 version = "0.0.1-SNAPSHOT"
@@ -37,7 +39,7 @@ dependencies {
     implementation(files("lib/at.jku.iic.droplet.electric.simulator.jar"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    //implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
+    testImplementation ("org.seleniumhq.selenium:selenium-java:3.141.59")
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
