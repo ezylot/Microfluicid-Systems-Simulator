@@ -33,8 +33,12 @@ export class Toast {
         $toastContainer.append($newToastElement);
 
         if(this.type == "info") {
-            $newToastElement.data("delay", $newToastElement.data("info-delay"));
+            $newToastElement.data("delay", 2000);
             $newToastElement.addClass("info");
+        }
+
+        if(this.type == "error") {
+            $newToastElement.data("delay", 6000);
         }
 
         $newToastElement.toast("show");

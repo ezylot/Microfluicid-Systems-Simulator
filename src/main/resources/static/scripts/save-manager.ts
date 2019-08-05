@@ -19,7 +19,8 @@ import {
     makeChannel,
     mergeElements,
     pumps,
-    PumpTypes
+    PumpTypes,
+    getChannelsFromCanvas
 } from "./workspace";
 import {ChannelEndCircle} from "./fabricElements/ChannelEndCircle";
 import {ChannelLine} from "./fabricElements/ChannelLine";
@@ -77,13 +78,17 @@ jQuery((): void => {
             object.fluids.forEach((fluid: Fluid): void => {
                 createNewFluid(Fluid.cloneTyped(fluid));
             });
-
             object.canvas.lines.forEach((channel: Channel): void => {
-                let channelLine = makeChannel(Channel.cloneTyped(channel));
-                channelLine.set({ evented: true });
-                channelLine.endCircle.set({ evented: true });
+                makeChannel(Channel.cloneTyped(channel));
             });
 
+            getChannelsFromCanvas().forEach(line => {
+                line.set({
+                    evented: true,
+                    hoverCursor: 'default'
+                });
+                line.endCircle.set({ evented: true });
+            });
             mergeElements(canvasToSave);
 
             object.pumps.forEach((pump: Pump): void => {

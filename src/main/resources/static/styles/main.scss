@@ -118,7 +118,12 @@ input {
 
     .toast.info {
         .toast-header {
+            padding: 0 .75rem;
             background: #b5d0ff;
+        }
+
+        .toast-body {
+            padding: 0.15rem 0.75rem;
         }
     }
 }

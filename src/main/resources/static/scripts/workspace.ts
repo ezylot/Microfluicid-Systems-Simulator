@@ -75,7 +75,7 @@ function calculatePumpRadius(): number {
     return defaultValues.width / 2 + 10;
 }
 
-function getChannels(): ChannelLine[] {
+export function getChannelsFromCanvas(): ChannelLine[] {
     return canvasToSave.getObjects('line') as ChannelLine[];
 }
 
@@ -86,7 +86,7 @@ export function makeChannel(channel: Channel): ChannelLine {
         strokeWidth: channel.properties.width || defaultValues.width,
         selectable: false,
         evented: false,
-        hoverCursor: 'default',
+        hoverCursor: 'not-allowed',
         perPixelTargetFind: true,
         hasControls: false,
         hasBorders: false,
@@ -382,7 +382,7 @@ function stopDrawingStyle(): void {
     canvasToSave.hoverCursor = 'move';
     canvasToSave.defaultCursor = 'default';
 
-    getChannels().forEach((value: ChannelLine): void => {
+    getChannelsFromCanvas().forEach((value: ChannelLine): void => {
         value.hoverCursor = 'default';
     });
 }
@@ -392,7 +392,7 @@ function startDrawingStyle(): void {
     canvasToSave.hoverCursor = 'crosshair';
     canvasToSave.defaultCursor = 'crosshair';
 
-    getChannels().forEach((value: ChannelLine): void => {
+    getChannelsFromCanvas().forEach((value: ChannelLine): void => {
         value.hoverCursor = 'not-allowed';
     });
 }
@@ -727,7 +727,7 @@ jQuery((): void => {
     });
 
     $createPressurePumpElement.on('click', (): void => {
-        if(getChannels().length == 0) {
+        if(getChannelsFromCanvas().length == 0) {
             new Toast(messageTranslations.drawPumpNoChannelTitle, '', messageTranslations.drawPumpNoChannel, 'info').show();
             return;
         }
@@ -741,7 +741,7 @@ jQuery((): void => {
     });
 
     $createVolumePumpElement.on('click', (): void => {
-        if(getChannels().length == 0) {
+        if(getChannelsFromCanvas().length == 0) {
             new Toast(messageTranslations.drawPumpNoChannelTitle, '', messageTranslations.drawPumpNoChannel, 'info').show();
             return;
         }
@@ -755,7 +755,7 @@ jQuery((): void => {
     });
 
     $createDrainPumpElement.on('click', (): void => {
-        if(getChannels().length == 0) {
+        if(getChannelsFromCanvas().length == 0) {
             new Toast(messageTranslations.drawPumpNoChannelTitle, '', messageTranslations.drawPumpNoChannel, 'info').show();
             return;
         }
