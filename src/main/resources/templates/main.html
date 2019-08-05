@@ -407,7 +407,7 @@
 
                         <label for="newDropletVolume" th:text="#{dropletProperties.newModal.newVolume}"></label>
                         <input required autofocus id="newDropletVolume"
-                                type="number" min="0"
+                                type="number" min="0" step="any"
                                th:placeholder="#{dropletProperties.newModal.newVolume.placeholder}"/>
 
                         <label for="newDropletColor" class="col-md-4" th:text="#{dropletProperties.newModal.newColor}"></label>

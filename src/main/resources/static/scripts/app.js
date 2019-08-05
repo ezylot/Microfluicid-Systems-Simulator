@@ -19,12 +19,10 @@
  TODO: look at functionality of traps
  TODO: Add grid size multiplier in default values
  TODO: About link "Created with JKU, etc"
- TODO: new droplet frontend validation
  TODO: Modal buttons ok button instead of text
  TODO: abort button on modal
  TODO: droplet initial color always black
  TODO: Can delete droplet when there is an injection with it
- TODO: simulate clears old simulation
 */
 
 require(['jquery', 'bootstrap'], function ($) {

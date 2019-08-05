@@ -97,9 +97,9 @@ export class Simulator {
             this.pause();
         }
 
-        for (let key in this.fluidsToSimulate) {
-            this.fluidsToSimulate.get(key).remove(this.canvas);
-        }
+        this.fluidsToSimulate.forEach((simulatedFluid): void => {
+            simulatedFluid.remove(this.canvas);
+        });
 
         this.$progressBar
             .attr('data-slider-value', 0)
