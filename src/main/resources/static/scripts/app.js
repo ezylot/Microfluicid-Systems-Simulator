@@ -2,8 +2,6 @@
  TODO: possibility to define "fully filled with fluid" channels in fluid simmulation
  TODO: design for available elements
  TODO: fast drawing destroys connections
- TODO: Lock Corners while simulator is started
- TODO: Change mouse pointer depending on selected element in the element palette
  TODO: Select next entry when deleting (? do not know if really better this way)
  TODO: fluid names should be unique
  TODO: droplet names should be unique
