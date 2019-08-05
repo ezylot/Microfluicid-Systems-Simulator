@@ -100,7 +100,7 @@ jQuery((): void => {
             let newDropletName = $('#newDropletModal #newDropletName');
             let newDropletVolume = $('#newDropletModal #newDropletVolume');
             let newDropletColor = $('#newDropletModal #newDropletColor');
-            let newDroplet = new Droplet(nextId++, newDropletName.val().toString(), Number(newDropletVolume.val()), newDropletColor.val() as string);
+            let newDroplet = new Droplet(nextId++, newDropletName.val().toString(), Number(newDropletVolume.val()), newDropletColor.spectrum("get").toString("hex"));
 
             createNewDroplet(newDroplet);
 

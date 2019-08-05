@@ -121,7 +121,15 @@ export class Simulator {
             let dropletName = value.name;
             unusedNames.splice(unusedNames.findIndex((name: string): boolean => name === dropletName), 1);
             if (!this.fluidsToSimulate.get(dropletName)) {
-                this.fluidsToSimulate.set(dropletName, new SimulatedFluid(null, 0, true, null, 0, true, dropletToInject.color));
+                this.fluidsToSimulate.set(dropletName, new SimulatedFluid(
+                    null,
+                    0,
+                    true,
+                    null,
+                    0,
+                    true,
+                    dropletToInject.color
+                ));
             }
 
             if (value.dropletPositions.length === 1) {

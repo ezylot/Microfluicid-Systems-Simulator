@@ -21,7 +21,6 @@
  TODO: About link "Created with JKU, etc"
  TODO: Modal buttons ok button instead of text
  TODO: abort button on modal
- TODO: droplet initial color always black
  TODO: Can delete droplet when there is an injection with it
 */
 
