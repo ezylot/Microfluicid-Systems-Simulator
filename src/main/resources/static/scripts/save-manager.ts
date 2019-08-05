@@ -55,9 +55,9 @@ export function getSaveAsJson(): string {
 
 jQuery((): void => {
     $('.fa-save').on('click', (event: ClickEvent): void => {
-        let file =  new Blob([
+        let file = new Blob([
             getSaveAsJson()
-        ], {type : 'application/json'});
+        ], { type: 'application/json' });
         event.target.href = URL.createObjectURL(file);
         event.target.download = 'microfluidic-' + new Date().toISOString() + '.save';
     });
@@ -79,7 +79,9 @@ jQuery((): void => {
             });
 
             object.canvas.lines.forEach((channel: Channel): void => {
-                makeChannel(Channel.cloneTyped(channel));
+                let channelLine = makeChannel(Channel.cloneTyped(channel));
+                channelLine.set({ evented: true });
+                channelLine.endCircle.set({ evented: true });
             });
 
             mergeElements(canvasToSave);

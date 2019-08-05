@@ -23,6 +23,7 @@ export class Footer {
 
     public resetSimulator(): void {
         if(!!this.simulator) {
+            this.simulator.goTo(0);
             this.simulator.destroy();
         }
     }

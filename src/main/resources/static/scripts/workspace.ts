@@ -10,6 +10,7 @@ import {updatePump} from './dropletInjections';
 import KeyUpEvent = JQuery.KeyUpEvent;
 import ContextMenuEvent = JQuery.ContextMenuEvent;
 import {Toast} from './classes/Toast';
+import {Footer} from "./Footer";
 
 declare var messageTranslations: any;
 
@@ -889,6 +890,9 @@ jQuery((): void => {
     });
 
     canvasToSave.on('object:moving', (e): void => {
+
+        Footer.getInstance().resetSimulator();
+
         let circle = e.target as ChannelEndCircle;
 
         let left = Math.round(circle.left / grid) * grid;

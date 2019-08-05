@@ -94,10 +94,12 @@ input {
     display: flex;
     flex-direction: column;
     align-items: center;
+    pointer-events: none;
 
     .toast {
         width: 500px;
         background: #FFFFFF;
+        pointer-events: all;
 
         .toast-header {
             background: #ff9191;
