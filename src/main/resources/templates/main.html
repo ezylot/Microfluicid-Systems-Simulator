@@ -27,7 +27,7 @@
     <link rel="stylesheet" th:href="@{/styles/main.css}">
 </head>
 <body>
-    <div id="exampleToast" role="alert" aria-live="assertive" aria-atomic="true" class="d-none toast" data-delay="6000">
+    <div id="exampleToast" role="alert" aria-live="assertive" aria-atomic="true" class="d-none toast" data-delay="6000" data-info-delay="3000">
         <div class="toast-header">
             <strong class="primary-text mr-auto"></strong>
             <small class="muted-text"></small>
@@ -533,6 +533,17 @@
             </div>
         </div>
     </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.messageTranslations = {
+            "cantDrawOnChannelsTitle": [[#{frontendValidation.cantDrawOnChannelsTitle}]],
+            "cantDrawOnChannels": [[#{frontendValidation.cantDrawOnChannels}]],
+            "drawPumpNoChannelTitle": [[#{frontendValidation.drawPumpNoChannelTitle}]],
+            "drawPumpNoChannel": [[#{frontendValidation.drawPumpNoChannel}]],
+        };
+        /*]]>*/
+    </script>
 
     <!--suppress SpellCheckingInspection -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"

@@ -25,7 +25,6 @@
  TODO: droplet initial color always black
  TODO: Can delete droplet when there is an injection with it
  TODO: simulate clears old simulation
- TODO: Wrong cursor when drawing and hovering over pipe
 */
 
 require(['jquery', 'bootstrap'], function ($) {

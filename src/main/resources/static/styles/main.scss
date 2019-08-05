@@ -94,7 +94,6 @@ input {
     display: flex;
     flex-direction: column;
     align-items: center;
-    pointer-events: none;
 
     .toast {
         width: 500px;
@@ -102,6 +101,12 @@ input {
 
         .toast-header {
             background: #ff9191;
+        }
+    }
+
+    .toast.info {
+        .toast-header {
+            background: #b5d0ff;
         }
     }
 }
