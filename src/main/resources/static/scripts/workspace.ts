@@ -806,7 +806,7 @@ jQuery((): void => {
     });
 
     canvasToSave.on('mouse:wheel', (opt: any): void => {
-        let delta = opt.e.deltaY < 0 ? -100 : 100;
+        let delta = opt.e.deltaY < 0 ? 100 : -100;
         let zoom = canvasToSave.getZoom();
         zoom = zoom + delta / 1000;
         if (zoom > 10) zoom = 10;
