@@ -1,19 +1,18 @@
 import * as $ from "jquery";
 import {Droplet} from "./classes/Droplet";
-import {dropletInjections, updateDroplet} from "./dropletInjections";
-import {DropletInjection} from "./classes/DropletInjection";
+import {createDropletInInjection, deleteDropletFromInjection, updateDropletInInjection} from "./dropletInjections";
 import "spectrum"
 import {formatNumber} from "./number-formatter";
+import messageTranslations from "./messageTranslation";
 import SubmitEvent = JQuery.SubmitEvent;
 import ClickEvent = JQuery.ClickEvent;
-import messageTranslations from "./messageTranslation";
 
 let nextId = 0;
 let droplets: Droplet[] = [];
 
 
 export function createNewDroplet(newDroplet: Droplet): void {
-    if(newDroplet.id >= nextId) {
+    if (newDroplet.id >= nextId) {
         nextId = newDroplet.id + 1;
     }
 
@@ -38,7 +37,9 @@ export function createNewDroplet(newDroplet: Droplet): void {
         $dropletProperties.find('input[name="volume"]').removeAttr('disabled').val(newDroplet.volume);
         $dropletProperties.find('#dropletColor').removeAttr('disabled').spectrum({
             color: newDroplet.color,
-            change: (color): void => { newDroplet.color = color.toString("hex"); }
+            change: (color): void => {
+                newDroplet.color = color.toString("hex");
+            }
         });
     });
 
@@ -46,15 +47,7 @@ export function createNewDroplet(newDroplet: Droplet): void {
     $('.droplet-properties .copy-button').removeClass('disabled');
     $('.droplet-properties .delete-button').removeClass('disabled');
 
-    $('#newDropletSelection').append($('<option>')
-        .text(newDroplet.name)
-        .attr('value', newDroplet.id)
-    );
-
-    $('#dropletSelection').append($('<option>').attr('value', newDroplet.id)
-        .text(newDroplet.name)
-        .attr('value', newDroplet.id)
-    );
+    createDropletInInjection(newDroplet);
 }
 
 export function deleteDroplet(dropletToDelete: Droplet): void {
@@ -64,15 +57,7 @@ export function deleteDroplet(dropletToDelete: Droplet): void {
 
     droplets.splice(droplets.indexOf(dropletToDelete), 1);
     $activeRow.remove();
-
-    $('#newDropletSelection option[value=\"' + dropletToDelete.id + '\"]').remove();
-    $('#dropletSelection option[value=\"' + dropletToDelete.id + '\"]').remove();
-
-    dropletInjections.forEach((value: DropletInjection): void => {
-        if(value.dropletId === dropletToDelete.id) {
-            value.dropletId = null;
-        }
-    });
+    deleteDropletFromInjection(dropletToDelete)
 }
 
 function resetDropletSelection(): void {
@@ -89,28 +74,31 @@ function resetDropletSelection(): void {
 
 jQuery((): void => {
     resetDropletSelection();
-    $('#newDropletModal').on('submit', (event: SubmitEvent): void => {
-        event.preventDefault();
+    $('#newDropletModal')
+        .on('show.bs.modal', (event): void => {
+            $(event.target).find('#newDropletColor').spectrum({ color: '#ffffff' });
+        })
+        .on('submit', (event: SubmitEvent): void => {
+            event.preventDefault();
 
-        let newDropletName = $('#newDropletModal #newDropletName');
-        let newDropletVolume = $('#newDropletModal #newDropletVolume');
-        let newDropletColor = $('#newDropletModal #newDropletColor');
-        let newDroplet = new Droplet(nextId++, newDropletName.val().toString(), Number(newDropletVolume.val()), newDropletColor.spectrum("get").toString("hex"));
+            let newDropletName = $('#newDropletModal #newDropletName');
+            let newDropletVolume = $('#newDropletModal #newDropletVolume');
+            let newDropletColor = $('#newDropletModal #newDropletColor');
+            let newDroplet = new Droplet(nextId++, newDropletName.val().toString(), Number(newDropletVolume.val()), newDropletColor.spectrum("get").toString("hex"));
 
-        let name = (newDropletName.val() as string).toLowerCase().trim();
-        if(droplets.find(value => value.name.toLowerCase() == name)) {
-            $('#newDropletModal form').prepend($('<span class="validation text-danger mb-2">').text(messageTranslations.duplicateFluid));
-            return;
-        }
+            let name = (newDropletName.val() as string).toLowerCase().trim();
+            if (droplets.find(value => value.name.toLowerCase() == name)) {
+                $('#newDropletModal form').prepend($('<span class="validation text-danger mb-2">').text(messageTranslations.duplicateFluid));
+                return;
+            }
 
-        createNewDroplet(newDroplet);
+            createNewDroplet(newDroplet);
 
-        $('#newDropletModal').modal('hide');
-        newDropletColor.spectrum({ color: '#ffffff' })
-    });
+            $('#newDropletModal').modal('hide');
+        });
 
     $('.droplet-properties .copy-button').on('click', (element: ClickEvent): void => {
-        if(!$(element.currentTarget).is('.disabled')) {
+        if (!$(element.currentTarget).is('.disabled')) {
             $('#copyDropletModal').modal('show')
         }
     });
@@ -140,25 +128,23 @@ jQuery((): void => {
 
     $('.droplet-properties input').on('input', (event): void => {
         let $activeRow = $('.droplet-properties table tbody .active');
-        if($activeRow.length === 0) return;
+        if ($activeRow.length === 0) return;
 
         let activeDroplet: Droplet = $activeRow.data('droplet');
         let $inputField = $(event.target);
         let inputName = $inputField.attr('name');
 
-        if(inputName === 'volume') {
+        if (inputName === 'volume') {
             activeDroplet.volume = Number($inputField.val());
             $activeRow.find('.volume').text(formatNumber(activeDroplet.volume));
         }
 
-        if(inputName === 'name') {
+        if (inputName === 'name') {
             activeDroplet.name = $inputField.val().toString();
             $activeRow.find('.name').text(activeDroplet.name);
-            $(`#newDropletSelection option[value=${activeDroplet.id}]`).text(activeDroplet.name);
-            $(`#dropletSelection option[value=${activeDroplet.id}]`).text(activeDroplet.name);
         }
 
-        updateDroplet(activeDroplet);
+        updateDropletInInjection(activeDroplet);
     });
 });
 

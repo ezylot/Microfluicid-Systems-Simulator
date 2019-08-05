@@ -5,7 +5,6 @@
  TODO: Select next entry when deleting (? do not know if really better this way)
  TODO: pump names should be unique
  TODO: Open dialog when downloading to let user select download location/name
- TODO: look at zooming in firefox
  TODO: Info tooltip at volume input
  TODO: Default Values from Volume Pump
  TODO: Units for Volume pump
@@ -15,7 +14,6 @@
  TODO: look at functionality of traps
  TODO: Add grid size multiplier in default values
  TODO: About link "Created with JKU, etc"
- TODO: Can delete droplet when there is an injection with it
 */
 
 require(['jquery', 'bootstrap'], function ($) {

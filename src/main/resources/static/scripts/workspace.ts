@@ -1,4 +1,4 @@
-import {Canvas, Circle, Text, Line, Group} from 'fabric/fabric-impl';
+import {Canvas, Circle, Group, Line, Text} from 'fabric/fabric-impl';
 import {Pump} from './classes/Pump';
 import * as $ from 'jquery';
 import {defaultValues} from './defaultvalue';
@@ -7,11 +7,11 @@ import {ChannelLine} from './fabricElements/ChannelLine';
 import {ChannelEndCircle} from './fabricElements/ChannelEndCircle';
 import {BackgroundLine} from './fabricElements/BackgroundLine';
 import {updatePump} from './dropletInjections';
-import KeyUpEvent = JQuery.KeyUpEvent;
-import ContextMenuEvent = JQuery.ContextMenuEvent;
 import {Toast} from './classes/Toast';
 import {Footer} from "./Footer";
 import messageTranslations from "./messageTranslation";
+import KeyUpEvent = JQuery.KeyUpEvent;
+import ContextMenuEvent = JQuery.ContextMenuEvent;
 
 
 const grid = 10;
@@ -806,8 +806,7 @@ jQuery((): void => {
     });
 
     canvasToSave.on('mouse:wheel', (opt: any): void => {
-        let delta = opt.e.deltaY;
-        delta = delta * -1;
+        let delta = opt.e.deltaY < 0 ? -100 : 100;
         let zoom = canvasToSave.getZoom();
         zoom = zoom + delta / 1000;
         if (zoom > 10) zoom = 10;

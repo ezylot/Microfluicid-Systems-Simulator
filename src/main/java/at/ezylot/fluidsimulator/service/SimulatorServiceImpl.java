@@ -224,6 +224,10 @@ public class SimulatorServiceImpl implements SimulatorService {
             // We receive the injection time in milliseconds, but we need seconds for the simulator
             double injectionTime = injection.get("injectionTime").asDouble() / 1000;
 
+            if(injection.get("dropletId").isNull()) {
+                throw new IllegalArgumentException(messageSource.getMessage("simulation-error.droplet-not-set", new String[]{ injection.get("id").asText() }, LocaleContextHolder.getLocale()));
+            }
+
             int dropletId = injection.get("dropletId").asInt();
             DropletDTO dropletDTO = dropletDTOMap.get(dropletId);
             PhysicalPump physicalPump = pumps.get(injectionPumpId);
