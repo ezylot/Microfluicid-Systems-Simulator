@@ -396,7 +396,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" th:text="#{dropletProperties.newModal.header}"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -406,14 +406,17 @@
                         <input type="text" required autofocus id="newDropletName" th:placeholder="#{dropletProperties.newModal.newName.placeholder}"/>
 
                         <label for="newDropletVolume" th:text="#{dropletProperties.newModal.newVolume}"></label>
-                        <input required autofocus id="newDropletVolume"
+                        <input required id="newDropletVolume"
                                 type="number" min="0" step="any"
                                th:placeholder="#{dropletProperties.newModal.newVolume.placeholder}"/>
 
                         <label for="newDropletColor" class="col-md-4" th:text="#{dropletProperties.newModal.newColor}"></label>
                         <input id="newDropletColor" name="newDropletColor" type="text" />
 
-                        <button class="mt-4" type="submit" th:text="#{dropletProperties.newModal.submit}"></button>
+                        <div class="d-flex">
+                            <button class="col-6 mr-1" type="button" data-dismiss="modal" th:text="#{modal.abort}"></button>
+                            <button class="col-6 ml-1" type="submit" th:text="#{modal.ok}"></button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -425,7 +428,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" th:text="#{dropletProperties.copyModal.header}"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -434,7 +437,11 @@
                         <label for="newDropletFromCopyName" th:text="#{dropletProperties.copyModal.name}"></label>
                         <input required autofocus id="newDropletFromCopyName" type="text"
                                th:placeholder="#{dropletProperties.copyModal.name.placeholder}"/>
-                        <button type="submit" th:text="#{dropletProperties.copyModal.submit}"></button>
+
+                        <div class="d-flex">
+                            <button class="col-6 mr-1" type="button" data-dismiss="modal" th:text="#{modal.abort}"></button>
+                            <button class="col-6 ml-1" type="submit" th:text="#{modal.ok}"></button>
+                        </div>
                     </form>
 
                 </div>
@@ -447,7 +454,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" th:text="#{injectionProperties.newModal.header}"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -467,11 +474,13 @@
                             <small class="unit" th:text="#{injectionProperties.newModal.injectionTime.unit}"></small>
                         </div>
 
-                        <label for="newPumpSelection"
-                               th:text="#{injectionProperties.newModal.pumpSelection.label}"></label>
+                        <label for="newPumpSelection" th:text="#{injectionProperties.newModal.pumpSelection.label}"></label>
                         <select id="newPumpSelection"></select>
 
-                        <button class="mt-4" type="submit" th:text="#{injectionProperties.newModal.submit}"></button>
+                        <div class="d-flex">
+                            <button class="col-6 mr-1" type="button" data-dismiss="modal" th:text="#{modal.abort}"></button>
+                            <button class="col-6 ml-1" type="submit" th:text="#{modal.ok}"></button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -483,7 +492,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" th:text="#{fluidProperties.newModal.header}"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -504,7 +513,10 @@
                             <small class="unit" th:utext="#{fluidProperties.newModal.densityC.unit}"></small>
                         </div>
 
-                        <button type="submit" th:text="#{fluidProperties.newModal.submit}"></button>
+                        <div class="d-flex">
+                            <button class="col-6 mr-1" type="button" data-dismiss="modal" th:text="#{modal.abort}"></button>
+                            <button class="col-6 ml-1" type="submit" th:text="#{modal.ok}"></button>
+                        </div>
                     </form>
 
                 </div>
@@ -517,7 +529,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" th:text="#{fluidProperties.copyModal.header}"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -526,7 +538,11 @@
                         <label for="newFluidFromCopyName" th:text="#{fluidProperties.copyModal.name.label}"></label>
                         <input required autofocus id="newFluidFromCopyName" type="text"
                                th:placeholder="#{fluidProperties.copyModal.name.placeholder}"/>
-                        <button type="submit" th:text="#{fluidProperties.copyModal.submit}"></button>
+
+                        <div class="d-flex">
+                            <button class="col-6 mr-1" type="button" data-dismiss="modal" th:text="#{modal.abort}"></button>
+                            <button class="col-6 ml-1" type="submit" th:text="#{modal.ok}"></button>
+                        </div>
                     </form>
 
                 </div>

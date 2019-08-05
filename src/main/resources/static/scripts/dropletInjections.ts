@@ -94,35 +94,25 @@ function resetInjectionSelection(): void {
 jQuery((): void => {
     resetInjectionSelection();
 
-    $('#newDropletInjectionModal')
-        .on('shown.bs.modal', (): void => {
-            $(this).find('[autofocus]').trigger('focus');
-        })
-        .on('submit', (event: SubmitEvent): void => {
-            event.preventDefault();
+    $('#newDropletInjectionModal').on('submit', (event: SubmitEvent): void => {
+        event.preventDefault();
 
-            let newDroplet = $('#newDropletInjectionModal #newDropletSelection');
-            let newInjectionTime = $('#newDropletInjectionModal #newDropletInjectionTime');
-            let newInjectionPump = $('#newDropletInjectionModal #newPumpSelection');
+        let newDroplet = $('#newDropletInjectionModal #newDropletSelection');
+        let newInjectionTime = $('#newDropletInjectionModal #newDropletInjectionTime');
+        let newInjectionPump = $('#newDropletInjectionModal #newPumpSelection');
 
-            let newInjection = new DropletInjection(
-                nextId++,
-                Number(newDroplet.val()),
-                Number(newInjectionPump.val()),
-                newDroplet.find('option:selected').text(),
-                newInjectionPump.find('option:selected').text(),
-                Number(newInjectionTime.val())
-            );
+        let newInjection = new DropletInjection(
+            nextId++,
+            Number(newDroplet.val()),
+            Number(newInjectionPump.val()),
+            newDroplet.find('option:selected').text(),
+            newInjectionPump.find('option:selected').text(),
+            Number(newInjectionTime.val())
+        );
 
-            createNewInjection(newInjection);
-
-            // Clean up modal
-            $('#newDropletInjectionModal').modal('hide');
-
-            newDroplet.val('');
-            newInjectionTime.val('');
-            newInjectionPump.val('');
-        });
+        createNewInjection(newInjection);
+        $('#newDropletInjectionModal').modal('hide');
+    });
 
     $('.injection-properties .copy-button').on('click', (element): void => {
         if(!$(element.currentTarget).is('.disabled')) {

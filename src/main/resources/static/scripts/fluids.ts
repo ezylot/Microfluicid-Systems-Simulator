@@ -77,32 +77,24 @@ function resetFluidSelection(): void {
 
 jQuery((): void => {
 
-    $('#newFluidModal')
-        .on('shown.bs.modal', (): void => {
-            $(this).find('[autofocus]').trigger('focus');
-        })
-        .on('submit', (event: SubmitEvent): void => {
-            event.preventDefault();
+    $('#newFluidModal').on('submit', (event: SubmitEvent): void => {
+        event.preventDefault();
 
-            let newFluidName = $('#newFluidForm #newFluidName');
-            let newMu = $('#newFluidForm input[name="newMu"]');
-            let newDensityC = $('#newFluidForm input[name="newDensityC"]');
+        let newFluidName = $('#newFluidForm #newFluidName');
+        let newMu = $('#newFluidForm input[name="newMu"]');
+        let newDensityC = $('#newFluidForm input[name="newDensityC"]');
 
-            let newFluid = new Fluid(
-                nextId++,
-                newFluidName.val().toString(),
-                Number(newMu.val()),
-                Number(newDensityC.val())
-            );
+        let newFluid = new Fluid(
+            nextId++,
+            newFluidName.val().toString(),
+            Number(newMu.val()),
+            Number(newDensityC.val())
+        );
 
-            createNewFluid(newFluid);
+        createNewFluid(newFluid);
 
-            // Clean up modal
-            $('#newFluidModal').modal('hide');
-            newFluidName.val('');
-            newMu.val('');
-            newDensityC.val('');
-        });
+        $('#newFluidModal').modal('hide');
+    });
 
     $('.fluid-properties .copy-button').on('click', (element): void => {
         if(!$(element.currentTarget).is('.disabled')) {
@@ -131,7 +123,6 @@ jQuery((): void => {
         createNewFluid(newFluid);
 
         $('#copyFluidModal').modal('hide');
-        $nameInput.val('');
     });
 
     $('.fluid-properties input').on('input', (event): void => {

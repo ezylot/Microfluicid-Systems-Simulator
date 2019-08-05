@@ -3,7 +3,6 @@ import {Droplet} from "./classes/Droplet";
 import {dropletInjections, updateDroplet} from "./dropletInjections";
 import {DropletInjection} from "./classes/DropletInjection";
 import "spectrum"
-import {ModalEventHandler} from "bootstrap";
 import {formatNumber} from "./number-formatter";
 import SubmitEvent = JQuery.SubmitEvent;
 import ClickEvent = JQuery.ClickEvent;
@@ -89,27 +88,19 @@ function resetDropletSelection(): void {
 
 jQuery((): void => {
     resetDropletSelection();
-    $('#newDropletModal')
-        .on('shown.bs.modal', (event: ModalEventHandler<HTMLElement>): void => {
-            $(event.target).find('#newDropletColor').spectrum({ color: '#ffffff' });
-            $(event.target).find('[autofocus]').trigger('focus');
-        })
-        .on('submit', (event: SubmitEvent): void => {
-            event.preventDefault();
+    $('#newDropletModal').on('submit', (event: SubmitEvent): void => {
+        event.preventDefault();
 
-            let newDropletName = $('#newDropletModal #newDropletName');
-            let newDropletVolume = $('#newDropletModal #newDropletVolume');
-            let newDropletColor = $('#newDropletModal #newDropletColor');
-            let newDroplet = new Droplet(nextId++, newDropletName.val().toString(), Number(newDropletVolume.val()), newDropletColor.spectrum("get").toString("hex"));
+        let newDropletName = $('#newDropletModal #newDropletName');
+        let newDropletVolume = $('#newDropletModal #newDropletVolume');
+        let newDropletColor = $('#newDropletModal #newDropletColor');
+        let newDroplet = new Droplet(nextId++, newDropletName.val().toString(), Number(newDropletVolume.val()), newDropletColor.spectrum("get").toString("hex"));
 
-            createNewDroplet(newDroplet);
+        createNewDroplet(newDroplet);
 
-            // Clean up modal
-            $('#newDropletModal').modal('hide');
-            newDropletName.val('');
-            newDropletVolume.val('');
-            newDropletColor.spectrum({ color: '#ffffff' })
-        });
+        $('#newDropletModal').modal('hide');
+        newDropletColor.spectrum({ color: '#ffffff' })
+    });
 
     $('.droplet-properties .copy-button').on('click', (element: ClickEvent): void => {
         if(!$(element.currentTarget).is('.disabled')) {
@@ -138,7 +129,6 @@ jQuery((): void => {
         createNewDroplet(newDroplet);
 
         $('#copyDropletModal').modal('hide');
-        $nameInput.val('');
     });
 
     $('.droplet-properties input').on('input', (event): void => {
