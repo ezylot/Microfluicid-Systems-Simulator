@@ -59,7 +59,7 @@ jQuery((): void => {
             getSaveAsJson()
         ], {type : 'application/json'});
         event.target.href = URL.createObjectURL(file);
-        event.target.download = 'microfluidic-' + Date.now() + '.save';
+        event.target.download = 'microfluidic-' + new Date().toISOString() + '.save';
     });
 
     $('#fileupload').on('change', (evt: ChangeEvent): void => {

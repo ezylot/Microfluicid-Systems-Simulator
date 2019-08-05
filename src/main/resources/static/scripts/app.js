@@ -26,7 +26,6 @@
  TODO: Can delete droplet when there is an injection with it
  TODO: simulate clears old simulation
  TODO: Wrong cursor when drawing and hovering over pipe
- TODO: save date with ISO-8601 date string
 */
 
 require(['jquery', 'bootstrap'], function ($) {
