@@ -11,8 +11,7 @@ import KeyUpEvent = JQuery.KeyUpEvent;
 import ContextMenuEvent = JQuery.ContextMenuEvent;
 import {Toast} from './classes/Toast';
 import {Footer} from "./Footer";
-
-declare var messageTranslations: any;
+import messageTranslations from "./messageTranslation";
 
 
 const grid = 10;

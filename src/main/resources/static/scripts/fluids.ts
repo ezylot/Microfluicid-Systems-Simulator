@@ -1,9 +1,9 @@
 import * as $ from "jquery";
-import SubmitEvent = JQuery.SubmitEvent;
 import {Fluid} from "./classes/Fluid";
 import {phaseProperties} from "./phases";
 import {formatNumber} from "./number-formatter";
-
+import messageTranslations from "./messageTranslation";
+import SubmitEvent = JQuery.SubmitEvent;
 
 let fluids: Fluid[] = [];
 let nextId = 0;
@@ -83,6 +83,12 @@ jQuery((): void => {
         let newFluidName = $('#newFluidForm #newFluidName');
         let newMu = $('#newFluidForm input[name="newMu"]');
         let newDensityC = $('#newFluidForm input[name="newDensityC"]');
+
+        let name = (newFluidName.val() as string).toLowerCase().trim();
+        if(fluids.find(value => value.name.toLowerCase() == name)) {
+            $('#newFluidModal form').prepend($('<span class="validation text-danger mb-2">').text(messageTranslations.duplicateFluid));
+            return;
+        }
 
         let newFluid = new Fluid(
             nextId++,

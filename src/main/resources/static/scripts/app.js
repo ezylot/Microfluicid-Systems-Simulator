@@ -3,8 +3,6 @@
  TODO: design for available elements
  TODO: fast drawing destroys connections
  TODO: Select next entry when deleting (? do not know if really better this way)
- TODO: fluid names should be unique
- TODO: droplet names should be unique
  TODO: pump names should be unique
  TODO: Open dialog when downloading to let user select download location/name
  TODO: look at zooming in firefox

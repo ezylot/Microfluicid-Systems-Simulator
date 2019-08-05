@@ -6,6 +6,7 @@ import "spectrum"
 import {formatNumber} from "./number-formatter";
 import SubmitEvent = JQuery.SubmitEvent;
 import ClickEvent = JQuery.ClickEvent;
+import messageTranslations from "./messageTranslation";
 
 let nextId = 0;
 let droplets: Droplet[] = [];
@@ -95,6 +96,12 @@ jQuery((): void => {
         let newDropletVolume = $('#newDropletModal #newDropletVolume');
         let newDropletColor = $('#newDropletModal #newDropletColor');
         let newDroplet = new Droplet(nextId++, newDropletName.val().toString(), Number(newDropletVolume.val()), newDropletColor.spectrum("get").toString("hex"));
+
+        let name = (newDropletName.val() as string).toLowerCase().trim();
+        if(droplets.find(value => value.name.toLowerCase() == name)) {
+            $('#newDropletModal form').prepend($('<span class="validation text-danger mb-2">').text(messageTranslations.duplicateFluid));
+            return;
+        }
 
         createNewDroplet(newDroplet);
 
