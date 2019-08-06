@@ -37,6 +37,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
 
     implementation(files("lib/at.jku.iic.droplet.electric.simulator.jar"))
+    implementation("net.logstash.logback:logstash-logback-encoder:6.1")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation ("org.seleniumhq.selenium:selenium-java:3.141.59")
@@ -91,6 +92,8 @@ tasks.create<NodeTask>("scssCompile") {
 
 tasks.clean.configure {
     delete(file("node_modules"))
+    delete(file("log"))
+    delete(file("out"))
 }
 
 tasks.processResources {
