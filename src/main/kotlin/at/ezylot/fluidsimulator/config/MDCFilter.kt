@@ -21,6 +21,8 @@ class MDCFilter: OncePerRequestFilter() {
         val uri = request.requestURL.toString() + if(queryString.orEmpty().isEmpty()) "" else "?$queryString"
         val path = request.requestURI.toString() + if(queryString.orEmpty().isEmpty()) "" else "?$queryString"
 
+        MDC.put("REQUEST.ADDRESS", request.remoteAddr)
+
         val stopWatch = StopWatch.createStarted()
         filterChain.doFilter(request, response)
         stopWatch.stop()
