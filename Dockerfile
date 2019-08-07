@@ -14,7 +14,7 @@ RUN ./gradlew assemble -Dorg.gradle.daemon=false \
     && rm -rf ~/.kotlin\
     && rm -rf ./node_modules \
     && rm -rf ./build \
-    && rm -rf ./gradle
+    && rm -rf ./.gradle
 
 EXPOSE 8080
 CMD ["java", "-jar", "fluidsimulator-0.0.1-SNAPSHOT.jar"]
