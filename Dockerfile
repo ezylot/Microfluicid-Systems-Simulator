@@ -7,7 +7,14 @@ COPY gradle /app/gradle
 RUN ./gradlew tasks -Dorg.gradle.daemon=false && rm -rf ~/.gradle && rm -rf ~/.npm && rm -rf ~/.kotlin
 
 ADD . /app
-RUN ./gradlew assemble -Dorg.gradle.daemon=false && rm -rf ~/.gradle && rm -rf ~/.npm && rm -rf ~/.kotlin
+RUN ./gradlew assemble -Dorg.gradle.daemon=false \
+    && cp build/libs/fluidsimulator-0.0.1-SNAPSHOT.jar . \
+    && rm -rf ~/.gradle \
+    && rm -rf ~/.npm \
+    && rm -rf ~/.kotlin\
+    && rm -rf ./node_modules \
+    && rm -rf ./build \
+    && rm -rf ./gradle
 
 EXPOSE 8080
-CMD ["java", "-jar", "build/libs/fluidsimulator-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "fluidsimulator-0.0.1-SNAPSHOT.jar"]
