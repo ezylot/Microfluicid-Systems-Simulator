@@ -4,6 +4,8 @@ import at.ezylot.fluidsimulator.dtos.ErrorResponse
 import at.ezylot.fluidsimulator.service.SimulatorService
 import com.fasterxml.jackson.databind.JsonNode
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
+import org.slf4j.MarkerFactory
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
@@ -17,20 +19,24 @@ import java.util.*
 class MainApiController(private val messageSource: MessageSource, private val simulatorService: SimulatorService) {
 
     private val LOGGER = LoggerFactory.getLogger(javaClass)
+    private val simulationMarker = MarkerFactory.getMarker("simulation")
 
     @PostMapping("/simulate")
     fun simulate(@RequestBody body: JsonNode): ResponseEntity<*> {
+        MDC.put("sourceJSON", body.toString())
+
         val errors = validateNodeCounts(body)
         return if (errors.isPresent) {
-            LOGGER.info("Own caught error occurred: {}", errors.get().message)
+            LOGGER.error(simulationMarker, "Own caught error occurred: {}", errors.get().message)
             ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errors.get())
         } else {
             try {
                 val responseEntity = ResponseEntity.ok(simulatorService.simulate(body))
-                LOGGER.info("Successful simulation: {}", body.toString())
+                LOGGER.info(simulationMarker, "Successful simulation")
+                MDC.put("responseJSON", responseEntity.toString())
                 responseEntity
             } catch (e: IllegalArgumentException) {
-                LOGGER.info("Simulator error occurred", e)
+                LOGGER.error(simulationMarker, "Simulator error occurred", e)
                 ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ErrorResponse("error", e.message!!))
             }
         }

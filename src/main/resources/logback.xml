@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <appender name="CONSOLE_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="CONSOLE" />
+        <discardingThreshold>0</discardingThreshold>
+    </appender>
+
     <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>log/microfluidic.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>log/microfluidic.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeMdc>true</includeMdc>
+        </encoder>
     </appender>
 
     <logger name="at.ezylot.fluidsimulator" level="debug" />
 
     <root level="INFO">
         <appender-ref ref="STASH" />
+        <appender-ref ref="CONSOLE_ASYNC"/>
     </root>
 </configuration>

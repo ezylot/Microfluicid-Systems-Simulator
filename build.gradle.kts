@@ -66,7 +66,7 @@ tasks.create<NodeTask>("tsRun") {
     inputs.dir("$projectDir/src/main/resources/static/scripts/")
     outputs.dir("$buildDir/resources/main/static/scripts")
     dependsOn(tasks.npmInstall)
-    setArgs(listOf())
+    setArgs(listOf<String>())
     setScript(file("$projectDir/node_modules/typescript/bin/tsc"))
 }
 
@@ -99,4 +99,10 @@ tasks.clean.configure {
 tasks.processResources {
     dependsOn("eslint", "tsRun", "scssCompile")
     finalizedBy("cleanScss", "cleanTypescript")
+}
+
+tasks.clean {
+    delete("log/")
+    delete("target/")
+    delete("out/")
 }
