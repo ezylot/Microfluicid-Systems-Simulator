@@ -3,3 +3,8 @@ Dockerfile
 .idea
 .gradle
 .git
+doc
+log
+out
+build
+node_modules

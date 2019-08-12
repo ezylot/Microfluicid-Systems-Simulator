@@ -7,15 +7,19 @@ import java.util.stream.Collectors
 class ReturnDTO(state: PhysicalSystemState) {
     val time: Double = state.time
     val dropletStates: List<PhysicalDropletStateDTO> = state.dropletStates.stream()
-        .map<PhysicalDropletStateDTO> { PhysicalDropletStateDTO(it) }
+        .map { PhysicalDropletStateDTO(it) }
         .collect(Collectors.toList())
 
     class PhysicalDropletStateDTO internal constructor(state: PhysicalDropletState) {
         val name: String = state.name
         val dropletPositions: List<DropletPositionDTO> = state.dropletPositions.stream()
-            .map<DropletPositionDTO> { DropletPositionDTO(it) }
+            .map { DropletPositionDTO(it) }
             .collect(Collectors.toList())
         val dropletInjectionTime: PhysicalDropletInjectionTimeDTO = PhysicalDropletInjectionTimeDTO(state.dropletInjectionTime)
+
+        override fun toString(): String {
+            return "PhysicalDropletStateDTO(name='$name', dropletPositions=$dropletPositions, dropletInjectionTime=$dropletInjectionTime)"
+        }
     }
 
     class DropletPositionDTO internal constructor(dropletPosition: DropletPosition) {
@@ -45,6 +49,12 @@ class ReturnDTO(state: PhysicalSystemState) {
                 this.tailPosition = null
             }
         }
+
+        override fun toString(): String {
+            return "DropletPositionDTO(edgeName='$edgeName', defaultFlowDirection=$defaultFlowDirection, dropletVolume=$dropletVolume, edge=$edge, headPosition=$headPosition, tailPosition=$tailPosition)"
+        }
+
+
     }
 
     class PhysicalDropletInjectionTimeDTO internal constructor(dropletInjectionTime: PhysicalDropletInjectionTime) {
@@ -58,4 +68,10 @@ class ReturnDTO(state: PhysicalSystemState) {
             this.pumpName = dropletInjectionTime.pump.name
         }
     }
+
+    override fun toString(): String {
+        return "ReturnDTO(time=$time, dropletStates=$dropletStates)"
+    }
+
+
 }

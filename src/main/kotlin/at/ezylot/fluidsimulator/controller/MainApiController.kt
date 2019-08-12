@@ -3,6 +3,7 @@ package at.ezylot.fluidsimulator.controller
 import at.ezylot.fluidsimulator.dtos.ErrorResponse
 import at.ezylot.fluidsimulator.service.SimulatorService
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.slf4j.MarkerFactory
@@ -16,7 +17,11 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-class MainApiController(private val messageSource: MessageSource, private val simulatorService: SimulatorService) {
+class MainApiController(
+    private val messageSource: MessageSource,
+    private val simulatorService: SimulatorService,
+    private val objectMapper: ObjectMapper
+) {
 
     private val LOGGER = LoggerFactory.getLogger(javaClass)
     private val simulationMarker = MarkerFactory.getMarker("simulation")
@@ -33,7 +38,7 @@ class MainApiController(private val messageSource: MessageSource, private val si
             try {
                 val responseEntity = ResponseEntity.ok(simulatorService.simulate(body))
                 LOGGER.info(simulationMarker, "Successful simulation")
-                MDC.put("responseJSON", responseEntity.toString())
+                MDC.put("responseJSON", objectMapper.writeValueAsString(responseEntity))
                 responseEntity
             } catch (e: IllegalArgumentException) {
                 LOGGER.error(simulationMarker, "Simulator error occurred", e)
