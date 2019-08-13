@@ -19,8 +19,7 @@ import java.util.*
 @RestController
 class MainApiController(
     private val messageSource: MessageSource,
-    private val simulatorService: SimulatorService,
-    private val objectMapper: ObjectMapper
+    private val simulatorService: SimulatorService
 ) {
 
     private val LOGGER = LoggerFactory.getLogger(javaClass)
@@ -30,20 +29,20 @@ class MainApiController(
     fun simulate(@RequestBody body: JsonNode): ResponseEntity<*> {
         MDC.put("sourceJSON", body.toString())
 
-        val errors = validateNodeCounts(body)
-        return if (errors.isPresent) {
-            LOGGER.error(simulationMarker, "Own caught error occurred: {}", errors.get().message)
-            ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errors.get())
-        } else {
-            try {
-                val responseEntity = ResponseEntity.ok(simulatorService.simulate(body))
-                LOGGER.info(simulationMarker, "Successful simulation")
-                MDC.put("responseJSON", objectMapper.writeValueAsString(responseEntity))
-                responseEntity
-            } catch (e: IllegalArgumentException) {
-                LOGGER.error(simulationMarker, "Simulator error occurred", e)
-                ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ErrorResponse("error", e.message!!))
+        try {
+            val errors = validateNodeCounts(body)
+            return if (errors.isPresent) {
+                LOGGER.error(simulationMarker, "Own caught error occurred: {}", errors.get().message)
+                ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errors.get())
+            } else {
+                return ResponseEntity.ok(simulatorService.simulate(body))
+                    .also { LOGGER.info(simulationMarker, "Successful simulation") }
             }
+        } catch (e: IllegalArgumentException) {
+            LOGGER.error(simulationMarker, "Simulator error occurred: {}", e.message, e)
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ErrorResponse("error", e.message!!))
+        } finally {
+            MDC.remove("sourceJSON")
         }
     }
 

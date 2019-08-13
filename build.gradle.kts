@@ -90,6 +90,16 @@ tasks.create<NodeTask>("scssCompile") {
     setScript(file("$projectDir/node_modules/node-sass/bin/node-sass"))
 }
 
+tasks.create("resolveDependencies") {
+    doLast {
+        project.rootProject.allprojects.forEach { subProject ->
+            subProject.configurations.forEach { configuration ->
+                if(configuration.isCanBeResolved()) configuration.resolve()
+            }
+        }
+    }
+}
+
 tasks.clean.configure {
     delete(file("node_modules"))
     delete(file("log"))
