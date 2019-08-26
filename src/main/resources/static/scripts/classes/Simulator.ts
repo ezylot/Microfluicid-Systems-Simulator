@@ -101,6 +101,9 @@ export class Simulator {
             simulatedFluid.remove(this.canvas);
         });
 
+        this._currentState = 0;
+        this.$footer.find('.progressbar-current').text(0);
+        this.$footer.find('.progressbar-max').text(0);
         this.$progressBar
             .attr('data-slider-value', 0)
             .attr('data-slider-max', this.states.length -  1);
