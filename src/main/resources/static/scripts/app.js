@@ -1,19 +1,9 @@
 /*
  TODO: possibility to define "fully filled with fluid" channels in fluid simmulation
- TODO: design for available elements
- TODO: fast drawing destroys connections
  TODO: Select next entry when deleting (? do not know if really better this way)
- TODO: pump names should be unique
- TODO: Open dialog when downloading to let user select download location/name
- TODO: Info tooltip at volume input
- TODO: Default Values from Volume Pump
- TODO: Units for Volume pump
- TODO: Units for Pressure pump
  TODO: Multi select channels
- TODO: Info Texts for the available elements
  TODO: look at functionality of traps
  TODO: Add grid size multiplier in default values
- TODO: About link "Created with JKU, etc"
 */
 
 require(['jquery', 'bootstrap'], function ($) {
