@@ -49,7 +49,24 @@
 
             <h3 th:text="#{header.title}"></h3>
 
-            <div class="ml-auto mr-3 dropdown">
+            <a class="fas fa-info ml-3" data-toggle="modal" data-target="#jkuInfoModal"></a>
+            <div class="modal fade" id="jkuInfoModal" tabindex="-1" role="dialog" aria-labelledby="jkuInfoModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="jkuInfoModalLabel" th:text="#{infomodal.title}">Modal title</h5>
+                            <button class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <th:block th:utext="#{infomodal.text}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${false}" class="ml-auto mr-3 dropdown">
                 <button class="btn btn-link dropdown-toggle"
                         type="button"
                         id="languageSwitcherButton"

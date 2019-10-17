@@ -54,6 +54,53 @@ export function getSaveAsJson(): string {
     return JSON.stringify(saveStructure, null, 2);
 }
 
+export function loadSave(json: string) {
+    let object: SaveStructure = JSON.parse(json);
+
+    resetValues();
+
+    $(window).trigger('resize');
+
+    setDefaultValues(object.defaultValues);
+
+    object.fluids.forEach((fluid: Fluid): void => {
+        createNewFluid(Fluid.cloneTyped(fluid));
+    });
+    object.canvas.lines.forEach((channel: Channel): void => {
+        makeChannel(Channel.cloneTyped(channel));
+    });
+
+    getChannelsFromCanvas().forEach(line => {
+        line.set({
+            evented: true,
+            hoverCursor: 'default'
+        });
+        line.endCircle.set({ evented: true });
+    });
+    mergeElements(canvasToSave);
+
+    object.pumps.forEach((pump: Pump): void => {
+        canvasToSave.getObjects("group")
+            .filter((circleGroup): boolean => circleGroup instanceof ChannelEndCircle)
+            .filter((circleGroup: ChannelEndCircle): boolean => circleGroup.top === pump.top && circleGroup.left === pump.left)
+            .forEach((circleGroup: ChannelEndCircle): void => {
+                let typedPump = Pump.cloneTyped(pump);
+                createPump(typedPump);
+                createOrUpdatePumpElement(circleGroup, PumpTypes[typedPump.type], typedPump);
+            });
+    });
+
+    setPhaseProperties(object.phaseProperties);
+
+    object.droplets.forEach((droplet: Droplet): void => {
+        createNewDroplet(Droplet.cloneTyped(droplet));
+    });
+
+    object.dropletInjections.forEach((injection: DropletInjection): void => {
+        createNewInjection(DropletInjection.cloneTyped(injection));
+    });
+}
+
 jQuery((): void => {
     $('.fa-save').on('click', (event: ClickEvent): void => {
         let file = new Blob([
@@ -67,50 +114,7 @@ jQuery((): void => {
         let file = evt.target.files[0];
         let reader = new FileReader();
         reader.onload = (): void => {
-            let object: SaveStructure = JSON.parse(reader.result.toString());
-
-            resetValues();
-
-            $(window).trigger('resize');
-
-            setDefaultValues(object.defaultValues);
-
-            object.fluids.forEach((fluid: Fluid): void => {
-                createNewFluid(Fluid.cloneTyped(fluid));
-            });
-            object.canvas.lines.forEach((channel: Channel): void => {
-                makeChannel(Channel.cloneTyped(channel));
-            });
-
-            getChannelsFromCanvas().forEach(line => {
-                line.set({
-                    evented: true,
-                    hoverCursor: 'default'
-                });
-                line.endCircle.set({ evented: true });
-            });
-            mergeElements(canvasToSave);
-
-            object.pumps.forEach((pump: Pump): void => {
-                canvasToSave.getObjects("group")
-                    .filter((circleGroup): boolean => circleGroup instanceof ChannelEndCircle)
-                    .filter((circleGroup: ChannelEndCircle): boolean => circleGroup.top === pump.top && circleGroup.left === pump.left)
-                    .forEach((circleGroup: ChannelEndCircle): void => {
-                        let typedPump = Pump.cloneTyped(pump);
-                        createPump(typedPump);
-                        createOrUpdatePumpElement(circleGroup, PumpTypes[typedPump.type], typedPump);
-                    });
-            });
-
-            setPhaseProperties(object.phaseProperties);
-
-            object.droplets.forEach((droplet: Droplet): void => {
-                createNewDroplet(Droplet.cloneTyped(droplet));
-            });
-
-            object.dropletInjections.forEach((injection: DropletInjection): void => {
-                createNewInjection(DropletInjection.cloneTyped(injection));
-            });
+            loadSave(reader.result.toString());
         };
         reader.readAsText(file);
         $('#fileupload').val(null);
@@ -121,7 +125,13 @@ jQuery((): void => {
     });
 
     $('.fa-file-alt').on('click', (): void => {
-        location.reload();
+        if(window.location.search.indexOf("clear=true") !== -1) {
+            location.reload();
+        } else if (location.href.indexOf("?") === -1) {
+            location.href = location.href + '?clear=true';
+        } else {
+            location.href = location.href + '&clear=true';
+        }
     });
 });
 

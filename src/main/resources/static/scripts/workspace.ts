@@ -35,14 +35,14 @@ export enum PumpTypes {
 }
 
 const lineColor: any = {};
-lineColor[ChannelTypes.normal] = '#9c9c9c';
-lineColor[ChannelTypes.cloggable] = '#70719c';
-lineColor[ChannelTypes.bypass] = '#9c5872';
+lineColor[ChannelTypes.normal] = '#a0a0a0';
+lineColor[ChannelTypes.cloggable] = '#0064ae';
+lineColor[ChannelTypes.bypass] = '#bd1614';
 
 const lineColorSelected: any = {};
-lineColorSelected[ChannelTypes.normal] = '#689c52';
-lineColorSelected[ChannelTypes.cloggable] = '#50429c';
-lineColorSelected[ChannelTypes.bypass] = '#9c3540';
+lineColorSelected[ChannelTypes.normal] = '#666666';
+lineColorSelected[ChannelTypes.cloggable] = '#004689';
+lineColorSelected[ChannelTypes.bypass] = '#a70c14';
 
 const pumpColor: any = {};
 pumpColor[PumpTypes.pressure] = '#c0c634';
@@ -411,17 +411,17 @@ jQuery((): void => {
     let $createChannelElement = $('.element-palette .createChannelIcon');
     $createChannelElement
         .css('cursor', 'pointer')
-        .css('color', lineColor[ChannelTypes.normal]);
+        .css('color', lineColorSelected[ChannelTypes.normal]);
 
     let $createCloggableChannelElement = $('.element-palette .createCloggableChannelIcon');
     $createCloggableChannelElement
         .css('cursor', 'pointer')
-        .css('color', lineColor[ChannelTypes.cloggable]);
+        .css('color', lineColorSelected[ChannelTypes.cloggable]);
 
     let $createBypassChannelElement = $('.element-palette .createBypassChannelIcon');
     $createBypassChannelElement
         .css('cursor', 'pointer')
-        .css('color', lineColor[ChannelTypes.bypass]);
+        .css('color', lineColorSelected[ChannelTypes.bypass]);
 
     let $createPressurePumpElement = $('.element-palette .createPressurePumpIcon');
     let $createVolumePumpElement = $('.element-palette .createVolumePumpIcon');
