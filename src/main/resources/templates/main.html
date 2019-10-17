@@ -3,13 +3,9 @@
 <head>
     <title th:text="#{htmlTitle}">Microfluidic Systems Simulator</title>
 
-    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/favicon/apple-touch-icon.png}"
-          href="../static/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/favicon/favicon-32x32.png}"
-          href="../static/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/favicon/favicon-16x16.png}"
-          href="../static/favicon/favicon-16x16.png">
-
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
 
     <!--suppress SpellCheckingInspection -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -24,7 +20,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
 
-    <link rel="stylesheet" th:href="@{/styles/main.css}">
+    <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
     <div id="exampleToast" role="alert" aria-live="assertive" aria-atomic="true" class="d-none toast">
@@ -584,8 +580,8 @@
             integrity="sha256-1fEPhSsRKlFKGfK3eO710tEweHh1fwokU5wFGDHO+vg="
             crossorigin="anonymous"></script>
 
-    <script th:src="@{/scripts/config.js}"></script>
-    <script th:src="@{/scripts/bundle.js}"></script>
-    <script th:src="@{/scripts/app.js}"></script>
+    <script src="scripts/config.js"></script>
+    <script src="scripts/bundle.js"></script>
+    <script src="scripts/app.js"></script>
 </body>
 </html>
