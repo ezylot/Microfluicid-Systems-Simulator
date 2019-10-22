@@ -32,7 +32,7 @@ export class Footer {
 
         return jQuery.ajax({
             'type': 'POST',
-            'url': window.location.href.replace(/\/+$/, '') + '/simulate',
+            'url': window.location.href.split('?')[0].replace(/\/+$/, '') + '/simulate',
             'contentType': 'application/json; charset=utf-8',
             'data': json,
             'dataType': 'json',
