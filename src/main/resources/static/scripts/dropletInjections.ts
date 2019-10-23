@@ -26,7 +26,8 @@ export function updatePump(updatedPump: Pump): void {
 }
 
 export function updateDropletInInjection(updatedDroplet: Droplet): void {
-    $(`#newDropletSelection,#dropletSelection option[value=${updatedDroplet.id}]`).text(updatedDroplet.name);
+    $(`#newDropletSelection option[value=${updatedDroplet.id}]`).text(updatedDroplet.name);
+    $(`#dropletSelection option[value=${updatedDroplet.id}]`).text(updatedDroplet.name);
 
     let $tableRows = $('.injection-properties table tbody tr');
     $tableRows.each((index, row): void => {
@@ -49,7 +50,8 @@ export function createDropletInInjection(newDroplet: Droplet): void {
 }
 
 export function deleteDropletFromInjection(dropletToDelete: Droplet): void {
-    $(`#newDropletSelection,#dropletSelection option[value=${dropletToDelete.id}]`).remove();
+    $(`#dropletSelection option[value=${dropletToDelete.id}]`).remove();
+    $(`#newDropletSelection option[value=${dropletToDelete.id}]`).remove();
 
     let $tableRows = $('.injection-properties table tbody tr');
     $tableRows.each((index, row): void => {
