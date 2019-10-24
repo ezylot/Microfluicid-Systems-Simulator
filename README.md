@@ -1,4 +1,4 @@
-# Microfluicid-Systems-Simulator
+# JKU Microfluicid-Systems-Simulator
 Project for my bachelor-thesis for the JKU university
 
 The application can be run with the following command
@@ -7,3 +7,4 @@ The application can be run with the following command
 When you want a runnable jar you can execute the following
 ```./gradlew assemble```
 and then copy the jar file from the *build/libs/* folder
+
