@@ -16,6 +16,7 @@ RUN ./gradlew -i assemble -Dorg.gradle.daemon=false \
     && rm -rf ~/.npm \
     && rm -rf ~/.kotlin \
     && rm -rf /tmp \
+    && mkdir /tmp \
     && find . -mindepth 1 -maxdepth 1 ! -name "fluidsimulator-0.0.1-SNAPSHOT.jar" -exec rm -rv {} +
 
 EXPOSE 8080
