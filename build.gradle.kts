@@ -8,11 +8,7 @@ plugins {
     id("org.springframework.boot") version "2.1.3.RELEASE"
     id("com.moowork.node") version "1.3.1"
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
-    id("com.avast.gradle.docker-compose") version "0.9.4"
 }
-
-tasks["test"].dependsOn(tasks["composeUp"])
-tasks["test"].finalizedBy(tasks["composeDown"])
 
 group = "at.ezylot"
 version = "0.0.1-SNAPSHOT"
