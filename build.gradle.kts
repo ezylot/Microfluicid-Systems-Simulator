@@ -36,7 +36,6 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:6.1")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation ("org.seleniumhq.selenium:selenium-java:3.141.59")
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
