@@ -263,8 +263,12 @@
                     <div class="property-list mt-auto">
                         <div class="droplet-property-line">
                             <label for="volume" th:text="#{dropletProperties.form.volume}"></label>
-                            <input id="volume" name="volume" step="any" type="number" min="0" />
+                            <div class="unit-input">
+                                <input id="volume" name="volume" step="any" type="number" min="0" />
+                                <small class="unit" th:utext="#{dropletProperties.form.volume.unit}"></small>
+                            </div>
                         </div>
+
                         <div class="droplet-property-line">
                             <label for="name" th:text="#{dropletProperties.form.name}"></label>
                             <input id="name" name="name" type="text" />
@@ -318,10 +322,7 @@
                             <select id="dropletSelection" name="dropletId"></select>
                         </div>
                         <div class="injection-property-line">
-                            <label for="injectionTime">
-                                <span th:text="#{injectionProperties.form.injectTime}"></span>
-                                <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" th:title="#{injectionProperties.injectionTime.hint}"></i>
-                            </label>
+                            <label for="injectionTime" th:text="#{injectionProperties.form.injectTime}"></label>
 
                             <div class="unit-input">
                                 <input id="injectionTime" name="injectionTime" type="number" min="0" step="0.0001" />
@@ -419,9 +420,11 @@
                         <input type="text" required autofocus id="newDropletName" th:placeholder="#{dropletProperties.newModal.newName.placeholder}"/>
 
                         <label for="newDropletVolume" th:text="#{dropletProperties.newModal.newVolume}"></label>
-                        <input required id="newDropletVolume"
-                                type="number" min="0" step="any"
-                               th:placeholder="#{dropletProperties.newModal.newVolume.placeholder}"/>
+                        <div class="unit-input">
+                            <input id="newDropletVolume" name="default-volume-pumpValue" type="number" min="0" required th:placeholder="#{dropletProperties.newModal.newVolume.placeholder}" />
+                            <small class="unit" th:utext="#{dropletProperties.newModal.newVolume.unit}"></small>
+                        </div>
+
 
                         <label for="newDropletColor" class="col-md-4" th:text="#{dropletProperties.newModal.newColor}"></label>
                         <input id="newDropletColor" class="mb-4" name="newDropletColor" type="text" />
@@ -476,10 +479,7 @@
                         <label for="newDropletSelection" th:text="#{injectionProperties.newModal.droplet.label}"></label>
                         <select id="newDropletSelection" ></select>
 
-                        <label for="newDropletInjectionTime">
-                            <span th:text="#{injectionProperties.newModal.injectionTime.label}"></span>
-                            <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" th:title="#{injectionProperties.injectionTime.hint}"></i>
-                        </label>
+                        <label for="newDropletInjectionTime" th:text="#{injectionProperties.newModal.injectionTime.label}"></label>
                         <div class="unit-input">
                             <input required autofocus id="newDropletInjectionTime"
                                    type="number" min="0" step="0.0001"
