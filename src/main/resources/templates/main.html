@@ -143,7 +143,7 @@
                     <label for="default-volume-pumpValue" th:text="#{elementProperties.pump.volume.value}"></label>
                     <div class="unit-input">
                         <input id="default-volume-pumpValue" name="default-volume-pumpValue" type="number" min="0"  value="0" />
-                        <small class="unit" th:text="#{elementProperties.pump.volume.unit}"></small>
+                        <small class="unit" th:utext="#{elementProperties.pump.volume.unit}"></small>
                     </div>
                 </div>
             </div>
@@ -163,7 +163,7 @@
                                 <th th:text="#{fluidProperties.table.id}"></th>
                                 <th th:text="#{fluidProperties.table.name}"></th>
                                 <th th:text="#{fluidProperties.table.mu}"></th>
-                                <th th:text="#{fluidProperties.table.density}"></th>
+                                <th th:utext="#{fluidProperties.table.density}"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -252,7 +252,7 @@
                             <tr>
                                 <th th:text="#{dropletProperties.table.id}"></th>
                                 <th th:text="#{dropletProperties.table.name}"></th>
-                                <th th:text="#{dropletProperties.table.volume}"></th>
+                                <th th:utext="#{dropletProperties.table.volume}"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -384,7 +384,7 @@
                 <div class="element-property-line unit-input">
                     <input id="pumpValue" name="value" type="number" min="0" />
                     <small class="unit" id="pressure-value-unit" th:text="#{elementProperties.pump.pressure.unit}"></small>
-                    <small class="unit" id="volume-value-unit" th:text="#{elementProperties.pump.volume.unit}"></small>
+                    <small class="unit" id="volume-value-unit" th:utext="#{elementProperties.pump.volume.unit}"></small>
                 </div>
             </div>
         </div>
