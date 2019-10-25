@@ -164,9 +164,6 @@ export class Simulator {
                 this.fluidsToSimulate.delete(dropletName);
             } else {
                 // TODO: implement multi channel spanning droplets
-                debugger;
-                this.fluidsToSimulate.get(dropletName).remove(this.canvas);
-                this.fluidsToSimulate.delete(dropletName);
             }
         });
 
