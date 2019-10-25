@@ -223,7 +223,7 @@ export function createOrUpdatePumpElement(pumpGroup: ChannelEndCircle, pumpType:
     let pumpCircle = pumpGroup.getObjects()[0] as Circle;
 
     if (pumpType === PumpTypes.drain) {
-        pump.pumpName = 'D' + pump.id;
+        pump.pumpName = pump.pumpName || 'D' + pump.id;
         pump.type = PumpTypes.drain;
         pumpCircle.set({
             radius: calculatePumpRadius(),
@@ -239,7 +239,7 @@ export function createOrUpdatePumpElement(pumpGroup: ChannelEndCircle, pumpType:
         });
     } else if (pumpType === PumpTypes.pressure) {
         pump.pumpValue = pump.pumpValue || defaultValues.pressure;
-        pump.pumpName = 'P' + pump.id;
+        pump.pumpName = pump.pumpName || 'P' + pump.id;
         pump.type = PumpTypes.pressure;
         pumpCircle.set({
             radius: calculatePumpRadius(),
@@ -263,7 +263,7 @@ export function createOrUpdatePumpElement(pumpGroup: ChannelEndCircle, pumpType:
         }));
     } else {
         pump.pumpValue = pump.pumpValue || defaultValues.volume;
-        pump.pumpName = 'V' + pump.id;
+        pump.pumpName = pump.pumpName || 'V' + pump.id;
         pump.type = PumpTypes.volume;
 
         pumpCircle.set({
@@ -691,10 +691,11 @@ jQuery((): void => {
             canvasToSave.renderAll();
         } else if ($input.attr('id') === 'pumpName') {
             objectProperties.pumpName = ($input.val() as string);
+            ((oldSelectedElem as ChannelEndCircle).getObjects()[1] as Text).set('text', objectProperties.pumpName);
+            canvasToSave.renderAll();
             updatePump(objectProperties);
         } else if ($input.attr('id') === 'pumpValue') {
             objectProperties.pumpValue = Number($input.val());
-            updatePump(objectProperties);
         }
     });
 

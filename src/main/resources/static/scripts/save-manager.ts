@@ -54,7 +54,7 @@ export function getSaveAsJson(): string {
     return JSON.stringify(saveStructure, null, 2);
 }
 
-export function loadSave(json: string) {
+export function loadSave(json: string): void {
     let object: SaveStructure = JSON.parse(json);
 
     resetValues();
