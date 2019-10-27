@@ -1,6 +1,7 @@
 package at.ezylot.fluidsimulator.controller
 
 import at.ezylot.fluidsimulator.dtos.ErrorResponse
+import at.ezylot.fluidsimulator.dtos.ReturnDTO
 import at.ezylot.fluidsimulator.service.SimulatorService
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 @RestController
 class MainApiController(
@@ -35,8 +38,19 @@ class MainApiController(
                 LOGGER.error(simulationMarker, "Own caught error occurred: {}", errors.get().message)
                 ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errors.get())
             } else {
-                return ResponseEntity.ok(simulatorService.simulate(body))
-                    .also { LOGGER.info(simulationMarker, "Successful simulation") }
+                val ret = simulatorService.simulate(body)
+                val thread = ret.first
+                val simulateFuture = ret.second
+
+                try {
+                    val result: List<ReturnDTO> = simulateFuture.get(10, TimeUnit.SECONDS)
+                    LOGGER.info(simulationMarker, "Successful simulation")
+                    return ResponseEntity.ok(result)
+                } catch (e: TimeoutException) {
+                    thread.stop()
+                    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                        .body(ErrorResponse("error", messageSource.getMessage("simulation-error.timeout", arrayOf<String>(), LocaleContextHolder.getLocale())))
+                }
             }
         } catch (e: IllegalArgumentException) {
             LOGGER.error(simulationMarker, "Simulator error occurred: {}", e.message, e)

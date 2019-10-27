@@ -12,6 +12,7 @@ export class SimulatedFluid {
 
     private fluidColor: string;
     private drawnGroup: Group;
+    private cachedPercentage: number = -1;
 
     /**
      * Represents a simulated fluid that runs though the channels
@@ -76,17 +77,21 @@ export class SimulatedFluid {
             }
 
             if(this.drawnGroup != null) {
-                if(this.drawnGroup.size() === 3) {
+                let newPercentage = this.startPercentage - this.endPercentage;
+                if(this.drawnGroup.size() === 3 && Math.floor(this.cachedPercentage * 1000) === Math.floor(newPercentage * 1000)) {
                     let newCoordsX = (coords[0] + coords[2]) / 2;
                     let newCoordsY = (coords[1] + coords[3]) / 2;
                     let oldTransformMatrix = this.drawnGroup.calcTransformMatrix();
 
                     oldTransformMatrix[4] = newCoordsX;
                     oldTransformMatrix[5] = newCoordsY;
+                    console.log();
                     return;
                 } else {
                     canvas.remove(this.drawnGroup);
                 }
+
+                this.cachedPercentage = newPercentage;
             }
 
             let simulatedFluid = new Line(coords, {

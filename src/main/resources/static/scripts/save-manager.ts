@@ -53,7 +53,7 @@ export function getSaveAsJson(): string {
     return JSON.stringify(saveStructure, null, 2);
 }
 
-export function loadSaveWithoutSnapshot(json: string) {
+export function loadSaveWithoutSnapshot(json: string): void {
     let object: SaveStructure = JSON.parse(json);
 
     resetValues();
