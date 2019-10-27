@@ -1,10 +1,11 @@
-import {ILineOptions, Line} from "fabric/fabric-impl";
-import {ChannelTypes} from "../workspace";
+import {Canvas, ILineOptions, Line} from "fabric/fabric-impl";
 import {ChannelEndCircle} from "./ChannelEndCircle";
+import {Channel} from "../classes/Channel";
+import {canvasToSave} from "../workspace";
 
 export class ChannelLine extends Line {
 
-    public channelType: ChannelTypes;
+    public channel: Channel;
     public represents = 'line';
     public properties: {
         height: number;
@@ -13,8 +14,12 @@ export class ChannelLine extends Line {
     public startCircle: ChannelEndCircle;
     public endCircle: ChannelEndCircle;
 
-    public constructor(points: number[], objObjects: ILineOptions, channelType: ChannelTypes) {
+    public constructor(points: number[], objObjects: ILineOptions, channel: Channel) {
         super(points, objObjects);
-        this.channelType = channelType;
+        this.channel = channel;
+    }
+
+    public static fromCanvas(canvas: Canvas): ChannelLine[] {
+        return canvasToSave.getObjects('line') as ChannelLine[];
     }
 }

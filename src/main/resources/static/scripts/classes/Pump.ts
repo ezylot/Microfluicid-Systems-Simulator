@@ -8,7 +8,6 @@ export class Pump {
     public pumpName: string;
     public type: PumpTypes;
 
-
     public constructor(top: number, left: number, id: number, pumpValue: number, pumpName: string, type: PumpTypes) {
         this.top = top;
         this.left = left;

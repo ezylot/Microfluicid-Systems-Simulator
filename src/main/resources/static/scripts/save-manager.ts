@@ -1,5 +1,4 @@
 import * as $ from "jquery";
-import ClickEvent = JQuery.ClickEvent;
 import {createNewFluid, fluids} from "./fluids";
 import {createNewDroplet, droplets} from "./droplets";
 import {createNewInjection, dropletInjections} from "./dropletInjections";
@@ -14,16 +13,16 @@ import {DropletInjection} from "./classes/DropletInjection";
 import {resetValues} from "./value-reset";
 import {
     canvasToSave,
-    createPump,
     createOrUpdatePumpElement,
-    makeChannel,
+    createPump,
     mergeElements,
     pumps,
-    PumpTypes,
-    getChannelsFromCanvas
+    PumpTypes
 } from "./workspace";
 import {ChannelEndCircle} from "./fabricElements/ChannelEndCircle";
 import {ChannelLine} from "./fabricElements/ChannelLine";
+import {UndoHistory} from "./classes/UndoHistory";
+import ClickEvent = JQuery.ClickEvent;
 import ChangeEvent = JQuery.ChangeEvent;
 
 
@@ -40,7 +39,7 @@ export function getSaveAsJson(): string {
                 .filter((value): boolean => value instanceof ChannelLine)
                 .map((line: ChannelLine): Channel => {
                     return new Channel(
-                        line.channelType,
+                        line.channel.channelType,
                         line.x1,
                         line.y1,
                         line.x2,
@@ -54,7 +53,7 @@ export function getSaveAsJson(): string {
     return JSON.stringify(saveStructure, null, 2);
 }
 
-export function loadSave(json: string) {
+export function loadSaveWithoutSnapshot(json: string) {
     let object: SaveStructure = JSON.parse(json);
 
     resetValues();
@@ -66,16 +65,17 @@ export function loadSave(json: string) {
     object.fluids.forEach((fluid: Fluid): void => {
         createNewFluid(Fluid.cloneTyped(fluid));
     });
+
     object.canvas.lines.forEach((channel: Channel): void => {
-        makeChannel(Channel.cloneTyped(channel));
+        Channel.cloneTyped(channel).onCanvas(canvasToSave);
     });
 
-    getChannelsFromCanvas().forEach(line => {
-        line.set({
+    ChannelLine.fromCanvas(canvasToSave).forEach(channelLine => {
+        channelLine.set({
             evented: true,
             hoverCursor: 'default'
         });
-        line.endCircle.set({ evented: true });
+        channelLine.endCircle.set({ evented: true });
     });
     mergeElements(canvasToSave);
 
@@ -99,6 +99,11 @@ export function loadSave(json: string) {
     object.dropletInjections.forEach((injection: DropletInjection): void => {
         createNewInjection(DropletInjection.cloneTyped(injection));
     });
+}
+
+export function loadSave(json: string) {
+    loadSaveWithoutSnapshot(json);
+    UndoHistory.snapshot();
 }
 
 jQuery((): void => {

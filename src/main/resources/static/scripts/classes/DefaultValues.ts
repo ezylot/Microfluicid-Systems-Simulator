@@ -11,6 +11,13 @@ export class DefaultValues {
         this._volume = volume;
     }
 
+    public calculateRadius(): number {
+        return this.width / 2 + 6;
+    }
+
+    public calculatePumpRadius(): number {
+        return this.width / 2 + 10;
+    }
 
     public get width(): number {
         return this._width;
